@@ -2,7 +2,7 @@ const nav = {
     "name": "Model Fitting",
     "tab": "model_fitting",
     "buttons": [
-        
+        "./groupByModeling",
         {
             "name": "Contrasts",
             "icon": "icon-brightness-and-contrast",
