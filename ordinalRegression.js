@@ -426,20 +426,9 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
         let results = getFixedEffectsandCovariates(code_vars.selected.formula);
         let independentVars =Object.values(results.covariates).concat( Object.values(results.fixedEffects)).toString();
         code_vars.selected.rCharacterArray = stringToRCharacterArray(independentVars)
-
-        //This is good code below that should work, I may decide to revert to this
-        /*   try {
-              fs.accessSync(libPath, fs.constants.W_OK);
-             
-          }
-          catch (err) {
-              dialog.showMessageBoxSync({type: "question", buttons: ["Ok", "Cancel"], title: "File Permission Error", message: `You need write access to be able to install a R package to the directory selected. Please relaunch the appliaction by selecting the Run as Administrator option`})
-              return res;
-          } */
-       
-            const cmd = instance.dialog.renderR(code_vars);
-            res.push({ cmd: cmd, cgid: newCommandGroup() })
-            return res;
+        const cmd = instance.dialog.renderR(code_vars);
+        res.push({ cmd: cmd, cgid: newCommandGroup() })
+        return res;
        
     }
 
