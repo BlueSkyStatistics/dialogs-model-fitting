@@ -342,6 +342,7 @@ rm(bsky_tree)
                     min: 0,
                     max: 9999999,
                     step: 0.01,
+                    ml:3,
                     value: 0.01,
                     extraction: "NoPrefix|UseComma"
                 })

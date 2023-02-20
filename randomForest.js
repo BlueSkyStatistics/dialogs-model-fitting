@@ -185,7 +185,6 @@ if( !exists('{{selected.modelname | safe}}' ) || is.null({{selected.modelname | 
                 el: new checkbox(config, {
                     label: localization.en.proximity,
                     no: "proximity",
-                    style: "ml-2",
                     required: true,
                     dependant_objects: ["newds"],
                 })
@@ -195,6 +194,7 @@ if( !exists('{{selected.modelname | safe}}' ) || is.null({{selected.modelname | 
                     no: 'newds',
                     label: localization.en.newds,
                     placeholder: "",
+                    ml:2,
                     type: "character",
                     extraction: "TextAsIs",
                     value: ""
@@ -204,6 +204,7 @@ if( !exists('{{selected.modelname | safe}}' ) || is.null({{selected.modelname | 
                 el: new checkbox(config, {
                     label: localization.en.predictor,
                     no: "predictor",
+                    style: "mt-2",
                     required: true,
                     dependant_objects: ["newcolname"],
                 })
