@@ -128,6 +128,8 @@ BSkyFormat(BSky_GLM_Summary_{{selected.modelname | safe}})
 BSkyFormat(exp(cbind(Exp_Coeff=coef({{selected.modelname | safe}}),confint.glm({{selected.modelname | safe}},level=0.95))),singleTableOutputHeader='Exponentiated coefficient estimates and 95% confidence intervals')
 {{/if}}
 #Adding attributes to support scoring
+##The attribute indepvar does not have to be populated as the function getModelIndependentVariables handles models of class glm and negbin (negative binomial)
+attr(.GlobalEnv\${{selected.modelname | safe}},"depvar")="{{selected.dependent | safe}}"
 attr(.GlobalEnv\${{selected.modelname | safe}},"classDepVar")= class({{dataset.name}}[, c("{{selected.dependent | safe}}")])
 attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset.name}}[, c("{{selected.dependent | safe}}")], size = 2, replace = TRUE)
 {{/if}}
