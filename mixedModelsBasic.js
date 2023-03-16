@@ -340,7 +340,7 @@ moderator.below <- mean({{dataset.name}}\${{selected.firstterm | safe}}) - sd({{
 mylist <- list({{selected.firstterm | safe}}=c(moderator.above,moderator.avg,moderator.below)) 
 BSkyEmmForSimpleEffects <- emmeans::emmeans({{selected.modelname | safe}}, ~ {{selected.firstterm | safe}}*{{selected.secondterm | safe}}, at=mylist)
 BSkySimpleEffects <- emmeans::contrast(BSkyEmmForSimpleEffects, "pairwise",by="{{selected.firstterm | safe}}")
-BSkyFormat(as.data.frame(BSkySimpleEffects), singleTableOutputHeader ="Simple effects tests")
+BSkyFormat(data.frame(BSkySimpleEffects), singleTableOutputHeader ="Simple effects tests")
 
 #simple.slopes1a<-as.data.frame(emtrends({{selected.modelname | safe}}, ~{{selected.secondterm | safe}}, var="{{selected.firstterm | safe}}" ,at=mylist))
 #t.1a<-as.matrix(simple.slopes1a[2]/simple.slopes1a[3])
@@ -357,7 +357,7 @@ BSkyFormat(as.data.frame(BSkySimpleEffects), singleTableOutputHeader ="Simple ef
 let snippet7 = { RCode: `
 BSkyEmmForSimpleEffects <- emmeans::emmeans({{selected.modelname | safe}}, ~ {{selected.firstterm | safe}}*{{selected.secondterm | safe}})
 BSkySimpleEffects <- emmeans::contrast(BSkyEmmForSimpleEffects, "revpairwise", by = "{{selected.firstterm | safe}}", adjust = "none")
-BSkyFormat(as.data.frame(BSkySimpleEffects), singleTableOutputHeader = paste(\"Simple effects for\",  "{{selected.firstterm | safe}}", "by", "{{selected.secondterm | safe}}", sep= \" \", collapse=\"\") )\n
+BSkyFormat(data.frame(BSkySimpleEffects), singleTableOutputHeader = paste(\"Simple effects for\",  "{{selected.firstterm | safe}}", "by", "{{selected.secondterm | safe}}", sep= \" \", collapse=\"\") )\n
 `
 }
 let snippet81 = { RCode: `
@@ -591,7 +591,7 @@ BSkyFormat(as.data.frame(unclass(BSkyRsquared[[2]])), singleTableOutputHeader = 
             for (var effect in fixedEffects) {
                 tempoutput += "\n#Estimated Marginal Means using method using Kenward Rogers";
                 tempoutput += "\nBSkyResultsEmmeans<-emmeans::emmeans(" + code_vars.selected.modelname + ", pairwise ~" + effect + ")";
-                tempoutput += "\nBSkyFormat( as.data.frame(BSkyResultsEmmeans), singleTableOutputHeader =\"Estimated Marginal Means for " +
+                tempoutput += "\nBSkyFormat(data.frame(BSkyResultsEmmeans), singleTableOutputHeader =\"Estimated Marginal Means for " +
                     code_vars.selected.tvarbox1 + " by " + effect + " using method = Kenward-Roger with no adjustment\")\n";
             }
         }
@@ -605,7 +605,7 @@ BSkyFormat(as.data.frame(unclass(BSkyRsquared[[2]])), singleTableOutputHeader = 
             for (var key in fixedEffects) {
                 tempoutput += "\n#Estimated Marginal Means using method using Kenward Rogers";
                 tempoutput += "\nBSkyResultsEmmeans<-emmeans::emmeans(" + code_vars.selected.modelname + ", pairwise ~" + key + ")";
-                tempoutput += "\nBSkyFormat( as.data.frame(BSkyResultsEmmeans), singleTableOutputHeader =\"Estimated Marginal Means for " +
+                tempoutput += "\nBSkyFormat(data.frame(BSkyResultsEmmeans), singleTableOutputHeader =\"Estimated Marginal Means for " +
                     code_vars.selected.tvarbox1 + " by " + key + " using method = Kenward-Roger with no adjustment\")\n";
             }
         }
@@ -623,7 +623,7 @@ BSkyFormat(as.data.frame(unclass(BSkyRsquared[[2]])), singleTableOutputHeader = 
             for (var key in fixedEffects) {
                 tempoutput += "\n#Estimated marginal means using method Satterthwaite and no adjustment\n";
                 tempoutput += "BSkyResultsEmmeans<-emmeans::emmeans(" + code_vars.selected.modelname + ", pairwise ~" + key + ", lmer.df = \"satterthwaite\", adjust = \"none\" )" + "\n";
-                tempoutput += "BSkyFormat( as.data.frame(BSkyResultsEmmeans), singleTableOutputHeader =\"Estimated Marginal Means for " +
+                tempoutput += "BSkyFormat(data.frame(BSkyResultsEmmeans), singleTableOutputHeader =\"Estimated Marginal Means for " +
                     code_vars.selected.tvarbox1 + " by " + key + " using method = Sattherthwaite with no adjustment\")" + "\n";
             }
         }
@@ -631,7 +631,7 @@ BSkyFormat(as.data.frame(unclass(BSkyRsquared[[2]])), singleTableOutputHeader = 
             for (var effect in fixedEffects) {
                 tempoutput += "\n#Estimated marginal means using method Satterthwaite and adjustment =Tukey\n";
                 tempoutput += "BSkyResultsEmmeans<-emmeans::emmeans(" + code_vars.selected.modelname + ", pairwise ~" + effect + ", lmer.df = \"satterthwaite\" , adjust = \"tukey\" )" + "\n";
-                tempoutput += "BSkyFormat( as.data.frame(BSkyResultsEmmeans), singleTableOutputHeader =\"Estimated Marginal Means for " +
+                tempoutput += "BSkyFormat(data.frame(BSkyResultsEmmeans), singleTableOutputHeader =\"Estimated Marginal Means for " +
                     code_vars.selected.tvarbox1 + " by " + effect + " using method = Satterthwaite with adjustment = Tukey\")" + "\n";
             }
         }
@@ -639,7 +639,7 @@ BSkyFormat(as.data.frame(unclass(BSkyRsquared[[2]])), singleTableOutputHeader = 
             for (var effect in fixedEffects) {
                 tempoutput += "\n#Estimated marginal means using method Satterthwaite and adjustment =Bonferroni\n";
                 tempoutput += "BSkyResultsEmmeans<-emmeans::emmeans(" + code_vars.selected.modelname + ", pairwise ~" + effect + ", lmer.df = \"satterthwaite\" , adjust = \"bonferroni\" )" + "\n";
-                tempoutput += "BSkyFormat( as.data.frame(BSkyResultsEmmeans), singleTableOutputHeader =\"Estimated Marginal Means for " +
+                tempoutput += "BSkyFormat(data.frame(BSkyResultsEmmeans), singleTableOutputHeader =\"Estimated Marginal Means for " +
                     code_vars.selected.tvarbox1 + " by " + effect + " using method = Satterthwaite with adjustment = Bonferroni\")" + "\n";
             }
         }
@@ -647,7 +647,7 @@ BSkyFormat(as.data.frame(unclass(BSkyRsquared[[2]])), singleTableOutputHeader = 
             for (var effect in fixedEffects) {
                 tempoutput += "\n#Estimated marginal means using method Satterthwaite and adjustment =FDR";
                 tempoutput += "\nBSkyResultsEmmeans<-emmeans::emmeans(" + code_vars.selected.modelname + ", pairwise ~" + effect + ", lmer.df = \"satterthwaite\" , adjust = \"FDR\" )";
-                tempoutput += "\nBSkyFormat( as.data.frame(BSkyResultsEmmeans), singleTableOutputHeader =\"Estimated Marginal Means for " +
+                tempoutput += "\nBSkyFormat(data.frame(BSkyResultsEmmeans), singleTableOutputHeader =\"Estimated Marginal Means for " +
                     code_vars.selected.tvarbox1 + " by " + effect + " using method = Satterthwaite with adjustment = FDR\")" + "\n";
             }
         }
