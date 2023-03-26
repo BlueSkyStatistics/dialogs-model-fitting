@@ -209,7 +209,7 @@ require(textutils)
 require(broom)
 {{selected.model | safe}} = MASS::polr({{selected.dependent | safe}}~{{selected.formula | safe}}, 
     method = '{{selected.method | safe}}', Hess = TRUE, weights ={{selected.weights | safe}}, 
-    na.action=na.exclude, data={{dataset.name}})
+    na.action=na.exclude, data = na.omit({{dataset.name}}[, {{selected.all_vars | safe}}]))
   
 #Display theoretical model equation and coefficients
 #Display theoretical model
@@ -286,7 +286,7 @@ cat ("LogLikelihood:", round (BSkyLogLikelihood, BSkyGetDecimalDigitSetting()) )
 
 {{selected.model | safe}}_null = MASS::polr({{selected.dependent | safe}}~1, 
     method = '{{selected.method | safe}}', Hess = TRUE, weights ={{selected.weights | safe}}, 
-    na.action=na.exclude, data={{dataset.name}})
+    na.action=na.exclude, data = na.omit({{dataset.name}}[, {{selected.all_vars | safe}}]))
 BSkyTestSlopes <- stats::anova({{selected.model | safe}}, {{selected.model | safe}}_null)
 BSkyTestSlopes <- as.data.frame(BSkyTestSlopes)
 BSkyTestSlopes <- cbind(Description= c("Null model", "Specified model"), BSkyTestSlopes)
@@ -427,6 +427,7 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
         let results = getFixedEffectsandCovariates(code_vars.selected.formula);
         let independentVars =Object.values(results.covariates).concat( Object.values(results.fixedEffects)).toString();
         code_vars.selected.rCharacterArray = stringToRCharacterArray(independentVars)
+        code_vars.selected.all_vars = stringToRCharacterArray(independentVars  +","+code_vars.selected.dependent)
         const cmd = instance.dialog.renderR(code_vars);
         res.push({ cmd: cmd, cgid: newCommandGroup() })
         return res;
