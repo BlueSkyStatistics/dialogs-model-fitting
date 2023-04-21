@@ -84,7 +84,8 @@ local ({
             nav: {
                 name: localization.en.navigation,
                 icon: "icon-package_install",
-                modal: config.id
+                modal: config.id,
+                datasetRequired: false,
             }
         }
         super(config, objects, content);

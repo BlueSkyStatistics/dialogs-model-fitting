@@ -112,7 +112,8 @@ base::save({{selected.modelSelection | safe}}, file = "{{selected.importResp | s
                 name: localization.en.navigation,
                 icon: "fas fa-save",
                 onclick: `r_before_modal("${config.id}")`,
-                modal_id: config.id
+                modal_id: config.id,
+                datasetRequired: false,
             }
         }
         super(config, objects, content);
