@@ -47,6 +47,13 @@ const nav = {
                 "./nonLinearReg"
             ]
         },
+        {
+            "name": "Non Linear Regression",
+            "icon": "icon-linear_regression_white_comp",
+            "children": [
+      
+            ]
+        },		        
         "./mixedModelsBasic",
         "./naiveBayes",
         {
