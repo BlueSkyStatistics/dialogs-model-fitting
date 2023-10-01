@@ -103,7 +103,7 @@ require(textutils);
 #Removing temporary objects
 if (exists("{{selected.modelname | safe}}")) rm({{selected.modelname | safe}})
 {{if (options.selected.family == "negative.binomial")}}
-{{selected.modelname | safe}} = MASS::glm.nb({{selected.dependent | safe}}~{{selected.formula | safe}}, link="{{selected.combokid | safe}}",{{if (options.selected.theta != "")}}init.theta = {{selected.theta | safe}}, {{/if}} {{if(options.selected.weights != "")}}weights = {{selected.weights | safe}},{{/if}} na.action=na.exclude, data={{dataset.name}})
+{{selected.modelname | safe}} = MASS::glm.nb({{selected.dependent | safe}} ~ {{selected.formula | safe}}, link="{{selected.combokid | safe}}",{{if (options.selected.theta != "")}}init.theta = {{selected.theta | safe}}, {{/if}} {{if(options.selected.weights != "")}}weights = {{selected.weights | safe}},{{/if}} na.action=na.exclude, data={{dataset.name}})
 {{#else}}
 {{selected.modelname | safe}} = glm({{selected.dependent | safe}}~{{selected.formula | safe}},family ={{selected.family | safe}}(link="{{selected.combokid | safe}}" {{if (options.selected.family == "negative.binomial")}}, theta = {{selected.theta | safe}}{{/if}}), {{if(options.selected.weights != "")}}weights = {{selected.weights | safe}},{{/if}} na.action=na.exclude, data={{dataset.name}})
 {{/if}}

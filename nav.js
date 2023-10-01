@@ -44,6 +44,7 @@ const nav = {
                 "./multiNomialLogistic",
                 "./ordinalRegression",
                 "./quantileregression",
+                "./nonLinearReg"
             ]
         },
         "./mixedModelsBasic",
@@ -56,6 +57,7 @@ const nav = {
                 "./neuralNets"
             ]
         },
+        "./sem",  
         {
             "name": "Trees",
             "icon": "icon-tree",
