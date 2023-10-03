@@ -43,8 +43,7 @@ const nav = {
                 "./logisticRegression",
                 "./multiNomialLogistic",
                 "./ordinalRegression",
-                "./quantileregression",
-                "./nonLinearReg"
+                "./quantileregression"
             ]
         },
         {
