@@ -1084,8 +1084,15 @@ if (has_nas) {
     let preTransModelTermsDst = code_vars.selected["modelTermsDst"]
     let preTranscoVarDst = code_vars.selected["coVarDst"]
     let preTransMediationDestCtrl = code_vars.selected["mediationDestCtrl"]
+    //We save the original preTransMediationDestCtrl as this is processed to remove equality constraints and mediation relationships
+    //If there are oripreTransMediationDestCtrl or latent loadings we can run the dialog
+    let oriPreTransMediationDestCtrl =preTransMediationDestCtrl
+    
     //Storing original latent variables in oriLatentvars so we can compare length correctly when the latent variables are removed due toequality constraints
     let oriLatentvars = common.transform(latentVars, "NoPrefix|UsePlus","sem_sem" )
+    
+    
+
     //Resetting the parameter constraints we need to recompute the parameter constraints bececause we may have equality constraints
     $(`#${instance.config.id}`).attr('parameterCount', 0)
     //We adjust LatVars, higher order factors, modeltermsDst for equality constraints
@@ -1177,9 +1184,11 @@ if (has_nas) {
       })
     })
   }   
+  //console.log(`pretransmodeltermsDST after removing mediation : ${preTransModelTermsDst}` )
   code_vars.selected["sem2"] = common.transform(higherOrderFactors, "NoPrefix|UsePlus","sem_sem2" )
 	code_vars.selected["sem3"] = common.transform(equalConstraints, "equalityConstraints","sem_sem3" )
 	code_vars.selected["modelTermsDst"] = common.transform(preTransModelTermsDst, "modelTerms","sem_modelTermsDst" )
+  //console.log(`modeltermsDST after calling common : ${code_vars.selected["modelTermsDst"]}` )
   code_vars.selected["coVarDst"] = common.transform(preTranscoVarDst, "coVariances","sem_coVarDst" )
   code_vars.selected["mediationDestCtrl"] = common.transform(preTransMediationDestCtrl, "mediation","sem_mediationDestCtrl" )
   //We don't show the graph when there are both higher order factors and structural parameters
@@ -1212,10 +1221,10 @@ if (has_nas) {
       code_vars.selected.combokid = ""
     code_vars.selected.endoExoString = finalRetString
     code_vars.selected.useSemFunction = true
-    if (code_vars.selected.modelTermsDst.length == 0 && oriLatentvars.length == 0) {
+   if (oriPreTransMediationDestCtrl.length == 0 && oriLatentvars.length == 0) {
       dialog.showMessageBoxSync({ type: "error", buttons: ["OK"], title: "Required controls not populated", message: `You need to specify latent traits or a relationship.` })
       return res
-    } else if (code_vars.selected.modelTermsDst.length == 0) {
+    } else  if (code_vars.selected.modelTermsDst.length == 0) {
       code_vars.selected.useSemFunction = false
     } else if (code_vars.selected.sem.length == 0) {
       code_vars.selected.useSemFunction = true
