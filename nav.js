@@ -47,7 +47,7 @@ const nav = {
             ]
         },
         {
-            "name": "Non Linear Regression",
+            "name": "Nonlinear Regression",
             "icon": "icon-logistic_white_comp",
             "children": [
       
