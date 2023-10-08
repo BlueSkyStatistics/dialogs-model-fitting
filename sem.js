@@ -1,6 +1,17 @@
 var localization = {
   en: {
     title: "SEM",
+    intercepts: "The intercepts of the observed variables",
+    means: "The intercepts/means of the latent variables",
+    residuals: "The residual variances of the observed variables",
+    residual_covariances: "The residual covariances of the observed variables",
+    lv_variances: "The (residual) variances of the latent variables",
+    lv_covariances: "The (residual) covariances of the latent variables",
+    regressions: "All regression coefficients in the model",
+    loadings: "To be done",
+    multiGrpOptions: "Multiple group options",
+    multiGrpSrc: "Source variables",
+    multiGrpDependent: "Grouping variables",
     modelname: "Enter a name of the model",
     mediationSrcCtrl : "Source relationships",
     mediationDestCtrl: "Mediation parameters",
@@ -16,8 +27,7 @@ var localization = {
     label2: "Select an item from the predictor and the outcome lists and click on the button with an arrow to move the selected items to the relationship list",
     label3: "Information",
     label4: "Additional outputs",
-   // label5: "Covariances and correlations",
-   label5: "Covariances and correlations (see help)",
+    label5: "Covariances and correlations (see help)",
     label6: "R-squared",
     label7: "Save predicted",
     coVarTerms: "1st variable/factor",
@@ -115,7 +125,9 @@ require(semTools)
     {{/if}}{{if (options.selected.combokid !="")}}\nlikelihood = "{{selected.combokid | safe}}",
     {{/if}}{{if (options.selected.gpbox2 != "" )}}se ="{{selected.gpbox2 | safe}}", 
     {{/if}}{{if (options.selected.gpbox2 == "bootstrap" )}}bootstrap = {{selected.bootstratRep   | safe}},
-    {{/if}}{{ if(options.selected.allLatentLoadingRemoved)}},std.lv=TRUE,
+    {{/if}}{{ if(options.selected.allLatentLoadingRemoved)}},std.lv = TRUE,
+    {{/if}}{{ if(options.selected.multiGrpDependent !="")}}, group = {{selected.multiGrpDependent | safe}},
+    {{/if}}{{ if(options.selected.intercepts =='TRUE'|| options.selected.means =='TRUE' || options.selected.residuals=='TRUE' || options.selected.residual_covariances =='TRUE'|| options.selected.lv_variances=='TRUE' || options.selected.lv_covariances =='TRUE'|| options.selected.regressions=='TRUE' || options.selected.loadings =='TRUE' )}}, group.equal = c({{if (options.selected.intercepts=='TRUE')}}"intercepts",{{/if}}{{if (options.selected.means=='TRUE')}}"means",{{/if}}{{if (options.selected.residuals=='TRUE')}}"residuals",{{/if}}{{if (options.selected.residual_covariances=='TRUE')}}"residuals_covariances",{{/if}}{{if (options.selected.lv_variances=='TRUE')}}"lv_variances",{{/if}}{{if (options.selected.lv_covariances=='TRUE')}}"lv_covariances",{{/if}}{{if (options.selected.regressions=='TRUE')}}"regressions",{{/if}}{{if (options.selected.loadings=='TRUE')}}"loadings",{{/if}}),
     {{/if}}missing = "{{selected.missing | safe}}", data = {{dataset.name}})
 BSkySummaryRes <- summary({{selected.modelname | safe}}, fit.measures = TRUE{{if(options.selected.gpbox1 =="endo")}}, rsq = TRUE{{/if}} {{if (options.selected.gpbox2 == "bootstrap" )}},ci = TRUE{{/if}})
 print.lavaan.summary_bsky(BSkySummaryRes)
@@ -867,6 +879,81 @@ if (has_nas) {
           required: false,  
         }), r: ['{{ var | safe}}']
       },
+      multiGrpSrc: { el: new srcVariableList(config, { label: localization.en.multiGrpSrc,
+        no: "multiGrpSrc",action: "move"}) },
+      multiGrpDependent: {
+        el: new dstVariable(config, {
+          label: localization.en.multiGrpDependent,
+          no: "multiGrpDependent",
+          filter: "String|Numeric|Logical|Ordinal|Nominal|Scale",
+          extraction: "NoPrefix|UseComma|Enclosed",   
+        }),
+      },
+
+      intercepts: {
+        el: new checkbox(config, {
+          label: localization.en.intercepts,
+          no: "intercepts",
+          extraction: "Boolean"
+        })
+      },
+      means: {
+        el: new checkbox(config, {
+          label: localization.en.means,
+          no: "means",
+          newline: true,
+          extraction: "Boolean"
+        })
+      },
+      residuals: {
+        el: new checkbox(config, {
+          label: localization.en.residuals,
+          no: "residuals",
+          newline: true,
+          extraction: "Boolean"
+        })
+      },
+      residual_covariances: {
+        el: new checkbox(config, {
+          label: localization.en.residual_covariances,
+          no: "residual_covariances",
+          newline: true,
+          extraction: "Boolean"
+        })
+      },
+      lv_variances: {
+        el: new checkbox(config, {
+          label: localization.en.lv_variances,
+          no: "lv_variances",
+          newline: true,
+          extraction: "Boolean"
+        })
+      },
+      lv_covariances: {
+        el: new checkbox(config, {
+          label: localization.en.lv_covariances,
+          no: "lv_covariances",
+          newline: true,
+          extraction: "Boolean"
+        })
+      },
+      regressions: {
+        el: new checkbox(config, {
+          label: localization.en.regressions,
+          no: "regressions",
+          newline: true,
+          extraction: "Boolean"
+        })
+      },
+      loadings: {
+        el: new checkbox(config, {
+          label: localization.en.loadings,
+          no: "loadings",
+          newline: true,
+          extraction: "Boolean"
+        })
+      }
+
     }
     var secOrderFactors = {
       el: new optionsVar(config, {
@@ -1014,6 +1101,33 @@ if (has_nas) {
         ],
       })
     };
+
+    var multiGrpOptions = {
+      el: new optionsVar(config, {
+        no: "multiGrpOptions",
+        name: localization.en.multiGrpOptions,
+        layout: "five",
+        top: [objects.label5.el],
+        left: [
+          objects.multiGrpSrc.el,
+        ],
+        right: [
+          objects.multiGrpDependent.el
+        ],
+        bottom: [
+          objects.intercepts.el,
+          objects.means.el,
+          objects.residuals.el,
+          objects.residual_covariances.el,
+          objects.lv_variances.el,
+          objects.lv_covariances.el,
+          objects.regressions.el,
+          objects.loadings.el,
+          
+        ],
+      })
+    };
+
     var semPlotOptions = {
       el: new optionsVar(config, {
         no: "semPlotOptions",
@@ -1044,7 +1158,7 @@ if (has_nas) {
       head: [objects.modelname.el.content],
       left: [objects.content_var.el.content],
       right: [objects.parameterizeFormula.el.content, objects.sem.el.content],
-      bottom: [secOrderFactors.el.content, optionsModelTerms.el.content, mediation.el.content, optionsCoVarTerms.el.content, equalConst.el.content,modelOptions.el.content, outputOptions.el.content, semPlotOptions.el.content, parameterOptions.el.content],
+      bottom: [secOrderFactors.el.content, optionsModelTerms.el.content, mediation.el.content, optionsCoVarTerms.el.content, equalConst.el.content,modelOptions.el.content, outputOptions.el.content, semPlotOptions.el.content, parameterOptions.el.content, multiGrpOptions.el.content],
       nav: {
         name: localization.en.navigation,
         icon: "icon-teamwork",
