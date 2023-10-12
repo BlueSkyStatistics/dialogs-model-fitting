@@ -109,7 +109,7 @@ class sem extends baseModal {
 require(lavaan)
 require(semPlot)  
 require(semTools)      
-{{selected.modelname | safe}}_def <- '{{selected.sem | safe}}{{selected.sem2 | safe}}{{selected.sem3 | safe}}{{selected.modelTermsDst | safe}} {{selected.coVarDst | safe}}{{selected.mediationDestCtrl | safe}}'
+{{selected.modelname | safe}}_def <- '{{selected.sem | safe}}{{selected.sem2 | safe}}{{selected.modelTermsDst | safe}} {{selected.coVarDst | safe}}{{selected.sem3 | safe}}{{selected.mediationDestCtrl | safe}}'
 \n{{selected.modelname | safe}} <- {{if (options.selected.useSemFunction)}}sem{{#else}}cfa{{/if}}({{selected.modelname | safe}}_def,    
     {{if (options.selected.family =="Maximum likelihood (ML)")}}estimator = "ML",
     {{/if}}{{if (options.selected.family =="Robust maximum likelihood (MLM)")}}estimator = "MLM",
