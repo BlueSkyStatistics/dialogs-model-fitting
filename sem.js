@@ -109,7 +109,7 @@ class sem extends baseModal {
 require(lavaan)
 require(semPlot)  
 require(semTools)      
-{{selected.modelname | safe}}_def <- '{{selected.sem | safe}}{{selected.sem2 | safe}}{{selected.modelTermsDst | safe}} {{selected.coVarDst | safe}}{{selected.sem3 | safe}}{{selected.mediationDestCtrl | safe}}'
+{{selected.modelname | safe}}_def <- '{{selected.sem | safe}}{{selected.sem2 | safe}}{{selected.modelTermsDst | safe}}{{selected.coVarDst | safe}}{{selected.sem3 | safe}}{{selected.mediationDestCtrl | safe}}'
 \n{{selected.modelname | safe}} <- {{if (options.selected.useSemFunction)}}sem{{#else}}cfa{{/if}}({{selected.modelname | safe}}_def,    
     {{if (options.selected.family =="Maximum likelihood (ML)")}}estimator = "ML",
     {{/if}}{{if (options.selected.family =="Robust maximum likelihood (MLM)")}}estimator = "MLM",
@@ -125,7 +125,7 @@ require(semTools)
     {{/if}}{{if (options.selected.combokid !="")}}\nlikelihood = "{{selected.combokid | safe}}",
     {{/if}}{{if (options.selected.gpbox2 != "" )}}se ="{{selected.gpbox2 | safe}}", 
     {{/if}}{{if (options.selected.gpbox2 == "bootstrap" )}}bootstrap = {{selected.bootstratRep   | safe}},
-    {{/if}}{{ if(options.selected.allLatentLoadingRemoved)}},std.lv = TRUE,
+    {{/if}}{{ if(options.selected.allLatentLoadingRemoved)}}std.lv = TRUE,
     {{/if}}{{ if(options.selected.multiGrpDependent !="")}}, group = {{selected.multiGrpDependent | safe}},
     {{/if}}{{ if(options.selected.intercepts =='TRUE'|| options.selected.means =='TRUE' || options.selected.residuals=='TRUE' || options.selected.residual_covariances =='TRUE'|| options.selected.lv_variances=='TRUE' || options.selected.lv_covariances =='TRUE'|| options.selected.regressions=='TRUE' || options.selected.loadings =='TRUE' )}}, group.equal = c({{if (options.selected.intercepts=='TRUE')}}"intercepts",{{/if}}{{if (options.selected.means=='TRUE')}}"means",{{/if}}{{if (options.selected.residuals=='TRUE')}}"residuals",{{/if}}{{if (options.selected.residual_covariances=='TRUE')}}"residuals_covariances",{{/if}}{{if (options.selected.lv_variances=='TRUE')}}"lv_variances",{{/if}}{{if (options.selected.lv_covariances=='TRUE')}}"lv_covariances",{{/if}}{{if (options.selected.regressions=='TRUE')}}"regressions",{{/if}}{{if (options.selected.loadings=='TRUE')}}"loadings",{{/if}}),
     {{/if}}missing = "{{selected.missing | safe}}", data = {{dataset.name}})
@@ -153,24 +153,28 @@ BSkyMardiasKurt <- semTools::mardiaKurtosis({{dataset.name}}[, c({{selected.allv
 BSkyFormat(BSkyMardiasKurt, singleTableOutputHeader="Mardia's kurtosis")
 {{/if}}
 {{if (options.selected.observed =="TRUE")}}
+{{if (options.selected.endoExoString.length >0)}}
 #Observed covariances  
 BSKyObservedCov <- cov(x = {{dataset.name}}[, c({{selected.endoExoString | safe}})], use="{{selected.coVarMissingOptions | safe}}")
 BSkyFormat(as.data.frame(BSKyObservedCov), singleTableOutputHeader="Observed covariances")
 {{/if}}
 {{if (options.selected.modelImplied =="TRUE")}}
 #Model implied (fitted) covariances
-BSkyCov <- fitted({{selected.modelname | safe}})
-print.lavaan.matrix.symmetric_bsky(BSkyCov$cov, message ="Model-implied fitted covariances")
+BSkyCovFitted <- fitted({{selected.modelname | safe}})
+print.lavaan.matrix.symmetric_bsky(BSkyCovFitted$cov, message ="Model-implied fitted covariances")
 {{/if}}
 {{if (options.selected.residual =="TRUE")}}
 #Model implied (fitted) covariances
 BSkyResiduals <- resid({{selected.modelname | safe}})
-print.lavaan.matrix.symmetric_bsky(BSkyCov$cov, message ="Residuals")
+print.lavaan.matrix.symmetric_bsky(BSkyResiduals, message ="Residuals")
 {{/if}}
-BSkyFormat("Estimated Model")
+{{#else}}
+cat ("Observed covariances cannot be displayed as there are no latent variables")
+{{/if}}
 {{if (options.selected.modIndices =="TRUE")}}
 #Modification indices
 {{if (options.selected.highLowIndices =="TRUE")}}
+BSkyFormat("Estimated Model")
 BSkyModIndices <- modificationIndices({{selected.modelname | safe}}, high.power = {{selected.threshold | safe}})
 BSkyFormat(as.data.frame(BSkyModIndices), singleTableOutputHeader = "Modification Indices: threshold = {{selected.threshold | safe}}")
 {{#else}}
@@ -885,6 +889,7 @@ if (has_nas) {
         el: new dstVariable(config, {
           label: localization.en.multiGrpDependent,
           no: "multiGrpDependent",
+          allowedSrcCtrls: ["semmultiGrpSrcVars"],
           filter: "String|Numeric|Logical|Ordinal|Nominal|Scale",
           extraction: "NoPrefix|UseComma|Enclosed",   
         }),
@@ -1106,15 +1111,13 @@ if (has_nas) {
       el: new optionsVar(config, {
         no: "multiGrpOptions",
         name: localization.en.multiGrpOptions,
-        layout: "five",
+        layout: "two",
         top: [objects.label5.el],
         left: [
           objects.multiGrpSrc.el,
         ],
         right: [
-          objects.multiGrpDependent.el
-        ],
-        bottom: [
+          objects.multiGrpDependent.el,
           objects.intercepts.el,
           objects.means.el,
           objects.residuals.el,
@@ -1123,8 +1126,7 @@ if (has_nas) {
           objects.lv_covariances.el,
           objects.regressions.el,
           objects.loadings.el,
-          
-        ],
+        ]
       })
     };
 
@@ -1306,7 +1308,7 @@ if (has_nas) {
   code_vars.selected["coVarDst"] = common.transform(preTranscoVarDst, "coVariances","sem_coVarDst" )
   code_vars.selected["mediationDestCtrl"] = common.transform(preTransMediationDestCtrl, "mediation","sem_mediationDestCtrl" )
   //We don't show the graph when there are both higher order factors and structural parameters
-  if (code_vars.selected["sem2"].length  > 0  && code_vars.selected["modelTermsDst"].length > 0)
+  if ((code_vars.selected["sem2"].length  > 0  && code_vars.selected["modelTermsDst"].length > 0) || code_vars.selected.multiGrpDependent !="" )
     code_vars.selected["showGraph"] = false
   //The way missing values are handled influences how the missing value parameter in the observed covariances are set
   if (code_vars.selected["missing"] =="listwise")
@@ -1335,8 +1337,8 @@ if (has_nas) {
       code_vars.selected.combokid = ""
     code_vars.selected.endoExoString = finalRetString
     code_vars.selected.useSemFunction = true
-   if (oriPreTransMediationDestCtrl.length == 0 && oriLatentvars.length == 0) {
-      dialog.showMessageBoxSync({ type: "error", buttons: ["OK"], title: "Required controls not populated", message: `You need to specify latent traits or a relationship.` })
+   if (preTransModelTermsDst.length == 0 && oriLatentvars.length == 0) {
+      dialog.showMessageBoxSync({ type: "error", buttons: ["OK"], title: "Required controls not populated", message: `You need to specify latent traits or a structural relationship.` })
       return res
     } else  if (code_vars.selected.modelTermsDst.length == 0) {
       code_vars.selected.useSemFunction = false
