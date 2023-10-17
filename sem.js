@@ -1,14 +1,15 @@
 var localization = {
   en: {
     title: "SEM",
-    intercepts: "The intercepts of the observed variables",
+    intercepts1: "The intercepts of the observed variables",
+    intercepts: "Show intercepts",
     means: "The intercepts/means of the latent variables",
-    residuals: "The residual variances of the observed variables",
+    residuals1: "The residual variances of the observed variables",
     residual_covariances: "The residual covariances of the observed variables",
     lv_variances: "The (residual) variances of the latent variables",
     lv_covariances: "The (residual) covariances of the latent variables",
     regressions: "All regression coefficients in the model",
-    loadings: "To be done",
+    loadings: "Loadings of the observed variables on their respective latent variables",
     multiGrpOptions: "Multiple group options",
     multiGrpSrc: "Source variables",
     multiGrpDependent: "Grouping variables",
@@ -30,6 +31,7 @@ var localization = {
     label5: "Covariances and correlations (see help)",
     label6: "R-squared",
     label7: "Save predicted",
+    label9: "Constraints",
     coVarTerms: "1st variable/factor",
     coVarTerms1: "2nd variable/factor",
     coVarDst: "Selected covariances",
@@ -40,8 +42,8 @@ var localization = {
     approach: "ML likelihood approach",
     missing: "Missing values",
     addFitMeasures: "Additional fit measures",
-    mardiaSkew: "Mardia's skew",
-    mardiaKurt: "Mardia's kurtosis",
+    mardiaSkew: "Mardia's skew (Only complete cases)",
+    mardiaKurt: "Mardia's kurtosis (Only complete cases)",
     observed: "Observed",
     modelImplied: "Model-implied (fitted)",
     residual: "Residual",
@@ -55,7 +57,6 @@ var localization = {
     highLowIndices: "Hide low indices",
     threshold: "Threshold",
     residuals: "Show residuals",
-    intercepts: "Show intercepts",
     includeThresholds: "Show thresholds",
     edgeLabels: "Select options for edge labels",
     layout: "Options for how the nodes should be placed",
@@ -126,8 +127,8 @@ require(semTools)
     {{/if}}{{if (options.selected.gpbox2 != "" )}}se ="{{selected.gpbox2 | safe}}", 
     {{/if}}{{if (options.selected.gpbox2 == "bootstrap" )}}bootstrap = {{selected.bootstratRep   | safe}},
     {{/if}}{{ if(options.selected.allLatentLoadingRemoved)}}std.lv = TRUE,
-    {{/if}}{{ if(options.selected.multiGrpDependent !="")}}, group = {{selected.multiGrpDependent | safe}},
-    {{/if}}{{ if(options.selected.intercepts =='TRUE'|| options.selected.means =='TRUE' || options.selected.residuals=='TRUE' || options.selected.residual_covariances =='TRUE'|| options.selected.lv_variances=='TRUE' || options.selected.lv_covariances =='TRUE'|| options.selected.regressions=='TRUE' || options.selected.loadings =='TRUE' )}}, group.equal = c({{if (options.selected.intercepts=='TRUE')}}"intercepts",{{/if}}{{if (options.selected.means=='TRUE')}}"means",{{/if}}{{if (options.selected.residuals=='TRUE')}}"residuals",{{/if}}{{if (options.selected.residual_covariances=='TRUE')}}"residuals_covariances",{{/if}}{{if (options.selected.lv_variances=='TRUE')}}"lv_variances",{{/if}}{{if (options.selected.lv_covariances=='TRUE')}}"lv_covariances",{{/if}}{{if (options.selected.regressions=='TRUE')}}"regressions",{{/if}}{{if (options.selected.loadings=='TRUE')}}"loadings",{{/if}}),
+    {{/if}}{{ if(options.selected.multiGrpDependent !="")}} group = {{selected.multiGrpDependent | safe}},
+    {{/if}}{{if (options.selected.groupEqualString != "")}} group.equal = c({{selected.groupEqualString | safe}}),
     {{/if}}missing = "{{selected.missing | safe}}", data = {{dataset.name}})
 BSkySummaryRes <- summary({{selected.modelname | safe}}, fit.measures = TRUE{{if(options.selected.gpbox1 =="endo")}}, rsq = TRUE{{/if}} {{if (options.selected.gpbox2 == "bootstrap" )}},ci = TRUE{{/if}})
 print.lavaan.summary_bsky(BSkySummaryRes)
@@ -144,12 +145,12 @@ BSkyFormat(as.data.frame(BSkyfitMeasures), singleTableOutputHeader="Additional f
 {{/if}}
 {{if (options.selected.mardiaSkew =="TRUE")}}
 #Mardia's skew
-BSkyMardiasSkew <- semTools::mardiaSkew({{dataset.name}}[, c({{selected.allvars | safe}})])
+BSkyMardiasSkew <- semTools::mardiaSkew(na.omit({{dataset.name}}[, c({{selected.allvars | safe}})]))
 BSkyFormat(BSkyMardiasSkew, singleTableOutputHeader="Mardia's skew")
 {{/if}}
 {{if (options.selected.mardiaKurt =="TRUE")}}
 #Mardia's kurtosis
-BSkyMardiasKurt <- semTools::mardiaKurtosis({{dataset.name}}[, c({{selected.allvars | safe}})])
+BSkyMardiasKurt <- semTools::mardiaKurtosis(na.omit({{dataset.name}}[, c({{selected.allvars | safe}})]))
 BSkyFormat(BSkyMardiasKurt, singleTableOutputHeader="Mardia's kurtosis")
 {{/if}}
 {{if (options.selected.observed =="TRUE")}}
@@ -169,7 +170,7 @@ BSkyResiduals <- resid({{selected.modelname | safe}})
 print.lavaan.matrix.symmetric_bsky(BSkyResiduals, message ="Residuals")
 {{/if}}
 {{#else}}
-cat ("Observed covariances cannot be displayed as there are no latent variables")
+cat ("Observed covariances cannot be displayed as there are no latent variables or structural parameters")
 {{/if}}
 {{if (options.selected.modIndices =="TRUE")}}
 #Modification indices
@@ -199,7 +200,7 @@ BSkyFormat(as.data.frame(BSkyStdSol), singleTableOutputHeader = "Standardized es
 {{/if}}
 
 {{if (options.selected.showGraph)}} 
-semPaths({{selected.modelname | safe}}, {{if (options.selected.residuals =="TRUE")}} residuals = TRUE,{{/if}} {{if (options.selected.intercepts =="TRUE")}} intercepts = TRUE,{{/if}} {{if (options.selected.includeThresholds =="TRUE")}} thresholds = TRUE,{{/if}}
+semPaths({{selected.modelname | safe}}, {{if (options.selected.residuals =="TRUE")}} residuals = TRUE,{{#else}}residuals = FALSE,{{/if}} {{if (options.selected.intercepts =="TRUE")}} intercepts = TRUE,{{#else}}intercepts = FALSE,{{/if}} {{if (options.selected.includeThresholds =="TRUE")}} thresholds = TRUE,{{#else}}thresholds = FALSE,{{/if}}
     whatLabels = "{{if (options.selected.edgeLabels =="names")}}name{{/if}}{{if (options.selected.edgeLabels =="parameter estimates")}}est{{/if}}{{if (options.selected.edgeLabels =="standardized parameter estimates")}}std{{/if}}{{if (options.selected.edgeLabels =="parameter number")}}eq{{/if}}{{if (options.selected.edgeLabels =="hide")}}hide{{/if}}",
     layout = "{{selected.layout | safe}}",
     rotation = {{if (options.selected.rotate =="Exog. top")}}1{{/if}}{{if (options.selected.rotate =="Exog. left")}}2{{/if}}{{if (options.selected.rotate =="Exog. bottom")}}3{{/if}}{{if (options.selected.rotate =="Exog. right")}}4{{/if}},
@@ -895,10 +896,10 @@ if (has_nas) {
         }),
       },
 
-      intercepts: {
+      intercepts1: {
         el: new checkbox(config, {
-          label: localization.en.intercepts,
-          no: "intercepts",
+          label: localization.en.intercepts1,
+          no: "intercepts1",
           extraction: "Boolean"
         })
       },
@@ -910,10 +911,10 @@ if (has_nas) {
           extraction: "Boolean"
         })
       },
-      residuals: {
+      residuals1: {
         el: new checkbox(config, {
-          label: localization.en.residuals,
-          no: "residuals",
+          label: localization.en.residuals1,
+          no: "residuals1",
           newline: true,
           extraction: "Boolean"
         })
@@ -956,6 +957,13 @@ if (has_nas) {
           no: "loadings",
           newline: true,
           extraction: "Boolean"
+        })
+      },
+      label9: {
+        el: new labelVar(config, {
+          label: localization.en.label9,
+          style: "mt-2", 
+          h:5
         })
       }
 
@@ -1118,14 +1126,16 @@ if (has_nas) {
         ],
         right: [
           objects.multiGrpDependent.el,
-          objects.intercepts.el,
+          objects.label9.el,
+          objects.intercepts1.el,
           objects.means.el,
-          objects.residuals.el,
+          objects.residuals1.el,
           objects.residual_covariances.el,
           objects.lv_variances.el,
           objects.lv_covariances.el,
           objects.regressions.el,
           objects.loadings.el,
+          
         ]
       })
     };
@@ -1196,8 +1206,13 @@ if (has_nas) {
     //modelTermsDst and coVarsDst needs to be adjusted based on equality constraints entered
     let equalConstraints = code_vars.selected["sem3"]
     let latentVars = code_vars.selected["sem"]
+    //Storing the original latent vars so that we compute observed covariances correctly
+    //observed covariances are all the observed variables in the latent loadings and structural parameters
+    let latentVarsOriObject = code_vars.selected["sem"]
     let higherOrderFactors = code_vars.selected["sem2"]
     let preTransModelTermsDst = code_vars.selected["modelTermsDst"]
+    // The array preTransModelTermsDstForObvCovar is used to compute  observed covariances
+    let preTransModelTermsDstForObvCovar = code_vars.selected["modelTermsDst"]
     let preTranscoVarDst = code_vars.selected["coVarDst"]
     let preTransMediationDestCtrl = code_vars.selected["mediationDestCtrl"]
     //We save the original preTransMediationDestCtrl as this is processed to remove equality constraints and mediation relationships
@@ -1316,28 +1331,56 @@ if (has_nas) {
   else if (code_vars.selected["missing"] =="fiml" || code_vars.selected["missing"] =="fiml.x" || code_vars.selected["missing"] =="pairwise")
     code_vars.selected["coVarMissingOptions"] = "pairwise.complete.obs"
   else code_vars.selected["coVarMissingOptions"] = "pairwise.complete.obs"
-    let item = '{{item | safe}}';
-      endoExo =latentVars
-    Object.keys(endoExo).forEach(function (key, index) {
-      endoExo[key].forEach(function (element, index) {
+  let item = '{{item | safe}}';
+  
+  endoExo =latentVars
+  
+  //finalRetString contains the string used for observed covariances (see observed covariances checkbox in the dialog)
+  //Observed covariances list latent loadings, all observed variables in structural parameters
+  //NO COVARIANCES
+  Object.keys(latentVarsOriObject).forEach(function (key, index) {
+      latentVarsOriObject[key].forEach(function (element, index) {
         if (!allVarsArray.includes(element)) {
-          allVarsArray.push(element)
+            allVarsArray.push(element)
         }
-        tempRes[index] = "'" + element + "'";
+        if (!tempRes.includes("'" + element + "'")) {
+            tempRes.push("'" + element + "'")
+        }
       })
-      tempretval = tempRes.join(separator);
-      if (finalRetString == "") {
-        finalRetString = tempretval
-      }
-      else {
-        finalRetString = finalRetString + "," + tempretval
-      }
     })
+    //preTransModelTermsDstForObvCovar
+    let myArray = []
+    let modTerms = []
+    if (preTransModelTermsDstForObvCovar.length != 0) {
+      myArray = []
+      //modTerms = instance.objects.modelTermsDst.el.getVal()
+      preTransModelTermsDstForObvCovar.forEach(function (valueStructParams) {
+        myArray = valueStructParams.split("->");
+        myArray.forEach(function (val, index) {
+          if (!allVarsArray.includes(val) && allColumnProps[val] != undefined ) {
+            allVarsArray.push(val)
+          if (!tempRes.includes("'" + val + "'")) {
+              tempRes.push("'" + val + "'")
+            }
+          }
+        })
+      })
+    }
+    if (tempRes.length != 0)
+    {
+        tempretval = tempRes.join(separator);
+        if (finalRetString == "") {
+          finalRetString = tempretval
+        }
+        else {
+          finalRetString = finalRetString + "," + tempretval
+        }
+    } 
     if (code_vars.selected.combokid == null || code_vars.selected.combokid == 'null') 
       code_vars.selected.combokid = ""
     code_vars.selected.endoExoString = finalRetString
     code_vars.selected.useSemFunction = true
-   if (preTransModelTermsDst.length == 0 && oriLatentvars.length == 0) {
+    if (preTransModelTermsDst.length == 0 && oriLatentvars.length == 0) {
       dialog.showMessageBoxSync({ type: "error", buttons: ["OK"], title: "Required controls not populated", message: `You need to specify latent traits or a structural relationship.` })
       return res
     } else  if (code_vars.selected.modelTermsDst.length == 0) {
@@ -1347,8 +1390,8 @@ if (has_nas) {
     } else {
       code_vars.selected.useSemFunction = true
     }
-    let myArray = []
-    let modTerms = []
+   /*  myArray = []
+    modTerms = []
     if (code_vars.selected.modelTermsDst != "") {
       myArray = []
       modTerms = instance.objects.modelTermsDst.el.getVal()
@@ -1360,7 +1403,7 @@ if (has_nas) {
           }
         })
       })
-    }
+    } */
     if (code_vars.selected.coVarDst != "") {
       myArray = []
       modTerms = instance.objects.coVarDst.el.getVal()
@@ -1376,10 +1419,22 @@ if (has_nas) {
     allVarsArray.forEach(function (val, index) {
       allVarsArray[index] = "'" + val + "'";
     })
+    let groupEqual =[]
+    let  groupEqualString =""
+    if (code_vars.selected.intercepts1 == "TRUE") groupEqual.push("'"+"intercepts"+"'")
+    if (code_vars.selected.means == "TRUE") groupEqual.push("'"+"means"+"'")
+    if (code_vars.selected.residuals1 == "TRUE") groupEqual.push("'"+"residuals"+"'")
+    if (code_vars.selected.residual_covariances == "TRUE") groupEqual.push("'"+"residual.covariances"+"'")
+    if (code_vars.selected.lv_variances == "TRUE") groupEqual.push("'"+"lv.variances"+"'")
+    if (code_vars.selected.lv_covariances == "TRUE") groupEqual.push("'"+"lv.covariances"+"'")
+    if (code_vars.selected.regressions == "TRUE") groupEqual.push("'"+"regressions"+"'")
+    if (code_vars.selected.loadings == "TRUE") groupEqual.push("'"+"loadings"+"'")
+    groupEqualString = groupEqual.join(",")
+    code_vars.selected.groupEqualString = groupEqualString
     code_vars.selected.allvars = allVarsArray.join(separator)
     const cmd = instance.dialog.renderR(code_vars);
     res.push({ cmd: cmd, cgid: newCommandGroup() })
-       return res;
+    return res;
   }
 }
 module.exports.item = new sem().render()
