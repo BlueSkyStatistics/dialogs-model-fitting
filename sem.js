@@ -109,7 +109,7 @@ class sem extends baseModal {
       RCode: `
 require(lavaan)
 require(semPlot)  
-require(semTools)      
+require(semTools)  
 {{selected.modelname | safe}}_def <- '{{selected.sem | safe}}{{selected.sem2 | safe}}{{selected.modelTermsDst | safe}}{{selected.coVarDst | safe}}{{selected.sem3 | safe}}{{selected.mediationDestCtrl | safe}}'
 \n{{selected.modelname | safe}} <- {{if (options.selected.useSemFunction)}}sem{{#else}}cfa{{/if}}({{selected.modelname | safe}}_def,    
     {{if (options.selected.family =="Maximum likelihood (ML)")}}estimator = "ML",
@@ -200,13 +200,15 @@ BSkyFormat(as.data.frame(BSkyStdSol), singleTableOutputHeader = "Standardized es
 {{/if}}
 
 {{if (options.selected.showGraph)}} 
-semPaths({{selected.modelname | safe}}, {{if (options.selected.residuals =="TRUE")}} residuals = TRUE,{{#else}}residuals = FALSE,{{/if}} {{if (options.selected.intercepts =="TRUE")}} intercepts = TRUE,{{#else}}intercepts = FALSE,{{/if}} {{if (options.selected.includeThresholds =="TRUE")}} thresholds = TRUE,{{#else}}thresholds = FALSE,{{/if}}
+semPlot::semPaths({{selected.modelname | safe}}, {{if (options.selected.residuals =="TRUE")}} residuals = TRUE,{{#else}}residuals = FALSE,{{/if}} {{if (options.selected.intercepts =="TRUE")}} intercepts = TRUE,{{#else}}intercepts = FALSE,{{/if}} {{if (options.selected.includeThresholds =="TRUE")}} thresholds = TRUE,{{#else}}thresholds = FALSE,{{/if}}
     whatLabels = "{{if (options.selected.edgeLabels =="names")}}name{{/if}}{{if (options.selected.edgeLabels =="parameter estimates")}}est{{/if}}{{if (options.selected.edgeLabels =="standardized parameter estimates")}}std{{/if}}{{if (options.selected.edgeLabels =="parameter number")}}eq{{/if}}{{if (options.selected.edgeLabels =="hide")}}hide{{/if}}",
     layout = "{{selected.layout | safe}}",
     rotation = {{if (options.selected.rotate =="Exog. top")}}1{{/if}}{{if (options.selected.rotate =="Exog. left")}}2{{/if}}{{if (options.selected.rotate =="Exog. bottom")}}3{{/if}}{{if (options.selected.rotate =="Exog. right")}}4{{/if}},
     {{if (options.selected.manifestShapes != "default")}}shapeMan = "{{selected.manifestShapes | safe}}",{{/if}}
     {{if (options.selected.latentShapes != "default")}}shapeLat = "{{selected.latentShapes | safe}}"{{/if}}
     )
+{{#else}}
+cat("We don't show a path diagram when there are higher order factors and structural parameters or a grouping variable has been specified.")
 {{/if}}
 {{if (options.selected.factorScores == "TRUE")}}
 has_nas <- any(is.na({{dataset.name}}[, c({{selected.allvars | safe}})]))
