@@ -101,6 +101,26 @@ var localization = {
 <b>Description</b></br>
 Covariances get recomputed, if you are deleted covariances do it in the last step
 Hande the documentation of the label see help
+
+Steve needs to document the situation around the degrees of freedom basically when a grouping variable is selected you need to select
+the checkbox "The intercepts of the observed variables" and the checkbox "The intercepts/means of the latent variables"
+Just checking 1 gives you more flexibility
+
+"ML" maximum likelihood
+"GLS": generalized least squares. For complete data only.
+"WLS": weighted least squares (sometimes called ADF estimation). For complete data only.
+"DWLS": diagonally weighted least squares
+"ULS": unweighted least squares
+"DLS": distributionally-weighted least squares
+"PML": pairwise maximum likelihood
+Many estimators have ‘robust’ variants, meaning that they provide robust standard errors and a scaled test statistic. For example, for the maximum likelihood estimator, lavaan provides the following robust variants:
+
+"MLM": maximum likelihood estimation with robust standard errors and a Satorra-Bentler scaled test statistic. For complete data only.
+"MLMVS": maximum likelihood estimation with robust standard errors and a mean- and variance adjusted test statistic (aka the Satterthwaite approach). For complete data only.
+"MLMV": maximum likelihood estimation with robust standard errors and a mean- and variance adjusted test statistic (using a scale-shifted approach). For complete data only.
+"MLF": for maximum likelihood estimation with standard errors based on the first-order derivatives, and a conventional test statistic. For both complete and incomplete data.
+"MLR": maximum likelihood estimation with robust (Huber-White) standard errors and a scaled test statistic that is (asymptotically) equal to the Yuan-Bentler test statistic. For both complete and incomplete data.
+
 `}
   }
 }
@@ -115,19 +135,28 @@ class sem extends baseModal {
 require(lavaan)
 require(semPlot)  
 require(semTools)  
+#Making sure we initialize these objects as if there are errors, R retains original object value
+if (exists('{{selected.modelname | safe}}_def')){rm({{selected.modelname | safe}}_def)}
+if (exists('{{selected.modelname | safe}}')){rm({{selected.modelname | safe}})}
 {{selected.modelname | safe}}_def <- '{{selected.sem | safe}}{{selected.sem2 | safe}}{{selected.modelTermsDst | safe}}{{selected.coVarDst | safe}}{{selected.sem3 | safe}}{{selected.mediationDestCtrl | safe}}'
-\n{{selected.modelname | safe}} <- {{if (options.selected.useSemFunction)}}sem{{#else}}cfa{{/if}}({{selected.modelname | safe}}_def,    
-    {{if (options.selected.family =="Maximum likelihood (ML)")}}estimator = "ML",
-    {{/if}}{{if (options.selected.family =="Robust maximum likelihood (MLM)")}}estimator = "MLM",
-    {{/if}}{{if (options.selected.family =="Robust maximum likelihood (MLMV)")}}estimator = "MLMV",
-    {{/if}}{{if (options.selected.family =="Pairwise maximum likelihood (PML)")}}estimator = "PML",
-    {{/if}}{{if (options.selected.family =="Generalized least squares (GLS)")}}estimator = "GLS",
-    {{/if}}{{if (options.selected.family =="Weighted least squares (WLS)")}}estimator = "WLS",
-    {{/if}}{{if (options.selected.family =="Diagonally weighted least squares (DWLS)")}}estimator = "DWLS",
-    {{/if}}{{if (options.selected.family =="Robust weighted least squares (WLSM)")}}estimator = "WLSM",
-    {{/if}}{{if (options.selected.family =="Robust weighted least squares (WLSM)")}}estimator = "WLSMV",
-    {{/if}}{{if (options.selected.family =="Robust weighted least squares (WLSMVS)")}}estimator = "WLSMVS",
-    {{/if}}{{if (options.selected.family =="Unweighted least squares")}}estimator = "ULS",
+\n{{selected.modelname | safe}} <- {{if (options.selected.useSemFunction)}}lavaan::sem{{#else}}lavaan::cfa{{/if}}({{selected.modelname | safe}}_def,    
+    {{if (options.selected.family =="ML")}}estimator = "ML",
+    {{/if}}{{if (options.selected.family =="MLM")}}estimator = "MLM",
+    {{/if}}{{if (options.selected.family =="MLF")}}estimator = "MLF",
+    {{/if}}{{if (options.selected.family =="MLR")}}estimator = "MLR",
+    {{/if}}{{if (options.selected.family =="MLMV")}}estimator = "MLMV",
+    {{/if}}{{if (options.selected.family =="MLMVS")}}estimator = "MLMVS",
+    {{/if}}{{if (options.selected.family =="PML")}}estimator = "PML",
+    {{/if}}{{if (options.selected.family =="GLS")}}estimator = "GLS",
+    {{/if}}{{if (options.selected.family =="WLS")}}estimator = "WLS",
+    {{/if}}{{if (options.selected.family =="DLS")}}estimator = "DLS",
+    {{/if}}{{if (options.selected.family =="DWLS")}}estimator = "DWLS",
+    {{/if}}{{if (options.selected.family =="WLSM")}}estimator = "WLSM",
+    {{/if}}{{if (options.selected.family =="WLSMV")}}estimator = "WLSMV",
+    {{/if}}{{if (options.selected.family =="WLSMVS")}}estimator = "WLSMVS",
+    {{/if}}{{if (options.selected.family =="js")}}estimator = "js",
+    {{/if}}{{if (options.selected.family =="jsa")}}estimator = "jsa",
+    {{/if}}{{if (options.selected.family =="ULS")}}estimator = "ULS",
     {{/if}}{{if (options.selected.combokid !="")}}\nlikelihood = "{{selected.combokid | safe}}",
     {{/if}}{{if (options.selected.gpbox2 != "" )}}se ="{{selected.gpbox2 | safe}}", 
     {{/if}}{{if (options.selected.gpbox2 == "bootstrap" )}}bootstrap = {{selected.bootstratRep   | safe}},
@@ -161,26 +190,18 @@ BSkyFormat(BSkyMardiasKurt, singleTableOutputHeader="Mardia's kurtosis")
 {{if (options.selected.observed =="TRUE")}}
 {{if (options.selected.endoExoString.length >0)}}
 #Observed covariances  
-#BSKyObservedCov <- cov(x = {{dataset.name}}[, c({{selected.endoExoString | safe}})], use="{{selected.coVarMissingOptions | safe}}")
-#BSkyFormat(as.data.frame(BSKyObservedCov), singleTableOutputHeader="Observed covariances")
 BSKyObservedCov <- data.frame({{selected.modelname | safe}}@SampleStats@cov[[1]])
 names(BSKyObservedCov) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 base::row.names(BSKyObservedCov) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 BSkyFormat(BSKyObservedCov, singleTableOutputHeader="Observed covariances")
 {{/if}}
 {{if (options.selected.modelImplied =="TRUE")}}
-#Model implied (fitted) covariances
-#BSkyCovFitted <- fitted({{selected.modelname | safe}})
-#print.lavaan.matrix.symmetric_bsky(BSkyCovFitted$cov, message ="Model-implied fitted covariances")
-#BSkyFormat({{selected.modelname | safe}}@implied[["cov"]], singleTableOutputHeader = "Model-implied (fitted) covariances")
 BSkyCovFitted <- data.frame({{selected.modelname | safe}}@implied[["cov"]])
 names(BSkyCovFitted) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 base::row.names(BSkyCovFitted) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 BSkyFormat(BSkyCovFitted, singleTableOutputHeader = "Model-implied (fitted) covariances")
 {{/if}}
 {{if (options.selected.residual =="TRUE")}}
-#BSkyResiduals <- resid({{selected.modelname | safe}})
-#print.lavaan.matrix.symmetric_bsky(BSkyResiduals, message ="Residuals")
 BSkyResiduals <- data.frame({{selected.modelname | safe}}@SampleStats@cov[[1]] - {{selected.modelname | safe}}@Fit@Sigma.hat[[1]])
 names(BSkyResiduals) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 base::row.names(BSkyResiduals) <- {{selected.modelname | safe}}@Data@ov[["name"]]
@@ -189,9 +210,9 @@ BSkyFormat(BSkyResiduals, singleTableOutputHeader="Deviation between observed an
 {{if (options.selected.residualCovHeatmap =="TRUE")}}
 #Heat map around the deviation matrix
 library (gplots)
-display1 <- round(BSkyResiduals,digits=2)
+BSkyDisplay1 <- round(BSkyResiduals,digits = BSkyGetDecimalDigitSetting())
 gplots::heatmap.2(as.matrix(BSkyResiduals), Rowv=FALSE, dendrogram="none", symm=TRUE, col=topo.colors(10), 
-          distfun=function(c) as.dist(1 - c), trace="none", cellnote = display1,
+          distfun=function(c) as.dist(1 - c), trace="none", cellnote = BSkyDisplay1 ,
           main = "Deviation between Observed and \n Model-Implied Covariance Matrices",
           key=TRUE, density.info="none")
 {{/if}}
@@ -209,25 +230,22 @@ BSkyFormat(BSkyCorrFitted, singleTableOutputHeader = "Model-implied (fitted) cor
 {{/if}}
 
 {{if (options.selected.residualCorr =="TRUE")}}
-#BSkyResiduals <- resid({{selected.modelname | safe}})
-#print.lavaan.matrix.symmetric_bsky(BSkyResiduals, message ="Residuals")
 BSkyCorrResiduals <- data.frame(stats::cov2cor({{selected.modelname | safe}}@SampleStats@cov[[1]]) - stats::cov2cor({{selected.modelname | safe}}@Fit@Sigma.hat[[1]]))
 names(BSkyCorrResiduals) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 BSkyFormat(BSkyCorrResiduals, singleTableOutputHeader="Deviation between observed and fitted correlations")
 {{/if}}
 
-
 {{if (options.selected.residualCorrHeatmap =="TRUE")}}
 #We compute correlations and then the residuals
 BSkyStdResiduals <- data.frame(stats::cov2cor({{selected.modelname | safe}}@SampleStats@cov[[1]]) - stats::cov2cor({{selected.modelname | safe}}@Fit@Sigma.hat[[1]]))
-display2 <- round(BSkyStdResiduals ,digits=BSkyGetDecimalDigitSetting())
+BSkyDisplay2 <- round(BSkyStdResiduals ,digits=BSkyGetDecimalDigitSetting())
 gplots::heatmap.2(as.matrix(BSkyStdResiduals), Rowv=FALSE, dendrogram="none", symm=TRUE, col=topo.colors(10), 
-          distfun=function(c) as.dist(1 - c), trace="none", cellnote = display2,
+          distfun=function(c) as.dist(1 - c), trace="none", cellnote = BSkyDisplay2,
           main = "Deviation between Observed and \n Model-Implied Correlation Matrices",
           key=TRUE, density.info="none")
 {{/if}}
 {{#else}}
-cat ("Observed covariances cannot be displayed as there are no latent variables or structural parameters")
+cat ("Observed covariances cannot be displayed as there are no latent variables or structural parameters\n")
 {{/if}}
 {{if (options.selected.modIndices =="TRUE")}}
 #Modification indices
@@ -265,12 +283,12 @@ semPlot::semPaths({{selected.modelname | safe}}, {{if (options.selected.residual
     {{if (options.selected.latentShapes != "default")}}shapeLat = "{{selected.latentShapes | safe}}"{{/if}}
     )
 {{#else}}
-cat("We don't show a path diagram when there are higher order factors and structural parameters or a grouping variable has been specified.")
+cat("A path diagram is not displayed when there are higher order factors and structural parameters or a grouping variable has been specified.\n")
 {{/if}}
 {{if (options.selected.factorScores == "TRUE")}}
-has_nas <- any(is.na({{dataset.name}}[, c({{selected.allvars | safe}})]))
-# If 'has_nas' is TRUE, it means the dataset contains NAs
-if (has_nas) {
+BSky_Has_nas <- any(is.na({{dataset.name}}[, c({{selected.allvars | safe}})]))
+# If 'BSky_Has_nas' is TRUE, it means the dataset contains NAs
+if (BSky_Has_nas) {
   cat("The dataset contains missing values (NAs), we cannot save predicted values to the dataset, we will display predicted values in the output window.\n")
   cat("Displaying a large number of predicted values in the output window can cause performance problems.\n")
   BSkyFormat(as.data.frame(lavaan::lavPredict({{selected.modelname | safe}}, 
@@ -284,9 +302,9 @@ if (has_nas) {
 }
 {{/if}}
 {{if (options.selected.indicators == "TRUE")}}
-has_nas <- base::any(base::is.na({{dataset.name}}[, c({{selected.allvars | safe}})]))
-# If 'has_nas' is TRUE, it means the dataset contains NAs
-if (has_nas) {
+BSky_Has_nas <- base::any(base::is.na({{dataset.name}}[, c({{selected.allvars | safe}})]))
+# If 'BSky_Has_nas' is TRUE, it means the dataset contains NAs
+if (BSky_Has_nas) {
   cat("The dataset contains missing values (NAs), we cannot save predicted values to the dataset, we will display predicted values in the output window.\n")
   cat("NOTE::Displaying a large number of predicted values in the output window can cause performance problems.\n")
   BSkyFormat(as.data.frame(lavaan::lavPredict({{selected.modelname | safe}}, 
@@ -300,9 +318,9 @@ if (has_nas) {
 }
 {{/if}}
 {{if (options.selected.dependentVars == "TRUE")}}
-has_nas <- base::any(is.na({{dataset.name}}[, c({{selected.allvars | safe}})]))
-# If 'has_nas' is TRUE, it means the dataset contains NAs
-if (has_nas) {
+BSky_Has_nas <- base::any(is.na({{dataset.name}}[, c({{selected.allvars | safe}})]))
+# If 'BSky_Has_nas' is TRUE, it means the dataset contains NAs
+if (BSky_Has_nas) {
   cat("The dataset contains missing values (NAs), we cannot save predicted values to the dataset, we will display predicted values in the output window.\n")
   cat("NOTE::Displaying a large number of predicted values in the output window can cause performance problems.\n")
   BSkyFormat(lavaan::lavPredict({{selected.modelname | safe}}, 
@@ -315,6 +333,27 @@ if (has_nas) {
   BSkyLoadRefresh("{{dataset.name}}")
 }
 {{/if}}
+
+#Deleting temporary objects
+if (exists('BSkySummaryRes'))rm(BSkySummaryRes)
+if (exists('BSkyParameterEst'))rm(BSkyParameterEst)
+if (exists('BSkyfitMeasures'))rm(BSkyfitMeasures)
+if (exists('BSkyMardiasSkew'))rm(BSkyMardiasSkew)
+if (exists('BSkyMardiasKurt'))rm(BSkyMardiasKurt)
+if (exists('BSKyObservedCov'))rm(BSKyObservedCov)
+if (exists('BSkyCovFitted'))rm(BSkyCovFitted)
+if (exists('BSkyResiduals'))rm(BSkyResiduals)
+if (exists('BSkyDisplay1'))rm(BSkyDisplay1)
+if (exists('BSKyObservedCorr'))rm(BSKyObservedCorr)
+if (exists('BSkyCorrFitted'))rm(BSkyCorrFitted)
+if (exists('BSkyCorrResiduals'))rm(BSkyCorrResiduals)
+if (exists('BSkyStdResiduals'))rm(BSkyStdResiduals)
+if (exists('BSkyDisplay2'))rm(BSkyDisplay2)
+if (exists('BSkyModIndices'))rm(BSkyModIndices)
+if (exists('BSkyStdSol'))rm(BSkyStdSol)
+if (exists('BSkyFS'))rm(BSkyFS)
+if (exists('BSky_Has_nas'))rm(BSky_Has_nas)
+if (exists('BSkyDV'))rm(BSkyDV)
 `
     }
     var objects =
@@ -381,6 +420,8 @@ if (has_nas) {
         el: new semControl(config, {
           label: localization.en.sem2,
           no: "sem2",
+          //This reduces the size of the semControl when in higher order factors and equality constraints
+          style : "ms-list3",
           filter: "Numeric|Date|Logical|Scale|semFactor",
           placeHolderText: "Enter higher order factor name",
           type: "higherOrderFactor",
@@ -464,6 +505,8 @@ if (has_nas) {
           type: "equalityConstraint",
           allowedSrcCtrls: ["semequalityConstraints1"],
           no: "sem3",
+          //This reduces the size of the semControl when in higher order factors and equality constraints
+          style : "ms-list3",
           equalityConstraints: true,
           filter: "Numeric|Date|Logical|Scale|semFactor|relation|covariance|structuralParameter",
           extraction: "equalityConstraints",
@@ -480,18 +523,23 @@ if (has_nas) {
           extraction: "NoPrefix|UseComma",
           options: [
             { "name": "Automatic", "value": [] },
-            { "name": "Maximum likelihood (ML)", "value": ["normal", "Wishart"] },
-            { "name": "Robust maximum likelihood (MLM)", "value": [] },
-            { "name": "Robust maximum likelihood (MLMV)", "value": [] },
-            { "name": "Robust maximum likelihood (MLMVS)", "value": [] },
-            { "name": "Pairwise maximum likelihood (PML)", "value": ["normal", "Wishart"] },
-            { "name": "Generalized least squares (GLS)", "value": [] },
-            { "name": "Weighted least squares (WLS)", "value": [] },
-            { "name": "Diagonally weighted least squares (DWLS)", "value": [] },
-            { "name": "Robust weighted least squares (WLSM)", "value": [] },
-            { "name": "Robust weighted least squares (WLSMV)", "value": [] },
-            { "name": "Robust weighted least squares (WLSMVS)", "value": [] },
-            { "name": "Unweighted least squares", "value": [] },
+            { "name": "DLS", "value": [] },
+            { "name": "DWLS", "value": [] },
+            { "name": "GLS", "value": [] },
+            { "name": "js", "value": [] },
+            { "name": "jsa", "value": [] },
+            { "name": "ML", "value": ["normal", "Wishart"] },
+            { "name": "MLF", "value": [] },
+            { "name": "MLM", "value": [] },
+            { "name": "MLMV", "value": [] },
+            { "name": "MLMVS", "value": [] },
+            { "name": "MLR", "value": [] },
+            { "name": "PML", "value": ["normal", "Wishart"] },
+            { "name": "WLS", "value": [] },
+              { "name": "WLSM", "value": [] },
+            { "name": "WLSMV", "value": [] },
+            { "name": "WLSMVS", "value": [] },
+            { "name": "ULS", "value": [] },
           ]
         })
       },
@@ -976,6 +1024,7 @@ if (has_nas) {
         el: new semControl(config, {
           label: localization.en.mediationDestCtrl,
           no: "mediationDestCtrl",
+          style : "ms-list3",
           filter: "Numeric|Date|Logical|Scale|semFactor|relation|covariance|structuralParameter",
           placeHolderText: "Enter higher order factor name",
           allowedSrcCtrls: ["semmediationSrcCtrl"],
@@ -1251,8 +1300,6 @@ if (has_nas) {
         name: localization.en.semPlotOptions,
         layout: "four",
         top: [objects.residuals.el],
-       // objects.intercepts.el,
-       // objects.includeThresholds.el,],
         left: [
           objects.label101.el,
           objects.edgeLabels.el,
@@ -1297,7 +1344,7 @@ if (has_nas) {
     let firstTerm =""
     let secondTerm =""
     let myArray = []
-    
+    let flippedParameterCheckbox = false
 
 
     let allColumnProps = fetchAllColumnAttributes()
@@ -1307,17 +1354,26 @@ if (has_nas) {
       },
       selected: instance.dialog.extractSemData()
     }
-
+    //If a grouping variable is specified, we cannot automatically generate parameter labels as Lavaan creates these labels
+    //Hence we must automatically suppress the creation of parameter labels
+    
+    let parameterizeFormulaChkId =""
     if (code_vars.selected.multiGrpDependent.length >0)
     {
       let modalDiv = $(`#sem`).closest('[parameterCount]')
       //Get the setting on the checkbox to check whether syntax should be parameterized or not
-      let parameterizeFormulaChkId = $(`#${modalDiv[0].id}`).find('[parameterizeFormula]')[0].id
+      parameterizeFormulaChkId = $(`#${modalDiv[0].id}`).find('[parameterizeFormula]')[0].id
       if ( $(`#${parameterizeFormulaChkId}`).prop('checked'))
       {
-        dialog.showMessageBoxSync({ type: "error", buttons: ["OK"], title: "Error", message: `Automatically creating parameter labels in the formula is not supported when a grouping variable is specified (see grouping variable in the multi-group options tab). Please uncheck the checkbox with label "show parameter labels" on the top of this dialog and rerun.` })
-        return res
+        $(`#${parameterizeFormulaChkId}`).prop('checked',false)
+        flippedParameterCheckbox = true
       }
+    }
+    //If mediation terms and a grouping variable are defined, we don't handle this case and display an error
+    if (code_vars.selected.multiGrpDependent.length >0 && Object.keys(code_vars.selected.mediationDestCtrl).length >0)
+    {
+       dialog.showMessageBoxSync({ type: "error", buttons: ["OK"], title: "Not supported", message: `We don't support mediation when a grouping variable is defined. Contact support@blueskystatistics.com if you need this capability.` })
+       return res
     }
     code_vars.selected["allLatentLoadingRemoved"] =false
     code_vars.selected["showGraph"] = true
@@ -1433,7 +1489,6 @@ if (has_nas) {
       })
     })
   }  
-  
   //We now examine the structural parameters to make sure that the direct relationship in the mediation is not duplicated in the structural parameters
   //see explanation below 
   //A->B
@@ -1487,13 +1542,13 @@ if (has_nas) {
       }//End of firstElement2nditem == secondElement1stitem 
       else if (firstElement1stitem == secondElement2nditem) 
       { 
-        //Case 2, the 1st element of the first item is equal to the 2nd element of the 2nd item 
-        //B->C 
-        //A->B 
-        //stop = false 
-        //Direct effect 
-        //a ~ direct * c 
-        modelTermsDst.forEach(function (element) { 
+          //Case 2, the 1st element of the first item is equal to the 2nd element of the 2nd item 
+          //B->C 
+          //A->B 
+          //stop = false 
+          //Direct effect 
+          //a ~ direct * c 
+          modelTermsDst.forEach(function (element) { 
           myArray = element.split("->"); 
           if (myArray[0] == secondElement1stitem && myArray[1] == firstElement2nditem) 
           { 
@@ -1526,14 +1581,10 @@ if (has_nas) {
 		})
 	}
 }
-  
-  //console.log(`pretransmodeltermsDST after removing mediation : ${preTransModelTermsDst}` )
   code_vars.selected["sem2"] = common.transform(higherOrderFactors, "NoPrefix|UsePlus","sem_sem2" )
 	code_vars.selected["sem3"] = common.transform(equalConstraints, "equalityConstraints","sem_sem3" )
 	code_vars.selected["modelTermsDst"] = common.transform(modelTermsDst, "modelTerms","sem_modelTermsDst" )
-  //console.log(`modeltermsDST after calling common : ${code_vars.selected["modelTermsDst"]}` )
   code_vars.selected["coVarDst"] = common.transform(preTranscoVarDst, "coVariances","sem_coVarDst" )
-
   if (reverseDirectRelationship)
   {
     code_vars.selected["mediationDestCtrl"] = common.transform(preTransMediationDestCtrl, "mediationReverseDirectRel","sem_mediationDestCtrl" )
@@ -1564,12 +1615,10 @@ if (has_nas) {
         }
       })
     })
-    //preTransModelTermsDstForObvCovar
     myArray = []
     let modTerms = []
     if (preTransModelTermsDstForObvCovar.length != 0) {
       myArray = []
-      //modTerms = instance.objects.modelTermsDst.el.getVal()
       preTransModelTermsDstForObvCovar.forEach(function (valueStructParams) {
         myArray = valueStructParams.split("->");
         myArray.forEach(function (val, index) {
@@ -1606,6 +1655,7 @@ if (has_nas) {
     } else {
       code_vars.selected.useSemFunction = true
     }
+    //Retaining this code for reuse
    /*  myArray = []
     modTerms = []
     if (code_vars.selected.modelTermsDst != "") {
@@ -1648,8 +1698,20 @@ if (has_nas) {
     groupEqualString = groupEqual.join(",")
     code_vars.selected.groupEqualString = groupEqualString
     code_vars.selected.allvars = allVarsArray.join(separator)
-    const cmd = instance.dialog.renderR(code_vars);
-    res.push({ cmd: cmd, cgid: newCommandGroup() })
+    let finalString =""
+    if (flippedParameterCheckbox)
+    {
+      finalString = instance.dialog.renderR(code_vars)+"\n"+"cat('As a grouping variable was specified, we suppressed the automatic generation of parameter labels as the R lavaan automatically creates these.\n')";   
+    }
+    else
+    {
+      finalString = instance.dialog.renderR(code_vars);
+    }
+    res.push({ cmd: finalString, cgid: newCommandGroup() })
+    if (flippedParameterCheckbox)
+    {
+      $(`#${parameterizeFormulaChkId}`).prop('checked',true)
+    }
     return res;
   }
 }
