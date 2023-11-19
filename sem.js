@@ -113,7 +113,7 @@ Just checking 1 gives you more flexibility
 "ULS": unweighted least squares
 "DLS": distributionally-weighted least squares
 "PML": pairwise maximum likelihood
-Many estimators have ‘robust’ variants, meaning that they provide robust standard errors and a scaled test statistic. For example, for the maximum likelihood estimator, lavaan provides the following robust variants:
+Many estimators have robust variants, meaning that they provide robust standard errors and a scaled test statistic. For example, for the maximum likelihood estimator, lavaan provides the following robust variants:
 
 "MLM": maximum likelihood estimation with robust standard errors and a Satorra-Bentler scaled test statistic. For complete data only.
 "MLMVS": maximum likelihood estimation with robust standard errors and a mean- and variance adjusted test statistic (aka the Satterthwaite approach). For complete data only.
@@ -187,13 +187,15 @@ BSkyFormat(BSkyMardiasSkew, singleTableOutputHeader="Mardia's skew")
 BSkyMardiasKurt <- semTools::mardiaKurtosis(na.omit({{dataset.name}}[, c({{selected.allvars | safe}})]))
 BSkyFormat(BSkyMardiasKurt, singleTableOutputHeader="Mardia's kurtosis")
 {{/if}}
-{{if (options.selected.observed =="TRUE")}}
-{{if (options.selected.endoExoString.length >0)}}
+{{if (options.selected.endoExoString.length > 0 && options.selected.observed =="TRUE")}}
 #Observed covariances  
 BSKyObservedCov <- data.frame({{selected.modelname | safe}}@SampleStats@cov[[1]])
 names(BSKyObservedCov) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 base::row.names(BSKyObservedCov) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 BSkyFormat(BSKyObservedCov, singleTableOutputHeader="Observed covariances")
+{{/if}}
+{{if (options.selected.endoExoString.length == 0 && options.selected.observed =="TRUE")}}
+cat ("Observed covariances cannot be displayed as there are no latent variables or structural parameters\n")
 {{/if}}
 {{if (options.selected.modelImplied =="TRUE")}}
 BSkyCovFitted <- data.frame({{selected.modelname | safe}}@implied[["cov"]])
@@ -220,7 +222,7 @@ gplots::heatmap.2(as.matrix(BSkyResiduals), Rowv=FALSE, dendrogram="none", symm=
 BSKyObservedCorr <- data.frame(stats::cov2cor({{selected.modelname | safe}}@SampleStats@cov[[1]]))
 names(BSKyObservedCorr) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 base::row.names(BSKyObservedCorr) <- {{selected.modelname | safe}}@Data@ov[["name"]]
-BSkyFormat(BSKyObservedCorr, singleTableOutputHeader="Deviation between observed and fitted correlations")
+BSkyFormat(BSKyObservedCorr, singleTableOutputHeader="Observed correlations")
 {{/if}}
 {{if (options.selected.modelImpliedCorr =="TRUE")}}
 BSkyCorrFitted <- data.frame(stats::cov2cor({{selected.modelname | safe}}@implied[["cov"]][[1]]))
@@ -244,9 +246,7 @@ gplots::heatmap.2(as.matrix(BSkyStdResiduals), Rowv=FALSE, dendrogram="none", sy
           main = "Deviation between Observed and \n Model-Implied Correlation Matrices",
           key=TRUE, density.info="none")
 {{/if}}
-{{#else}}
-cat ("Observed covariances cannot be displayed as there are no latent variables or structural parameters\n")
-{{/if}}
+
 {{if (options.selected.modIndices =="TRUE")}}
 #Modification indices
 {{if (options.selected.highLowIndices =="TRUE")}}
@@ -283,7 +283,7 @@ semPlot::semPaths({{selected.modelname | safe}}, {{if (options.selected.residual
     {{if (options.selected.latentShapes != "default")}}shapeLat = "{{selected.latentShapes | safe}}"{{/if}}
     )
 {{#else}}
-cat("A path diagram is not displayed when there are higher order factors and structural parameters or a grouping variable has been specified.\n")
+cat("A path diagram is not displayed when there are higher order factors and structural parameters or when a grouping variable has been specified.\n")
 {{/if}}
 {{if (options.selected.factorScores == "TRUE")}}
 BSky_Has_nas <- any(is.na({{dataset.name}}[, c({{selected.allvars | safe}})]))
@@ -691,7 +691,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
           max: 99999999,
           style: "ml-2",
           step: 0.01,
-          value: 10,
+          value: 3.84,
           extraction: "NoPrefix|UseComma"
         })
       },
@@ -1345,8 +1345,6 @@ if (exists('BSkyDV'))rm(BSkyDV)
     let secondTerm =""
     let myArray = []
     let flippedParameterCheckbox = false
-
-
     let allColumnProps = fetchAllColumnAttributes()
     var code_vars = {
       dataset: {
@@ -1385,12 +1383,13 @@ if (exists('BSkyDV'))rm(BSkyDV)
     let latentVars = code_vars.selected["sem"]
     //Storing the original latent vars so that we compute observed covariances correctly
     //observed covariances are all the observed variables in the latent loadings and structural parameters
-    let latentVarsOriObject = code_vars.selected["sem"]
+    let latentVarsOriObject = deepCopy(code_vars.selected["sem"])
+    let oriHigherOrderFactorsLength = Object.keys(code_vars.selected["sem2"]).length
     let higherOrderFactors = code_vars.selected["sem2"]
-    let preTransModelTermsDst = code_vars.selected["modelTermsDst"]
+    let preTransModelTermsDstLength = Object.keys(code_vars.selected["modelTermsDst"]).length
     let modelTermsDst = code_vars.selected["modelTermsDst"]
     // The array preTransModelTermsDstForObvCovar is used to compute observed covariances
-    let preTransModelTermsDstForObvCovar = code_vars.selected["modelTermsDst"]
+    let preTransModelTermsDstForObvCovar = deepCopy(code_vars.selected["modelTermsDst"])
     let preTranscoVarDst = code_vars.selected["coVarDst"]
     let preTransMediationDestCtrl = code_vars.selected["mediationDestCtrl"]
     //We save the original preTransMediationDestCtrl as this is processed to remove equality constraints and mediation relationships
@@ -1592,7 +1591,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
   code_vars.selected["mediationDestCtrl"] = common.transform(preTransMediationDestCtrl, "mediation","sem_mediationDestCtrl" )
   }
   //We don't show the graph when there are both higher order factors and structural parameters
-  if ((code_vars.selected["sem2"].length  > 0  && code_vars.selected["modelTermsDst"].length > 0) || code_vars.selected.multiGrpDependent !="" )
+  if ((oriHigherOrderFactorsLength  > 0  && preTransModelTermsDstLength > 0) || code_vars.selected.multiGrpDependent !="" )
     code_vars.selected["showGraph"] = false
   //The way missing values are handled influences how the missing value parameter in the observed covariances are set
   if (code_vars.selected["missing"] =="listwise")
@@ -1645,7 +1644,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       code_vars.selected.combokid = ""
     code_vars.selected.endoExoString = finalRetString
     code_vars.selected.useSemFunction = true
-    if (preTransModelTermsDst.length == 0 && oriLatentvars.length == 0) {
+    if (preTransModelTermsDstLength == 0 && oriLatentvars.length == 0) {
       dialog.showMessageBoxSync({ type: "error", buttons: ["OK"], title: "Required controls not populated", message: `You need to specify latent traits or a structural relationship.` })
       return res
     } else  if (code_vars.selected.modelTermsDst.length == 0) {

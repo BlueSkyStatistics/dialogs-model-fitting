@@ -204,7 +204,7 @@ if({{selected.PlotRSQRChkbox | safe}})
     rsq.rpart(bsky_tree) 
 }
 #appropriate for the "anova" method                     
-BSkytmp = rpart.plot( {{selected.TxtTreeName | safe}}, type = 5, main="Decision Tree Diagram", roundint = FALSE) 
+BSkytmp = rpart.plot( {{selected.TxtTreeName | safe}}, type = 5, digits = -getOption("digits"), main="Decision Tree Diagram", roundint = FALSE) 
 #Adding attributes to support scoring
 #We don't add dependent and independent variables as this is handled by our functions
 attr(.GlobalEnv\${{selected.TxtTreeName | safe}},"classDepVar")= class({{dataset.name}}[, c("{{selected.dependent | safe}}")])
