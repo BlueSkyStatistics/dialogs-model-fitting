@@ -251,26 +251,26 @@ gplots::heatmap.2(as.matrix(BSkyStdResiduals), Rowv=FALSE, dendrogram="none", sy
 #Modification indices
 {{if (options.selected.highLowIndices =="TRUE")}}
 BSkyFormat("Estimated Model")
-BSkyModIndices <- modificationIndices({{selected.modelname | safe}}, high.power = {{selected.threshold | safe}})
+BSkyModIndices <- lavaan::modificationIndices({{selected.modelname | safe}}, minimum.value = {{selected.threshold | safe}})
 BSkyFormat(as.data.frame(BSkyModIndices), singleTableOutputHeader = "Modification Indices: threshold = {{selected.threshold | safe}}")
 {{#else}}
-BSkyModIndices <- modificationIndices({{selected.modelname | safe}})
+BSkyModIndices <- lavaan::modificationIndices({{selected.modelname | safe}})
 BSkyFormat(as.data.frame(BSkyModIndices), singleTableOutputHeader = "Modification Indices")
 {{/if}}
 {{/if}}
 {{if (options.selected.stdall =="TRUE")}}
 #Standardized solution (type ="std.all")
-BSkyStdSol <- standardizedSolution({{selected.modelname | safe}}, type ="std.all")
+BSkyStdSol <- lavaan::standardizedSolution({{selected.modelname | safe}}, type ="std.all")
 BSkyFormat(as.data.frame(BSkyStdSol), singleTableOutputHeader = "Standardized estimates based on variances of both observed and latent variables")
 {{/if}}
 {{if (options.selected.stdlv =="TRUE")}}
 #Standardized solution (type ="std.lv")
-BSkyStdSol <-standardizedSolution({{selected.modelname | safe}}, type ="std.lv")
+BSkyStdSol <- lavaan::standardizedSolution({{selected.modelname | safe}}, type ="std.lv")
 BSkyFormat(as.data.frame(BSkyStdSol), singleTableOutputHeader = "Standardized estimates based on variances of (continuous) latent variables only")
 {{/if}}
 {{if (options.selected.stdnox =="TRUE")}}
 #Standardized solution (type ="std.nox")
-BSkyStdSol <-standardizedSolution({{selected.modelname | safe}}, type ="std.nox")
+BSkyStdSol <- lavaan::standardizedSolution({{selected.modelname | safe}}, type ="std.nox")
 BSkyFormat(as.data.frame(BSkyStdSol), singleTableOutputHeader = "Standardized estimates based on observed and latent but not exogenous covariates")
 {{/if}}
 
