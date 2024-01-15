@@ -58,7 +58,7 @@ class loadAModel extends baseModal {
 base::load(file = "{{selected.importResp | safe}}")
 local ({
     #list of all models
-    allModels <- BSkyGetAvailableModelsCP(objclasslist ='All_Models')
+    allModels <- BSkyGetAvailableModels(objclasslist ='All_Models')
     #Filtering models loaded from file
     modelsFromFile <- base::Filter(function(x) !is.null(base::attr(eval(parse(text=x)), "BSkyModel")), allModels)
     cat(paste("The following model(s) (separated by comma):", paste(modelsFromFile , collapse =", "), "are loaded from the file\n"))

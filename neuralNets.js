@@ -172,7 +172,7 @@ if (!is.null({{selected.model | safe}}))
     NeuralNetTools::neuralweights({{selected.model | safe}})
     #Setting attributes to support scoring
     attr(.GlobalEnv\${{selected.model | safe}},"depvar")="'{{selected.dependentvar | safe }}'"
-    attr(.GlobalEnv\${{selected.model | safe}},"indepvar")=paste(str_split("{{selected.independentvars}}",fixed("+")),sep=",", collapse="")
+    attr(.GlobalEnv\${{selected.model | safe}},"indepvar")=paste(stringr::str_split("{{selected.independentvars}}",fixed("+")),sep=",", collapse="")
     attr(.GlobalEnv\${{selected.model | safe}},"classDepVar")= class({{dataset.name}}[, c("{{selected.dependentvar | safe}}")])
     attr(.GlobalEnv\${{selected.model | safe}},"depVarSample")= sample({{dataset.name}}[, c("{{selected.dependentvar | safe}}")], size = 2, replace = TRUE)
 }

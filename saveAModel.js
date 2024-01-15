@@ -4,7 +4,7 @@ var localization = {
         title: "Save Models to a file",
         navigation: "Save Models",
         filterModels: "Filter models by class",
-        modelSelection: "Select a model to save",
+        modelSelection: "Select a model(s) to save",
         importResp: "Select a file to save a model to",
         label1: "NOTE: The model will be saved to a file in the path selected below ONLY when you execute the dialog.",
         levelOfInterest: "When the variable to predict has 2 levels, specify the level of interest. The confusion matrix and related statistics are displayed with the specified level of interest as the reference",
@@ -66,7 +66,7 @@ base::save({{selected.modelSelection | safe}}, file = "{{selected.importResp | s
 })
 `,
             pre_start_r: JSON.stringify({
-                modelSelection: "BSkyGetAvailableModelsCP(objclasslist ='All_Models')",
+                modelSelection: "BSkyGetAvailableModels(objclasslist ='All_Models')",
             })
         }
         var objects = {
@@ -79,7 +79,7 @@ base::save({{selected.modelSelection | safe}}, file = "{{selected.importResp | s
                     extraction: "NoPrefix|UseComma",
                     options: ["adaboost", "All_Models", "BinaryTree", "blasso", "C5.0", "earth", "gbm", "glm", "glmnet", "knn3", "ksvm", "lm", "lmerModLmerTest", "lognet", "mlp", "multinom", "NaiveBayes", "nn", "nnet", "polr", "randomForest", "RandomForest", "ranger", "real_adaboost", "rlm", "rpart", "rq", "rsnns", "train", "xgb.Booster"],
                     default: "All_Models",
-                    onselect_r: { modelSelection: "BSkyGetAvailableModelsCP( objclasslist = c('{{value}}'))" }
+                    onselect_r: { modelSelection: "BSkyGetAvailableModels( objclasslist = c('{{value}}'))" }
                 })
             },
             modelSelection: {
@@ -107,7 +107,7 @@ base::save({{selected.modelSelection | safe}}, file = "{{selected.importResp | s
             
         }
         const content = {
-            items: [objects.label1.el.content, objects.filterModels.el.content, objects.modelSelection.el.content, objects.importResp.el.content ],
+            items: [objects.label1.el.content, objects.importResp.el.content, objects.filterModels.el.content, objects.modelSelection.el.content ],
             nav: {
                 name: localization.en.navigation,
                 icon: "fas fa-save",
