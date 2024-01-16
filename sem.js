@@ -99,27 +99,41 @@ var localization = {
       r_help: "help(sem, package=lavaan)",
       body: `
 <b>Description</b></br>
-Covariances get recomputed, if you are deleted covariances do it in the last step
+Structural Equation Modeling (SEM) utilizes the lavaan package (0.6.16) estimation and works with the traditional LISREL SEM formulation (rather than Bentler-Weeks, RAMpath, or LISCOMP formulations). Estimation defaults to maximum likelihood and uses NLMINB (quasi-Newton) using the normal liklelihood approach (rather than the Wishart likelihood method). Standard errors are based on expected (rather than obsevced) information matrices, but observed, expected, and deviations may be examined using heat maps. Normality screening (i.e., Mardia's skew and kurtosis) are provided. The user may specify models with and without continuous latent variables (i.e., measurement modeling) at both lower and higher orders, as well as structural models (i.e., path modeling).  Equality constrants, mediation, and multigroup analysis are possible. A host of estimation methods (e.g., varieties of maximum likelihood, least squares, and james-stein) are supported. Numerous fit statistics are available upon request (e.g., GFI, aGFI, ECVI, etc.), and a small subset (i.e., CFI, TLI, SRMR, RMSEA, AIC, BC) are provided by default. Confidence intervals utilizing various bootstrapping functions may also be obtained. Diagrams of models are produced using semPlot (1.1.6).  
+</br>
+</br>
+When you click on Covariances on the dialog, you will see that the checkbox, automatically compute covariances is checked. You can delete an automatically computed covariance by selecting the covariance and clicking the trash icon. When you delete a covariance, we suppress it in the code generated. If you want to undo the supression, you must manually add it again or delete and recreate the latent variable or higher order factor that is part of the covariance you want to undo the suppression for.
+</br>
+</br>
+When a grouping variable is selected (click on Multi-group options on the dialog), you need to select the checkbox "The intercepts of the observed variables" and the checkbox "The intercepts/means of the latent variables"
+Just checking the 1st checkbox gives you more flexibility.
+</br>
+Description for the fit functions are below</br>
+"ML" maximum likelihood</br>
+"GLS": generalized least squares. For complete data only.</br>
+"WLS": weighted least squares (sometimes called ADF estimation). For complete data only.</br>
+"DWLS": diagonally weighted least squares</br>
+"ULS": unweighted least squares</br>
+"DLS": distributionally-weighted least squares</br>
+"PML": pairwise maximum likelihood</br>
+Many estimators have robust variants, meaning that they provide robust standard errors and a scaled test statistic. For example, for the maximum likelihood estimator, lavaan provides the following robust variants:</br>
+"MLM": maximum likelihood estimation with robust standard errors and a Satorra-Bentler scaled test statistic. For complete data only.</br>
+"MLMVS": maximum likelihood estimation with robust standard errors and a mean- and variance adjusted test statistic (aka the Satterthwaite approach). For complete data only.</br>
+"MLMV": maximum likelihood estimation with robust standard errors and a mean- and variance adjusted test statistic (using a scale-shifted approach). For complete data only.</br>
+"MLF": for maximum likelihood estimation with standard errors based on the first-order derivatives, and a conventional test statistic. For both complete and incomplete data.</br>
+"MLR": maximum likelihood estimation with robust (Huber-White) standard errors and a scaled test statistic that is (asymptotically) equal to the Yuan-Bentler test statistic. For both complete and incomplete data.</br>
+</br>
+TBD
 Hande the documentation of the label see help
-
-Steve needs to document the situation around the degrees of freedom basically when a grouping variable is selected you need to select
+We need to document the situation around the degrees of freedom basically when a grouping variable is selected, you need to select
 the checkbox "The intercepts of the observed variables" and the checkbox "The intercepts/means of the latent variables"
-Just checking 1 gives you more flexibility
+Just checking the 1st checkbox gives you more flexibility.
+<b>Package</b></br>
+lavaan;semPlot;semTools</br>
+<b>Help</b></br>
+For detailed help click on the R icon on the top right hand side of this dialog overlay or run the following command in the R syntax editor</br>
+help(sem, package='lavaan')
 
-"ML" maximum likelihood
-"GLS": generalized least squares. For complete data only.
-"WLS": weighted least squares (sometimes called ADF estimation). For complete data only.
-"DWLS": diagonally weighted least squares
-"ULS": unweighted least squares
-"DLS": distributionally-weighted least squares
-"PML": pairwise maximum likelihood
-Many estimators have robust variants, meaning that they provide robust standard errors and a scaled test statistic. For example, for the maximum likelihood estimator, lavaan provides the following robust variants:
-
-"MLM": maximum likelihood estimation with robust standard errors and a Satorra-Bentler scaled test statistic. For complete data only.
-"MLMVS": maximum likelihood estimation with robust standard errors and a mean- and variance adjusted test statistic (aka the Satterthwaite approach). For complete data only.
-"MLMV": maximum likelihood estimation with robust standard errors and a mean- and variance adjusted test statistic (using a scale-shifted approach). For complete data only.
-"MLF": for maximum likelihood estimation with standard errors based on the first-order derivatives, and a conventional test statistic. For both complete and incomplete data.
-"MLR": maximum likelihood estimation with robust (Huber-White) standard errors and a scaled test statistic that is (asymptotically) equal to the Yuan-Bentler test statistic. For both complete and incomplete data.
 
 `}
   }
@@ -464,7 +478,6 @@ if (exists('BSkyDV'))rm(BSkyDV)
           extraction: "modelTerms", 
           firstModelTermCtrl: "modelTerms", 
           secondModelTermCtrl: "modelTerms1",
-          //suppCtrlIds: ["modelTerms", "modelTerms1", "coVarTerms", "coVarTerms1"],
           suppCtrlAddIds: ["mediationSrcCtrl"],
           suppCtrlDeleteIds: ["mediationSrcCtrl", "mediationDestCtrl" ]
         })
@@ -758,7 +771,6 @@ if (exists('BSkyDV'))rm(BSkyDV)
         el: new checkbox(config, {
           label: localization.en.residuals,
           no: "residuals",
-          //style: "mb-2",
           newline: true,
           extraction: "Boolean"
         })
@@ -768,7 +780,6 @@ if (exists('BSkyDV'))rm(BSkyDV)
           label: localization.en.intercepts,
           no: "intercepts",
           newline: true,
-          //style: "mb-2",
           extraction: "Boolean",
         })
       },
@@ -776,7 +787,6 @@ if (exists('BSkyDV'))rm(BSkyDV)
         el: new checkbox(config, {
           label: localization.en.includeThresholds,
           no: "includeThresholds",
-          //style: "mb-2",
           newline: true,
           extraction: "Boolean",
         })
@@ -883,7 +893,6 @@ if (exists('BSkyDV'))rm(BSkyDV)
         el: new checkbox(config, {
           label: localization.en.stdall,
           no: "stdall",
-          //style: "mb-2",
           newline: true,
           extraction: "Boolean",
         })
@@ -892,7 +901,6 @@ if (exists('BSkyDV'))rm(BSkyDV)
         el: new checkbox(config, {
           label: localization.en.stdlv,
           no: "stdlv",
-          //style: "mb-2",
           newline: true,
           extraction: "Boolean",
         })
@@ -901,7 +909,6 @@ if (exists('BSkyDV'))rm(BSkyDV)
         el: new checkbox(config, {
           label: localization.en.stdnox,
           no: "stdnox",
-          //style: "mb-2",
           newline: true,
           extraction: "Boolean",
         })
