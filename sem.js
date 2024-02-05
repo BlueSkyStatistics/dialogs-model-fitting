@@ -184,29 +184,29 @@ print.lavaan.summary_bsky(BSkySummaryRes)
 BSkyParameterEst <- lavaan::parameterEstimates({{selected.modelname | safe}}, 
   level = 0.95, 
   boot.ci.type="{{selected.gpbox3 | safe}}")
-BSkyFormat(as.data.frame(BSkyParameterEst), singleTableOutputHeader="Parameter estimates")
+BSkyFormat(as.data.frame(BSkyParameterEst), singleTableOutputHeader="Parameter Estimates")
 {{/if}}
 {{if (options.selected.addFitMeasures == "TRUE")}}
 #Additional fit measures
 BSkyfitMeasures <- fitMeasures({{selected.modelname | safe}})
-BSkyFormat(as.data.frame(BSkyfitMeasures), singleTableOutputHeader="Additional fit measures")
+BSkyFormat(as.data.frame(BSkyfitMeasures), singleTableOutputHeader="Additional Fit Measures")
 {{/if}}
 {{if (options.selected.mardiaSkew =="TRUE")}}
 #Mardia's skew
 BSkyMardiasSkew <- semTools::mardiaSkew(na.omit({{dataset.name}}[, c({{selected.allvars | safe}})]))
-BSkyFormat(BSkyMardiasSkew, singleTableOutputHeader="Mardia's skew")
+BSkyFormat(BSkyMardiasSkew, singleTableOutputHeader="Mardia's Skew")
 {{/if}}
 {{if (options.selected.mardiaKurt =="TRUE")}}
 #Mardia's kurtosis
 BSkyMardiasKurt <- semTools::mardiaKurtosis(na.omit({{dataset.name}}[, c({{selected.allvars | safe}})]))
-BSkyFormat(BSkyMardiasKurt, singleTableOutputHeader="Mardia's kurtosis")
+BSkyFormat(BSkyMardiasKurt, singleTableOutputHeader="Mardia's Kurtosis")
 {{/if}}
 {{if (options.selected.endoExoString.length > 0 && options.selected.observed =="TRUE")}}
 #Observed covariances  
 BSKyObservedCov <- data.frame({{selected.modelname | safe}}@SampleStats@cov[[1]])
 names(BSKyObservedCov) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 base::row.names(BSKyObservedCov) <- {{selected.modelname | safe}}@Data@ov[["name"]]
-BSkyFormat(BSKyObservedCov, singleTableOutputHeader="Observed covariances")
+BSkyFormat(BSKyObservedCov, singleTableOutputHeader="Observed Covariances")
 {{/if}}
 {{if (options.selected.endoExoString.length == 0 && options.selected.observed =="TRUE")}}
 cat ("Observed covariances cannot be displayed as there are no latent variables or structural parameters\n")
@@ -215,13 +215,13 @@ cat ("Observed covariances cannot be displayed as there are no latent variables 
 BSkyCovFitted <- data.frame({{selected.modelname | safe}}@implied[["cov"]])
 names(BSkyCovFitted) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 base::row.names(BSkyCovFitted) <- {{selected.modelname | safe}}@Data@ov[["name"]]
-BSkyFormat(BSkyCovFitted, singleTableOutputHeader = "Model-implied (fitted) covariances")
+BSkyFormat(BSkyCovFitted, singleTableOutputHeader = "Model-implied (fitted) Covariances")
 {{/if}}
 {{if (options.selected.residual =="TRUE")}}
 BSkyResiduals <- data.frame({{selected.modelname | safe}}@SampleStats@cov[[1]] - {{selected.modelname | safe}}@Fit@Sigma.hat[[1]])
 names(BSkyResiduals) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 base::row.names(BSkyResiduals) <- {{selected.modelname | safe}}@Data@ov[["name"]]
-BSkyFormat(BSkyResiduals, singleTableOutputHeader="Deviation between observed and fitted covariances")
+BSkyFormat(BSkyResiduals, singleTableOutputHeader="Deviation between Observed and Fitted Covariances")
 {{/if}}
 {{if (options.selected.residualCovHeatmap =="TRUE")}}
 #Heat map around the deviation matrix
@@ -236,19 +236,19 @@ gplots::heatmap.2(as.matrix(BSkyResiduals), Rowv=FALSE, dendrogram="none", symm=
 BSKyObservedCorr <- data.frame(stats::cov2cor({{selected.modelname | safe}}@SampleStats@cov[[1]]))
 names(BSKyObservedCorr) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 base::row.names(BSKyObservedCorr) <- {{selected.modelname | safe}}@Data@ov[["name"]]
-BSkyFormat(BSKyObservedCorr, singleTableOutputHeader="Observed correlations")
+BSkyFormat(BSKyObservedCorr, singleTableOutputHeader="Observed Correlations")
 {{/if}}
 {{if (options.selected.modelImpliedCorr =="TRUE")}}
 BSkyCorrFitted <- data.frame(stats::cov2cor({{selected.modelname | safe}}@implied[["cov"]][[1]]))
 names(BSkyCorrFitted) <- {{selected.modelname | safe}}@Data@ov[["name"]]
 base::row.names(BSkyCorrFitted) <- {{selected.modelname | safe}}@Data@ov[["name"]]
-BSkyFormat(BSkyCorrFitted, singleTableOutputHeader = "Model-implied (fitted) correlations")
+BSkyFormat(BSkyCorrFitted, singleTableOutputHeader = "Model-implied (fitted) Correlations")
 {{/if}}
 
 {{if (options.selected.residualCorr =="TRUE")}}
 BSkyCorrResiduals <- data.frame(stats::cov2cor({{selected.modelname | safe}}@SampleStats@cov[[1]]) - stats::cov2cor({{selected.modelname | safe}}@Fit@Sigma.hat[[1]]))
 names(BSkyCorrResiduals) <- {{selected.modelname | safe}}@Data@ov[["name"]]
-BSkyFormat(BSkyCorrResiduals, singleTableOutputHeader="Deviation between observed and fitted correlations")
+BSkyFormat(BSkyCorrResiduals, singleTableOutputHeader="Deviation between Observed and Fitted Correlations")
 {{/if}}
 
 {{if (options.selected.residualCorrHeatmap =="TRUE")}}
@@ -306,7 +306,7 @@ if (BSky_Has_nas) {
   cat("The dataset contains missing values (NAs), we cannot save predicted values to the dataset, we will display predicted values in the output window.\n")
   cat("Displaying a large number of predicted values in the output window can cause performance problems.\n")
   BSkyFormat(as.data.frame(lavaan::lavPredict({{selected.modelname | safe}}, 
-    type = "lv")), singleTableOutputHeader = "Predicted factor scores")
+    type = "lv")), singleTableOutputHeader = "Predicted Factor Scores")
 } else {
   BSkyFS <- lavaan::lavPredict({{selected.modelname | safe}}, 
     type = "lv")
@@ -322,7 +322,7 @@ if (BSky_Has_nas) {
   cat("The dataset contains missing values (NAs), we cannot save predicted values to the dataset, we will display predicted values in the output window.\n")
   cat("NOTE::Displaying a large number of predicted values in the output window can cause performance problems.\n")
   BSkyFormat(as.data.frame(lavaan::lavPredict({{selected.modelname | safe}}, 
-    type = "ov")), singleTableOutputHeader = "Predicted indicators")
+    type = "ov")), singleTableOutputHeader = "Predicted Indicators")
 } else {
   BSkyI <- lavaan::lavPredict({{selected.modelname | safe}}, 
     type = "ov")
@@ -338,7 +338,7 @@ if (BSky_Has_nas) {
   cat("The dataset contains missing values (NAs), we cannot save predicted values to the dataset, we will display predicted values in the output window.\n")
   cat("NOTE::Displaying a large number of predicted values in the output window can cause performance problems.\n")
   BSkyFormat(lavaan::lavPredict({{selected.modelname | safe}}, 
-    type = "yhat"), singleTableOutputHeader = "Predicted dependent variables") 
+    type = "yhat"), singleTableOutputHeader = "Predicted Dependent Variables") 
 } else {
   BSkyDV <- lavaan::lavPredict({{selected.modelname | safe}}, 
     type = "yhat")
