@@ -7,6 +7,7 @@ var localization = {
         TreeGenChkbox: "Don't re-generate if tree already exists",
         dependent: "Dependent variable",
         independent: "Independent variable(s)",
+        weights: "Survey weights",
         TxtMinSplit: "Minimum split",
         minBucket: "Minimum bucket",
         TxtCP: "Complexity parameter",
@@ -153,10 +154,10 @@ var localization = {
     }
 }
 
-class decisionTrees extends baseModal {
+class decisionTreesEZ extends baseModal {
     constructor() {
         var config = {
-            id: "decisionTrees",
+            id: "decisionTreesEZ",
             label: localization.en.title,
             modalType: "two",
             splitProcessing: true,
@@ -167,7 +168,8 @@ require(partykit)
 #Generate a new tree model if the model does not exist of the user has chosen the option to generate a model
 if(!{{selected.TreeGenChkbox | safe}} || !exists("{{selected.TxtTreeName | safe}}"))
 {
-    {{selected.TxtTreeName | safe}} = rpart({{selected.dependent | safe}}~{{selected.independent | safe}}, data = {{dataset.name}}, control = rpart.control(minsplit={{selected.TxtMinSplit | safe}},{{ if (options.selected.minbucket=="")}}minbucket ={{selected.minBucket | safe}},{{/if}}maxdepth={{selected.maxDepth | safe}},cp ={{selected.TxtCP | safe}}))
+    
+    {{selected.TxtTreeName | safe}} = rpart({{selected.dependent | safe}}~{{selected.independent | safe}}{{if(options.selected.weights!="")}}, weights={{selected.weights |safe}} {{/if}}, data = {{dataset.name}}, control = rpart.control(minsplit={{selected.TxtMinSplit | safe}},{{ if (options.selected.minbucket=="")}}minbucket ={{selected.minBucket | safe}},{{/if}}maxdepth={{selected.maxDepth | safe}},cp ={{selected.TxtCP | safe}}))
 }
 #If the user selected the option to prune the tree, prune it
 var ="{{selected.grp1 | safe}}"
@@ -246,6 +248,15 @@ rm(bsky_tree)
                     filter: "String|Numeric|Date|Logical|Ordinal|Nominal|Scale",
                     extraction: "NoPrefix|UseComma",
                     required: true,
+                }), r: ['{{ var | safe}}']
+            },
+            weights: {
+                el: new dstVariable(config, {
+                    label: localization.en.weights,
+                    no: "weights",
+                    filter: "Numeric|Scale",
+                    extraction: "NoPrefix|UseComma",
+                    required: false,
                 }), r: ['{{ var | safe}}']
             },
             independent: {
@@ -402,7 +413,7 @@ rm(bsky_tree)
         };
         const content = {
             left: [objects.content_var.el.content],
-            right: [objects.TxtTreeName.el.content, objects.TreeGenChkbox.el.content, objects.dependent.el.content, objects.independent.el.content,],
+            right: [objects.TxtTreeName.el.content, objects.TreeGenChkbox.el.content, objects.dependent.el.content, objects.independent.el.content,objects.weights.el.content],
             bottom: [prePruningOptions.el.content, pruneTree.el.content, plots.el.content],
             nav: {
                 name: localization.en.navigation,
@@ -414,4 +425,4 @@ rm(bsky_tree)
         this.help = localization.en.help;
     }
 }
-module.exports.item = new decisionTrees().render()
+module.exports.item = new decisionTreesEZ().render()
