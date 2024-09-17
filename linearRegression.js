@@ -57,9 +57,6 @@ class linearRegression extends baseModal {
 require(magrittr)
 require(equatiomatic)
 require(textutils)
-#{{selected.modelname | safe}} = {{dataset.name}} %>%
-                        #  lm(formula = {{selected.dependent | safe}}~0+{{selected.independent | safe}}, data=.,
-                        #{{selected.weights | safe}} na.action=na.exclude)   
 {{if(options.selected.nointercept =="TRUE")}}
 {{selected.modelname | safe}} = lm(formula = {{selected.dependent | safe}}~0+{{selected.independent | safe}}, data={{dataset.name}},
                         {{selected.weights | safe}} na.action=na.exclude)
@@ -86,19 +83,19 @@ require(textutils)
     BSkyFormat()      
 
 #Displaying the Anova table
-AnovaRes = {{selected.modelname | safe}} %>%
+BSkyAnovaRes = {{selected.modelname | safe}} %>%
             anova() %T>%
 			  BSkyFormat(singleTableOutputHeader = "Anova table")
 
 #Displaying sum of squares table
-df = as.data.frame(AnovaRes)
-totalrows = nrow(df)
-regSumOfSquares = sum(df[1:totalrows - 1, 2])
-residualSumOfSquares = df[totalrows, 2]
-totalSumOfSquares = regSumOfSquares + residualSumOfSquares
+BSkydf = as.data.frame(BSkyAnovaRes)
+BSkytotalrows = nrow(BSkydf)
+BSkyregSumOfSquares = sum(BSkydf[1:BSkytotalrows - 1, 2])
+BSkyresidualSumOfSquares = BSkydf[BSkytotalrows, 2]
+BSkytotalSumOfSquares = BSkyregSumOfSquares + BSkyresidualSumOfSquares
 
-matrix(c(regSumOfSquares, residualSumOfSquares, 
-        totalSumOfSquares), nrow = 3, ncol = 1, dimnames = list(c("Sum of squares of regression", 
+matrix(c(BSkyregSumOfSquares, BSkyresidualSumOfSquares, 
+        BSkytotalSumOfSquares), nrow = 3, ncol = 1, dimnames = list(c("Sum of squares of regression", 
         "Sum of squares of residuals", "Total sum of squares"), 
         c("Values"))) %>%
             BSkyFormat(singleTableOutputHeader = "Sum of squares table")
@@ -110,7 +107,13 @@ matrix(c(regSumOfSquares, residualSumOfSquares,
 #We don't add dependent and independent variables as this is handled by our functions
 attr(.GlobalEnv\${{selected.modelname | safe}},"classDepVar")= class({{dataset.name}}[, c("{{selected.dependent | safe}}")])
 attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset.name}}[, c("{{selected.dependent | safe}}")], size = 2, replace = TRUE)
-#remove({{selected.modelname | safe}})
+#Removing temporary objects
+if (exists("BSkyAnovaRes")) rm (BSkyAnovaRes)
+if (exists("BSkydf")) rm (BSkydf)
+if (exists("BSkytotalrows")) rm (BSkytotalrows)
+if (exists("BSkyregSumOfSquares")) rm (BSkyregSumOfSquares)
+if (exists("BSkyresidualSumOfSquares")) rm (BSkyresidualSumOfSquares)
+if (exists("BSkytotalSumOfSquares")) rm (BSkytotalSumOfSquares)
 
 `
         };
