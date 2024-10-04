@@ -8,8 +8,10 @@ var localization = {
         dependent: "Dependent variable",
         offset: "Offset",
         weights: "Weights",
+        formulaBuilder: "Formula builder",
         family: "Select a family and link function",
         theta: "Specify a value of theta (applied for the negative binomial family only)",
+        expCoefficients:"Exponentiate coefficients",
         help: {
             title: "Generalized Linear Model",
             r_help: "help(glm, package ='stats')",
@@ -23,7 +25,8 @@ NOTE 2: When specifying a variable containing weights, be aware that since we us
 This can cause a mismatch as NA values are NOT automatically removed from the weighting variable. <br/>
 In this situation you will see the error variable lengths differ (found for (weights))<br/>
 To address this error go to Variables>Missing Values>Remove NAs and select the dependent, independent variables and the weighting variable to remove missing values from and rebuild the model.<br/>
-NOTE 3: Dummy code factor variables, when using the negative.bimonial family, see Variables > Compute > Dummy Code. 
+NOTE 3: Dummy code factor variables, when using the negative.bimonial family, see Variables > Compute > Dummy Code.<br/>
+NOTE 4: Intercept is included by default, to remove the intercept enter -1 in the formula builder
             <br/>
             <b>Usage</b>
             <br/>
@@ -103,9 +106,9 @@ require(textutils);
 #Removing temporary objects
 if (exists("{{selected.modelname | safe}}")) rm({{selected.modelname | safe}})
 {{if (options.selected.family == "negative.binomial")}}
-{{selected.modelname | safe}} = MASS::glm.nb({{selected.dependent | safe}} ~ {{selected.formula | safe}}, link="{{selected.combokid | safe}}",{{if (options.selected.theta != "")}}init.theta = {{selected.theta | safe}}, {{/if}} {{if(options.selected.weights != "")}}weights = {{selected.weights | safe}},{{/if}} na.action=na.exclude, data={{dataset.name}})
+{{selected.modelname | safe}} = MASS::glm.nb({{selected.dependent | safe}} ~ {{selected.formula | safe}} {{selected.offset | safe}}, link="{{selected.combokid | safe}}",{{if (options.selected.theta != "")}}init.theta = {{selected.theta | safe}}, {{/if}} {{if(options.selected.weights != "")}}weights = {{selected.weights | safe}},{{/if}} na.action=na.exclude, data={{dataset.name}})
 {{#else}}
-{{selected.modelname | safe}} = glm({{selected.dependent | safe}}~{{selected.formula | safe}},family ={{selected.family | safe}}(link="{{selected.combokid | safe}}" {{if (options.selected.family == "negative.binomial")}}, theta = {{selected.theta | safe}}{{/if}}), {{if(options.selected.weights != "")}}weights = {{selected.weights | safe}},{{/if}} na.action=na.exclude, data={{dataset.name}})
+{{selected.modelname | safe}} = glm({{selected.dependent | safe}}~{{selected.formula | safe}} {{selected.offset | safe}},family ={{selected.family | safe}}(link="{{selected.combokid | safe}}" {{if (options.selected.family == "negative.binomial")}}, theta = {{selected.theta | safe}}{{/if}}), {{if(options.selected.weights != "")}}weights = {{selected.weights | safe}},{{/if}} na.action=na.exclude, data={{dataset.name}})
 {{/if}}
 {{if (!((options.selected.family == "negative.binomial" && options.selected.combokid =="identity") || (options.selected.family == "negative.binomial" && options.selected.combokid =="sqrt")) )}}
 #Display theoretical model equation and coefficients
@@ -123,9 +126,11 @@ BSky_GLM_Summary_{{selected.modelname | safe}} = BSky_GLM_Summary_{{selected.mod
 class(BSky_GLM_Summary_{{selected.modelname | safe}}) = unique(c("summary.glm", BSky_orig_class))
 {{/if}}
 BSkyFormat(BSky_GLM_Summary_{{selected.modelname | safe}})
-{{if ((options.selected.combokid =="log" || options.selected.combokid =="logit") && (options.selected.family == "binomial"))}}
+#Coefficients -95% confidence interval
+BSkyFormat(cbind(Estimate=coef({{selected.modelname | safe}}),confint.glm({{selected.modelname | safe}},level=0.95)),singleTableOutputHeader='Coefficient estimates and 95% confidence intervals')
+{{if (options.selected.expCoefficients =="TRUE")}}
 #Exponents of the coefficients and 95% confidence interval
-BSkyFormat(exp(cbind(Exp_Coeff=coef({{selected.modelname | safe}}),confint.glm({{selected.modelname | safe}},level=0.95))),singleTableOutputHeader='Exponentiated coefficient estimates and 95% confidence intervals')
+BSkyFormat(exp(cbind(Exp_Coef=coef({{selected.modelname | safe}}),confint.glm({{selected.modelname | safe}},level=0.95))),singleTableOutputHeader='Exponentiated coefficient estimates and 95% confidence intervals')
 {{/if}}
 #Adding attributes to support scoring
 ##The attribute indepvar does not have to be populated as the function getModelIndependentVariables handles models of class glm and negbin (negative binomial)
@@ -161,7 +166,8 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
             formulaBuilder: {
                 el: new formulaBuilder(config, {
                     no: "formula",
-                    label: localization.en.dependent,
+                    required:true,
+                    label: localization.en.formulaBuilder,
                 })
             },
             offset: {
@@ -169,6 +175,7 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
                     label: localization.en.offset,
                     no: "offset",
                     filter: "Numeric|Scale",
+                    wrapped: '+ offset(%val%)',
                     extraction: "NoPrefix|UseComma",
                 }), r: ['{{ var | safe}}']
             },
@@ -177,7 +184,7 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
                     label: localization.en.weights,
                     no: "weights",
                     filter: "Numeric|Scale",
-                    extraction: "Prefix|UseComma",
+                    extraction: "NoPrefix|UseComma",
                 })
             },
             family: {
@@ -211,13 +218,21 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
                     extraction: "NoPrefix|UseComma",
                     type: "numeric",
                 })
-            }
+            },
+
+            expCoefficients: {
+                el: new checkbox(config, {
+                  label: localization.en.expCoefficients,
+                  no: "expCoefficients",
+                  extraction: "Boolean"
+                })
+              },
         }
         const content = {
             head: [objects.modelname.el.content],
             left: [objects.content_var.el.content],
             right: [objects.dependent.el.content, objects.formulaBuilder.el.content, objects.offset.el.content, objects.weights.el.content],
-            bottom: [objects.family.el.content, objects.theta.el.content],
+            bottom: [objects.family.el.content, objects.theta.el.content, objects.expCoefficients.el.content],
             nav: {
                 name: localization.en.navigation,
                 icon: "icon-glz",
