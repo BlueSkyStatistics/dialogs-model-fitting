@@ -1,48 +1,14 @@
 
-var localization = {
-    en: {
-        title: "Set Contrasts For Factor variables",
-        navigation: "Set Contrasts",
-        target: "Destination",
-        label1: "Contrasts",
-        Dummy: "Treatment (dummy) contrasts",
-        Deviation: "Sum (deviation) contrasts",
-        Helmert: "Helmert contrasts",
-        Poly: "Polynomial contrasts",
-        help: {
-            title: "Set Contrasts",
-            r_help: "help(contrasts, package ='stats')",
-            body: `
-            <b>Description</b></br>
-            ​Set and view the contrasts associated with a factor.
-            <br/>
-            <b>Usage</b>
-            <br/>
-            <code> 
-            contrasts(x) <-value
-            </code> <br/>
-            <b>Arguments</b><br/>
-            <ul>
-            <li>
-            x: an R object.​
-            </li>
-            <li>
-            value: either a numeric matrix (or a sparse or dense matrix of a class extending dMatrix from package Matrix) whose columns give coefficients for contrasts in the levels of x, or the (quoted) name of a function which computes such matrices e.g. “contr.treatment”, “contr.sum”, “contr.helmert”, “contr.poly”
-            </li>
-            </ul>
-            <b>Package</b></br>
-            stats</br>
-            <b>Help</b></br>
-            help(contrasts, package ='stats')       
-            `}
-    }
-}
+
 
 class contrastsSet extends baseModal {
+    static dialogId = 'contrastsSet'
+    static t = baseModal.makeT(contrastsSet.dialogId)
+
     constructor() {
         var config = {
-            id: "contrastsSet",
-            label: localization.en.title,
+            id: contrastsSet.dialogId,
+            label: contrastsSet.t('title'),
             modalType: "two",
             RCode: `
 #Set contrasts
@@ -55,17 +21,17 @@ BSkyFormat( contrasts({{dataset.name}}\${{selected.target | safe}}) ,singleTable
             content_var: { el: new srcVariableList(config) },
             target: {
                 el: new dstVariable(config, {
-                    label: localization.en.target,
+                    label: contrastsSet.t('target'),
                     no: "target",
                     filter: "Numeric|Logical|Ordinal|Nominal",
                     extraction: "NoPrefix|UseComma",
                     required: true
                 }), r: ['{{ var | safe}}']
             },
-            label1: { el: new labelVar(config, { label: localization.en.label1,  style: "mt-3", h: 6 }) },
+            label1: { el: new labelVar(config, { label: contrastsSet.t('label1'),  style: "mt-3", h: 6 }) },
             Dummy: {
                 el: new radioButton(config, {
-                    label: localization.en.Dummy,
+                    label: contrastsSet.t('Dummy'),
                     no: "Contrast",
                     increment: "Dummy",
                     value: "contr.treatment",
@@ -75,7 +41,7 @@ BSkyFormat( contrasts({{dataset.name}}\${{selected.target | safe}}) ,singleTable
             },
             Deviation: {
                 el: new radioButton(config, {
-                    label: localization.en.Deviation,
+                    label: contrastsSet.t('Deviation'),
                     no: "Contrast",
                     increment: "Deviation",
                     value: "contr.sum",
@@ -85,7 +51,7 @@ BSkyFormat( contrasts({{dataset.name}}\${{selected.target | safe}}) ,singleTable
             },
             Helmert: {
                 el: new radioButton(config, {
-                    label: localization.en.Helmert,
+                    label: contrastsSet.t('Helmert'),
                     no: "Contrast",
                     increment: "Helmert",
                     value: "contr.helmert",
@@ -95,7 +61,7 @@ BSkyFormat( contrasts({{dataset.name}}\${{selected.target | safe}}) ,singleTable
             },
             Poly: {
                 el: new radioButton(config, {
-                    label: localization.en.Poly,
+                    label: contrastsSet.t('Poly'),
                     no: "Contrast",
                     increment: "Poly",
                     value: "contr.poly",
@@ -108,13 +74,22 @@ BSkyFormat( contrasts({{dataset.name}}\${{selected.target | safe}}) ,singleTable
             left: [objects.content_var.el.content],
             right: [objects.target.el.content, objects.label1.el.content, objects.Dummy.el.content, objects.Deviation.el.content, objects.Helmert.el.content, objects.Poly.el.content],
             nav: {
-                name: localization.en.navigation,
+                name: contrastsSet.t('navigation'),
                 icon: "icon-gears",
                 modal: config.id
             }
         }
         super(config, objects, content);
-        this.help = localization.en.help;
+        
+        this.help = {
+            title: contrastsSet.t('help.title'),
+            r_help: "help(data,package='utils')",
+            body: contrastsSet.t('help.body')
+        }
+;
     }
 }
-module.exports.item = new contrastsSet().render()
+
+module.exports = {
+    render: () => new contrastsSet().render()
+}

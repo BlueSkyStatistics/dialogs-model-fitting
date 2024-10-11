@@ -1,61 +1,13 @@
-var localization = {
-    en: {
-        title: "Mixed Models",
-        navigation: "Mixed Models",
-        modelname: "Enter model name",
-        tvarbox1: "Dependent variable",
-        formulaBuilder: "Fixed effects",
-        NestingVar: "Nesting unit",
-        label1: "Random effects",
-        Cov: "Covariance structure",
-        estimator: "Estimator",
-        randomvars: "Variables that exhibit random variance around the nesting unit",
-        ICC: "ICC (Intra Class Correlation)",
-        ls: "Least square means",
-        fixedandobserved: "Plot fixed effects and observed data",
-        CHB7: "Q-Q Plot",
-        CHQ5: "Residual vs. estimated Plot",
-        CHQ2: "Spaghetti plots, estimated",
-        suffix: "Enter a suffix for the predicted variable",
-        CHQ1: "Spaghetti plots, observed",
-        label2: "Interactions",
-        CHB6: "Simple effects tests",
-        label3: "Interaction plots",
-        rad1: "None",
-        rad2: "Automatically detect",
-        rad3: "Force categorical, bar plots",
-        forcecont: "Force continuous",
-        label4: "Posthocs",
-        rad10: "None",
-        rad4: "Kenward-Rogers",
-        rad5: "Sattherthwaite",
-        label5: "Adjustment for Satterthwaite",
-        rad6: "None",
-        rad7: "Tukey",
-        rad13: "Bonferroni",
-        rad14: "FDR",
-        label6: "Contrasts",
-        label7: "Default contrasts are dummy coded",
-        label8: "On the BlueSky Statistics top level menu go to Model Fitting -> Contrast Set for sum/deviation (effect coding), Helmert or polynomial contrasts.",
-        advanced: "Options",
-        Rsquared: "Rsquared for mixed effects models",
-        help: {
-            title: "Mixed Models",
-            r_help: "help(lmer, package ='lme4')",
-            body: `
-            <b>NOTE</b></br>
-            Please refer to the Mixed Models Guide document in the install directory at BlueSky Statistics\\10\\Samples_and_Documents\\Docs folder
-            With the simple effects test, we find the effect of each variable at every level of the other variable.   If a continuous variable is present, this is examined at the mean as well as a standard deviation above and below the mean
-            We also 
-			`}
-    }
-}
+
 
 class mixedModelsBasic extends baseModal {
+    static dialogId = 'mixedModelsBasic'
+    static t = baseModal.makeT(mixedModelsBasic.dialogId)
+
     constructor() {
         var config = {
-            id: "mixedModelsBasic",
-            label: localization.en.title,
+            id: mixedModelsBasic.dialogId,
+            label: mixedModelsBasic.t('title'),
             modalType: "two",
             RCode: `
 `
@@ -65,7 +17,7 @@ class mixedModelsBasic extends baseModal {
             modelname: {
                 el: new input(config, {
                     no: 'modelname',
-                    label: localization.en.modelname,
+                    label: mixedModelsBasic.t('modelname'),
                     placeholder: "",
                     required: true,
                     type: "character",
@@ -76,7 +28,7 @@ class mixedModelsBasic extends baseModal {
             },
             tvarbox1: {
                 el: new dstVariable(config, {
-                    label: localization.en.tvarbox1,
+                    label: mixedModelsBasic.t('tvarbox1'),
                     no: "tvarbox1",
                     filter: "Numeric|Scale",
                     extraction: "NoPrefix|UseComma",
@@ -86,23 +38,23 @@ class mixedModelsBasic extends baseModal {
             tvarbox2: {
                 el: new formulaBuilder(config, {
                     no: "tvarbox2",
-                    label: localization.en.formulaBuilder,
+                    label: mixedModelsBasic.t('formulaBuilder'),
                 })
             },
             NestingVar: {
                 el: new dstVariable(config, {
-                    label: localization.en.NestingVar,
+                    label: mixedModelsBasic.t('NestingVar'),
                     no: "NestingVar",
                     required: true,
                     filter: "String|Numeric|Date|Logical|Ordinal|Nominal|Scale",
                     extraction: "NoPrefix|UseComma",
                 }), r: ['{{ var | safe}}']
             },
-            label1: { el: new labelVar(config, { label: localization.en.label1, h: 5 }) },
+            label1: { el: new labelVar(config, { label: mixedModelsBasic.t('label1'), h: 5 }) },
             Cov: {
                 el: new comboBox(config, {
                     no: 'Cov',
-                    label: localization.en.Cov,
+                    label: mixedModelsBasic.t('Cov'),
                     multiple: false,
                     extraction: "NoPrefix|UseComma",
                     options: ["Intercept Only", "Slopes only", "Intercept and Slopes (uncorrelated)", "Intercept and Slopes (correlated)"],
@@ -112,7 +64,7 @@ class mixedModelsBasic extends baseModal {
             estimator: {
                 el: new comboBox(config, {
                     no: 'estimator',
-                    label: localization.en.estimator,
+                    label: mixedModelsBasic.t('estimator'),
                     multiple: false,
                     extraction: "NoPrefix|UseComma",
                     options: ["REML", "ML"],
@@ -121,7 +73,7 @@ class mixedModelsBasic extends baseModal {
             },
             randomvars: {
                 el: new dstVariableList(config, {
-                    label: localization.en.randomvars,
+                    label: mixedModelsBasic.t('randomvars'),
                     no: "randomvars",
                     filter: "String|Numeric|Date|Logical|Ordinal|Nominal|Scale",
                     extraction: "NoPrefix|UseComma",
@@ -129,7 +81,7 @@ class mixedModelsBasic extends baseModal {
             },
             ICC: {
                 el: new checkbox(config, {
-                    label: localization.en.ICC,
+                    label: mixedModelsBasic.t('ICC'),
                     no: "ICC",
                     extraction: "Boolean",
                     newline: true,
@@ -137,7 +89,7 @@ class mixedModelsBasic extends baseModal {
             },
             ls: {
                 el: new checkbox(config, {
-                    label: localization.en.ls,
+                    label: mixedModelsBasic.t('ls'),
                     no: "ls",
                     extraction: "Boolean",
                     newline: true,
@@ -145,7 +97,7 @@ class mixedModelsBasic extends baseModal {
             },
             fixedandobserved: {
                 el: new checkbox(config, {
-                    label: localization.en.fixedandobserved,
+                    label: mixedModelsBasic.t('fixedandobserved'),
                     no: "fixedandobserved",
                     extraction: "Boolean",
                     newline: true,
@@ -153,7 +105,7 @@ class mixedModelsBasic extends baseModal {
             },
             CHB7: {
                 el: new checkbox(config, {
-                    label: localization.en.CHB7,
+                    label: mixedModelsBasic.t('CHB7'),
                     no: "CHB7",
                     extraction: "Boolean",
                     newline: true,
@@ -161,7 +113,7 @@ class mixedModelsBasic extends baseModal {
             },
             CHQ5: {
                 el: new checkbox(config, {
-                    label: localization.en.CHQ5,
+                    label: mixedModelsBasic.t('CHQ5'),
                     no: "CHQ5",
                     extraction: "Boolean",
                     newline: true,
@@ -169,7 +121,7 @@ class mixedModelsBasic extends baseModal {
             },
             CHQ2: {
                 el: new checkbox(config, {
-                    label: localization.en.CHQ2,
+                    label: mixedModelsBasic.t('CHQ2'),
                     no: "CHQ2",
                     extraction: "Boolean",
                     newline: true,
@@ -180,7 +132,7 @@ class mixedModelsBasic extends baseModal {
             suffix: {
                 el: new input(config, {
                     no: 'suffix',
-                    label: localization.en.suffix,
+                    label: mixedModelsBasic.t('suffix'),
                     extraction: "NoPrefix|UseComma",
                     type: "character",
                     ml: 4,
@@ -188,70 +140,70 @@ class mixedModelsBasic extends baseModal {
             },
             CHQ1: {
                 el: new checkbox(config, {
-                    label: localization.en.CHQ1,
+                    label: mixedModelsBasic.t('CHQ1'),
                     no: "CHQ1",
                     extraction: "Boolean",
                 })
             },
-            label2: { el: new labelVar(config, { no: 'label2', label: localization.en.label2, style: "mt-3", h: 5 }) },
+            label2: { el: new labelVar(config, { no: 'label2', label: mixedModelsBasic.t('label2'), style: "mt-3", h: 5 }) },
             CHB6: {
                 el: new checkbox(config, {
-                    label: localization.en.CHB6,
+                    label: mixedModelsBasic.t('CHB6'),
                     no: "CHB6",
                     extraction: "Boolean",
                 })
             },
-            label3: { el: new labelVar(config, { no: 'label3', label: localization.en.label3, style: "mt-0", h: 7 }) },
+            label3: { el: new labelVar(config, { no: 'label3', label: mixedModelsBasic.t('label3'), style: "mt-0", h: 7 }) },
             RAD1: {
-                el: new radioButton(config, { label: localization.en.rad1, no: "GRP3", increment: "RAD1", value: "RAD1", state: "checked", extraction: "ValueAsIs" })
+                el: new radioButton(config, { label: mixedModelsBasic.t('rad1'), no: "GRP3", increment: "RAD1", value: "RAD1", state: "checked", extraction: "ValueAsIs" })
             },
             RAD2: {
-                el: new radioButton(config, { label: localization.en.rad2, no: "GRP3", increment: "RAD2", value: "RAD2", state: "", extraction: "ValueAsIs" })
+                el: new radioButton(config, { label: mixedModelsBasic.t('rad2'), no: "GRP3", increment: "RAD2", value: "RAD2", state: "", extraction: "ValueAsIs" })
             },
             RAD3: {
-                el: new radioButton(config, { label: localization.en.rad3, no: "GRP3", increment: "RAD3", value: "RAD3", state: "", extraction: "ValueAsIs" })
+                el: new radioButton(config, { label: mixedModelsBasic.t('rad3'), no: "GRP3", increment: "RAD3", value: "RAD3", state: "", extraction: "ValueAsIs" })
             },
             forcecont: {
-                el: new radioButton(config, { label: localization.en.forcecont, no: "GRP3", increment: "forcecont", value: "TRUE", state: "", extraction: "ValueAsIs" })
+                el: new radioButton(config, { label: mixedModelsBasic.t('forcecont'), no: "GRP3", increment: "forcecont", value: "TRUE", state: "", extraction: "ValueAsIs" })
             },
-            label4: { el: new labelVar(config, { no: 'label4', label: localization.en.label4, style: "mt-3", h: 5 }) },
+            label4: { el: new labelVar(config, { no: 'label4', label: mixedModelsBasic.t('label4'), style: "mt-3", h: 5 }) },
             RAD10: {
-                el: new radioButton(config, { label: localization.en.rad10, no: "GRP1", increment: "RAD10", value: "RAD10", state: "checked", extraction: "ValueAsIs" })
+                el: new radioButton(config, { label: mixedModelsBasic.t('rad10'), no: "GRP1", increment: "RAD10", value: "RAD10", state: "checked", extraction: "ValueAsIs" })
             },
             RAD4: {
-                el: new radioButton(config, { label: localization.en.rad4, no: "GRP1", increment: "RAD4", value: "RAD4", state: "", extraction: "ValueAsIs" })
+                el: new radioButton(config, { label: mixedModelsBasic.t('rad4'), no: "GRP1", increment: "RAD4", value: "RAD4", state: "", extraction: "ValueAsIs" })
             },
             RAD5: {
-                el: new radioButton(config, { label: localization.en.rad5, no: "GRP1", increment: "RAD5", value: "RAD5", state: "", extraction: "ValueAsIs" })
+                el: new radioButton(config, { label: mixedModelsBasic.t('rad5'), no: "GRP1", increment: "RAD5", value: "RAD5", state: "", extraction: "ValueAsIs" })
             },
-            label5: { el: new labelVar(config, { no: 'label5', label: localization.en.label5, style: "mt-1, ml-3", h: 8 }) },
+            label5: { el: new labelVar(config, { no: 'label5', label: mixedModelsBasic.t('label5'), style: "mt-1, ml-3", h: 8 }) },
             RAD6: {
-                el: new radioButton(config, { label: localization.en.rad6, no: "GRP4", increment: "RAD6", style: "ml-4 mt-0", value: "RAD6", state: "checked", extraction: "ValueAsIs" })
+                el: new radioButton(config, { label: mixedModelsBasic.t('rad6'), no: "GRP4", increment: "RAD6", style: "ml-4 mt-0", value: "RAD6", state: "checked", extraction: "ValueAsIs" })
             },
             RAD7: {
-                el: new radioButton(config, { label: localization.en.rad7, no: "GRP4", increment: "RAD7", style: "ml-4", value: "RAD7", state: "", extraction: "ValueAsIs" })
+                el: new radioButton(config, { label: mixedModelsBasic.t('rad7'), no: "GRP4", increment: "RAD7", style: "ml-4", value: "RAD7", state: "", extraction: "ValueAsIs" })
             },
             RAD13: {
-                el: new radioButton(config, { label: localization.en.rad13, no: "GRP4", increment: "RAD13", style: "ml-4", value: "RAD13", state: "", extraction: "ValueAsIs" })
+                el: new radioButton(config, { label: mixedModelsBasic.t('rad13'), no: "GRP4", increment: "RAD13", style: "ml-4", value: "RAD13", state: "", extraction: "ValueAsIs" })
             },
             RAD14: {
-                el: new radioButton(config, { label: localization.en.rad14, no: "GRP4", increment: "RAD14", style: "ml-4", value: "RAD14", state: "", extraction: "ValueAsIs" })
+                el: new radioButton(config, { label: mixedModelsBasic.t('rad14'), no: "GRP4", increment: "RAD14", style: "ml-4", value: "RAD14", state: "", extraction: "ValueAsIs" })
             },
             Rsquared: {
                 el: new checkbox(config, {
-                    label: localization.en.Rsquared,
+                    label: mixedModelsBasic.t('Rsquared'),
                     no: "Rsquared",
                     extraction: "Boolean",
                 })
             },
-            label6: { el: new labelVar(config, { no: 'label6', label: localization.en.label6, style: "mt-3", h: 5 }) },
-            label7: { el: new labelVar(config, { no: 'label7', label: localization.en.label7, h: 7 }) },
-            label8: { el: new labelVar(config, { no: 'label8', label: localization.en.label8, h: 7 }) },
+            label6: { el: new labelVar(config, { no: 'label6', label: mixedModelsBasic.t('label6'), style: "mt-3", h: 5 }) },
+            label7: { el: new labelVar(config, { no: 'label7', label: mixedModelsBasic.t('label7'), h: 7 }) },
+            label8: { el: new labelVar(config, { no: 'label8', label: mixedModelsBasic.t('label8'), h: 7 }) },
         };
         var advanced = {
             el: new optionsVar(config, {
                 no: "advanced",
-                name: localization.en.advanced,
+                name: mixedModelsBasic.t('advanced'),
                 content: [
                     objects.ICC.el,
                     objects.ls.el,
@@ -289,13 +241,19 @@ class mixedModelsBasic extends baseModal {
             right: [objects.modelname.el.content, objects.tvarbox1.el.content, objects.tvarbox2.el.content, objects.NestingVar.el.content, objects.label1.el.content, objects.Cov.el.content, objects.estimator.el.content, objects.randomvars.el.content],
             bottom: [advanced.el.content],
             nav: {
-                name: localization.en.navigation,
+                name: mixedModelsBasic.t('navigation'),
                 icon: "icon-mmb",
                 modal: config.id
             }
         };
         super(config, objects, content);
-        this.help = localization.en.help;
+        
+        this.help = {
+            title: mixedModelsBasic.t('help.title'),
+            r_help: "help(data,package='utils')",
+            body: mixedModelsBasic.t('help.body')
+        }
+;
     }
     prepareExecution(instance) {
         var temp = "";
@@ -774,4 +732,7 @@ BSkyFormat(as.data.frame(unclass(BSkyRsquared[[2]])), singleTableOutputHeader = 
         return res;
     }
 }
-module.exports.item = new mixedModelsBasic().render()
+
+module.exports = {
+    render: () => new mixedModelsBasic().render()
+}

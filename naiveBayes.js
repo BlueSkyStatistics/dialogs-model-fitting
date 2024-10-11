@@ -1,52 +1,14 @@
 
-var localization = {
-    en: {
-        title: "Naive Bayes",
-        navigation: "Naive Bayes",
-        modelname: "Enter model name",
-        dependentvar: "Dependent variable",
-        independentvars: "Independent variable(s)",
-        help: {
-            title: "Naive Bayes",
-            r_help: "help(NaiveBayes,package='klaR')",
-            body: `
-                <b>Description</b></br>
-Computes the conditional a-posterior probabilities of a categorical class variable given independent predictor variables using the Bayes rule. 
-<br/>
-<b>Usage</b>
-<br/>
-<code> 
-NaiveBayes(formula, data, ...,  na.action = na.pass)
-</code> <br/>
-<b>Arguments</b><br/>
-<ul>
-<li>
-formula : a formula of the form class ~ x1 + x2 + .... Interactions are not allowed.
-</li>
-<li>
-data: a data frame of predictors (caegorical and/or numeric).
-</li>
-<li>
-na.action : a function to specify the action to be taken if NAs are found. The default action is not to count them for the computation of the probability factors. An alternative is na.omit, which leads to rejection of cases with missing values on any required variable. (NOTE: If given, this argument must be named.)
-</li>
-<li>
-... : arguments passed to density.
-</li>
-</ul>
-<b>Package</b></br>
-caret;klaR</br>
-<b>Help</b></br>
-For detailed help click on the R icon on the top right hand side of this dialog overlay or run the following command in the R syntax editor</br>
-help(NaiveBayes,package='klaR')
-`}
-    }
-}
+
 
 class naiveBayes extends baseModal {
+    static dialogId = 'naiveBayes'
+    static t = baseModal.makeT(naiveBayes.dialogId)
+
     constructor() {
         var config = {
-            id: "naiveBayes",
-            label: localization.en.title,
+            id: naiveBayes.dialogId,
+            label: naiveBayes.t('title'),
             modalType: "two",
             RCode: `
 require(caret);
@@ -105,7 +67,7 @@ local(
             modelname: {
                 el: new input(config, {
                     no: 'modelname',
-                    label: localization.en.modelname,
+                    label: naiveBayes.t('modelname'),
                     placeholder: "",
                     required: true,
                     type: "character",
@@ -116,7 +78,7 @@ local(
             },
             dependentvar: {
                 el: new dstVariable(config, {
-                    label: localization.en.dependentvar,
+                    label: naiveBayes.t('dependentvar'),
                     no: "dependentvar",
                     filter: "Numeric|Ordinal|Nominal",
                     extraction: "NoPrefix|UseComma",
@@ -125,7 +87,7 @@ local(
             },
             independentvars: {
                 el: new dstVariableList(config, {
-                    label: localization.en.independentvars,
+                    label: naiveBayes.t('independentvars'),
                     no: "independentvars",
                     required: true,
                     filter: "Numeric|Logical|Ordinal|Nominal|Scale",
@@ -137,7 +99,7 @@ local(
             left: [objects.content_var.el.content],
             right: [objects.modelname.el.content, objects.dependentvar.el.content, objects.independentvars.el.content,],
             nav: {
-                name: localization.en.navigation,
+                name: naiveBayes.t('navigation'),
               // icon: "icon-nb",
                //We may want to revert to this
                icon: "icon-p_a_given_b",
@@ -145,7 +107,16 @@ local(
             }
         };
         super(config, objects, content);
-        this.help = localization.en.help;
+        
+        this.help = {
+            title: naiveBayes.t('help.title'),
+            r_help: "help(data,package='utils')",
+            body: naiveBayes.t('help.body')
+        }
+;
     }
 }
-module.exports.item = new naiveBayes().render()
+
+module.exports = {
+    render: () => new naiveBayes().render()
+}

@@ -1,57 +1,15 @@
 
 
-var localization = {
-    en: {
-        title: "Linear Regression",
-        navigation: "Linear, advanced",
-        modelname: "Enter model name",
-        dependent: "Dependent variable",
-        independent: "Independent variable(s)",
-        generateplotchk: "Plot residuals vs fitted, normal Q-Q , scale-location and residuals vs leverage",
-        weights: "Specify a variable with weights",
-        help: {
-            title: "Linear Regression, formula builder",
-            r_help: "help(lm, package ='stats')",
-            body: `
-            <b>Description</b></br>
-Builds a linear regression model by creating a formula using the formula builder. Internally calls function lm in stats package. Returns an object called BSkyLinearRegression which is an object  of class lm. Displays a summary of the model, coefficient table, Anova table and sum of squares table and plots the following  residuals vs. fitted, normal Q-Q, theoretical quantiles, residuals vs. leverage. 
-<br/>
-<b>Usage</b>
-<br/>
-<code> 
-LinearRegModel1 <- lm(depVar~indepVars, dataset)​<br/>
-#Summarizing the model<br/>
-summary(LinearRegModel1)<br/>
-#Displaying the Anova table<br/>
-anova(LinearRegModel1)<br/>
-#Plots residuals vs. fitted, normal Q-Q, scale-location, residuals vs. leverage<br/>
-plot(LinearRegModel1)<br/>
-</code> <br/>
-<b>Arguments</b><br/>
-<ul>
-<li>
-depVar: Name of the dependent variable.  If we have a dataset cars, with a variable mpg that we want to predict mpg (dependent variable is mpg) enter mpg​
-</li>
-<li>
-indepVars: Names of the dependent variable. If we have a dataset cars, with dependent  variable horsepower, enginesize, enter horsepower+enginesize. Categorical variables are automatically dummy coded.​
-</li>
-<li>
-dataset: Name of the dataframe. When you open data frames or datasets e.g. csv, Excel files, SAS files in BlueSky Statistics, they are named Dataset1, Dataset2, Dataset3 so enter Dataset1
-</li>
-</ul>
-<b>Package</b></br>
-stats</br>
-<b>Help</b></br>
-help(lm, package ='stats')
-			`}
-    }
-}
+
 
 class linearRegressionFormula extends baseModal {
+    static dialogId = 'linearRegressionFormula'
+    static t = baseModal.makeT(linearRegressionFormula.dialogId)
+
     constructor() {
         var config = {
-            id: "linearRegressionFormula",
-            label: localization.en.title,
+            id: linearRegressionFormula.dialogId,
+            label: linearRegressionFormula.t('title'),
             modalType: "two",
             RCode: `
 require(equatiomatic)
@@ -100,7 +58,7 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
             modelname: {
                 el: new input(config, {
                     no: 'modelname',
-                    label: localization.en.modelname,
+                    label: linearRegressionFormula.t('modelname'),
                     placeholder: "",
                     required: true,
                     type: "character",
@@ -111,7 +69,7 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
             },
             dependent: {
                 el: new dstVariable(config, {
-                    label: localization.en.dependent,
+                    label: linearRegressionFormula.t('dependent'),
                     no: "dependent",
                     filter: "Numeric|Scale",
                     extraction: "NoPrefix|UseComma",
@@ -126,7 +84,7 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
             },
             generateplotchk: {
                 el: new checkbox(config, {
-                    label: localization.en.generateplotchk, no: "generateplotchk",
+                    label: linearRegressionFormula.t('generateplotchk'), no: "generateplotchk",
                     bs_type: "valuebox",
                     style: "mt-2 mb-3",
                     extraction: "BooleanValue",
@@ -136,7 +94,7 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
             },
             weights: {
                 el: new dstVariable(config, {
-                    label: localization.en.weights,
+                    label: linearRegressionFormula.t('weights'),
                     no: "weights",
                     filter: "String|Numeric|Date|Logical|Ordinal|Nominal|Scale",
                     extraction: "NoPrefix|UseComma",
@@ -148,13 +106,22 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
             left: [objects.content_var.el.content],
             right: [objects.modelname.el.content, objects.dependent.el.content, objects.formulaBuilder.el.content, objects.generateplotchk.el.content, objects.weights.el.content],
             nav: {
-                name: localization.en.navigation,
+                name: linearRegressionFormula.t('navigation'),
                 icon: "icon-linear_regression_formula",
                 modal: config.id
             }
         };
         super(config, objects, content);
-        this.help = localization.en.help;
+        
+        this.help = {
+            title: linearRegressionFormula.t('help.title'),
+            r_help: "help(data,package='utils')",
+            body: linearRegressionFormula.t('help.body')
+        }
+;
     }
 }
-module.exports.item = new linearRegressionFormula().render()
+
+module.exports = {
+    render: () => new linearRegressionFormula().render()
+}

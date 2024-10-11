@@ -1,72 +1,13 @@
-var localization = {
-    en: {
-        title: "Logistic Regression",
-        navigation: "Logistic, advanced",
-        modelname: "Enter model name",
-        dependent: "Dependent variable",
-        independent: "Independent variable(s)",
-        generateplotchk: "Plot residuals vs fitted, normal Q-Q , scale-location and residuals vs leverage",
-        destination2: "Specify a variable with weights",
-        help: {
-            title: "Logistic Regression",
-            r_help: "help(glm, package ='stats')",
-            body: `
-<b>Description</b></br>
-Builds a binary logistic regression model using a formula builder. We use glm function passing the parameter family =binomial(link='logit'). We display a summary of the model, analysis of variance tables and McFadden R2.<br/>
-You can score the model by selecting the model created on the top right hand corner of the main application screen and select the Score button. You can choose to display a confusion matrix and a ROC curve<br/>
-The default model name is Logistic1 which you can change.<br/><br/>
-NOTE: When specifying a variable containing weights, be aware that since we use the option na.exlude to build the model, all NA values are automatically removed from the dependent and independent variables.<br/> 
-This can cause a mismatch as NA values are NOT automatically removed from the weighting variable. <br/>
-In this situation you will see the error variable lengths differ (found for (weights))<br/>
-To address this error go to Variables>Missing Values>Remove NAs and select the dependent, independent variables and the weighting variable to remove missing values from and rebuild the model.<br/>
-<br/>
-<b>Usage</b>
-<br/>
-<code> 
-modelname <- glm(dependentVariable ~ var1+var2+var3...,family =binomial(link='logit'),data=datasetName)
-#Summarizing the model<br/>
-summary(modelname)<br/>
-#Displaying the Anova table<br/>
-anova(modelname)<br/>
-#Plots residuals vs. fitted, normal Q-Q, scale-location, residuals vs. leverage<br/>
-plot(modelname)<br/>
-#McFadden R2<br/>
-pR2(Logistic1)<br/>
-#odds ratio and 95% confidence interval<br/>
-exp(cbind(OR=coef(Logistic1), confint(Logistic1,level=0.95)))<br/>
-#Plot the model<br/>
-plot(Logistic1)<br/>
-</code> <br/>
-<b>Arguments</b><br/>
-<ul>
-<li>
-depVar: Name of the dependent variable.  If we have a dataset cars, with a variable class that we want to predict (dependent variable is class) enter class
-</li>
-<li>
-indepVars: Names of the independent variable, separated by +. If we have a dataset cars, with independent  variable horsepower, enginesize, specify horsepower+enginesize). Categorical variables are automatically dummy coded.​
-</li>
-<li>
-data: Name of the dataframe. When you open data frames or datasets e.g. csv, Excel files, SAS files in BlueSky Statistics, they are named Dataset1, Dataset2, Dataset3 So enter data=Dataset1​
-</li>
-</ul>
-<b>Package</b></br>
-glm</br>
-<b>Help</b></br>
-help(glm, package ='stats')</br>
-<b>References</b></br>
-https://datascienceplus.com/perform-logistic-regression-in-r/</br>
-https://www.machinelearningplus.com/machine-learning/logistic-regression-tutorial-examples-r/</br>
-<b>Other</b></br>
-Click the R Help icon to get detailed R help​</br>
-			`}
-    }
-}
+
 
 class logisticRegressionFormula extends baseModal {
+    static dialogId = 'logisticRegressionFormula'
+    static t = baseModal.makeT(logisticRegressionFormula.dialogId)
+
     constructor() {
         var config = {
-            id: "logisticRegressionFormula",
-            label: localization.en.title,
+            id: logisticRegressionFormula.dialogId,
+            label: logisticRegressionFormula.t('title'),
             modalType: "two",
             RCode: `
 require(equatiomatic);
@@ -115,7 +56,7 @@ local(
             modelname: {
                 el: new input(config, {
                     no: 'modelname',
-                    label: localization.en.modelname,
+                    label: logisticRegressionFormula.t('modelname'),
                     placeholder: "",
                     required: true,
                     type: "character",
@@ -126,7 +67,7 @@ local(
             },
             dependent: {
                 el: new dstVariable(config, {
-                    label: localization.en.dependent,
+                    label: logisticRegressionFormula.t('dependent'),
                     no: "dependent",
                     filter: "Numeric|Date|Logical|Ordinal|Nominal|Scale",
                     extraction: "NoPrefix|UseComma",
@@ -141,7 +82,7 @@ local(
             },
             generateplotchk: {
                 el: new checkbox(config, {
-                    label: localization.en.generateplotchk,
+                    label: logisticRegressionFormula.t('generateplotchk'),
                     no: "generateplotchk",
                     style: "mt-2 mb-3",
                     bs_type: "valuebox",
@@ -152,7 +93,7 @@ local(
             },
             destination2: {
                 el: new dstVariable(config, {
-                    label: localization.en.destination2,
+                    label: logisticRegressionFormula.t('destination2'),
                     no: "destination2",
                     filter: "String|Numeric|Date|Logical|Ordinal|Nominal|Scale",
                     extraction: "Prefix|UseComma",
@@ -164,13 +105,22 @@ local(
             left: [objects.content_var.el.content],
             right: [objects.modelname.el.content, objects.dependent.el.content, objects.formulaBuilder.el.content, objects.generateplotchk.el.content, objects.destination2.el.content],
             nav: {
-                name: localization.en.navigation,
+                name: logisticRegressionFormula.t('navigation'),
                 icon: "icon-logistic_formula",
                 modal: config.id
             }
         };
         super(config, objects, content);
-        this.help = localization.en.help;
+        
+        this.help = {
+            title: logisticRegressionFormula.t('help.title'),
+            r_help: "help(data,package='utils')",
+            body: logisticRegressionFormula.t('help.body')
+        }
+;
     }
 }
-module.exports.item = new logisticRegressionFormula().render()
+
+module.exports = {
+    render: () => new logisticRegressionFormula().render()
+}

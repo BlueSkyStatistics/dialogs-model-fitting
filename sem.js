@@ -1,148 +1,12 @@
-var localization = {
-  en: {
-    title: "SEM",
-    residualCovHeatmap: "Heatmap of deviation between observed and model-Implied covariance matrices",
-    observedCorr: "Observed correlations",
-    modelImpliedCorr: "Model implied correlations",
-    residualCorr: "Deviation between observed and fitted correlations",
-    residualCorrHeatmap: "Heatmap of deviation between observed and model-Implied correlations matrices",
-    intercepts1: "The intercepts of the observed variables",
-    intercepts: "Show intercepts",
-    means: "The intercepts/means of the latent variables",
-    residuals1: "The residual variances of the observed variables",
-    residual_covariances: "The residual covariances of the observed variables",
-    lv_variances: "The (residual) variances of the latent variables",
-    lv_covariances: "The (residual) covariances of the latent variables",
-    regressions: "All regression coefficients in the model",
-    loadings: "Loadings of the observed variables on their respective latent variables",
-    multiGrpOptions: "Multiple group options",
-    multiGrpSrc: "Source variables",
-    multiGrpDependent: "Grouping variables",
-    modelname: "Enter a name of the model",
-    mediationSrcCtrl : "Source relationships",
-    mediationDestCtrl: "Mediation parameters",
-    navigation: "SEM",
-    modelTermsDst: "Relationship",
-    modelTerms: "Predictor",
-    modelTerms1: "Outcome",
-    sem: "Latent variables",
-    sem_model_terms: "Structural parameters",
-    semSuppCtrl: "First order factors",
-    sem2: "Second order factors",
-    label1: "Select an item from the predictor and the outcome lists and click on the button with an arrow to move the selected items to the relationship list",
-    label2: "Select an item from the predictor and the outcome lists and click on the button with an arrow to move the selected items to the relationship list",
-    label3: "Information",
-    label4: "Additional outputs",
-    label5: "Covariances and correlations (see help)",
-    label6: "R-squared",
-    label7: "Save predicted",
-    label9: "Constraints",
-    coVarTerms: "1st variable/factor",
-    coVarTerms1: "2nd variable/factor",
-    coVarDst: "Selected covariances",
-    optionsCoVarTerms: "Covariances",
-    parameterizeFormula: "Show parameter labels",
-    modelOptions: "Model options",
-    method: "Select a method and approach (if applicable)",
-    approach: "ML likelihood approach",
-    missing: "Missing values",
-    addFitMeasures: "Additional fit measures",
-    mardiaSkew: "Mardia's skew (Only complete cases)",
-    mardiaKurt: "Mardia's kurtosis (Only complete cases)",
-    observed: "Observed covariances",
-    modelImplied: "Model-implied (fitted) covariances",
-    residual: "Deviation between observed and fitted covariances",
-    r2squareNone: "None",
-    r2squareEndo: "Endogenous",
-    factorScores: "Factor scores (variables saved with prefix FS)",
-    indicators: "Indicators (variables saved with prefix I)",
-    dependentVars: "Dependent variables (variables saved with prefix DV)",
-    label8: "Modification Indices",
-    modIndices: "Modification Indices",
-    highLowIndices: "Hide low indices",
-    threshold: "Threshold",
-    residuals: "Show residuals",
-    includeThresholds: "Show thresholds",
-    edgeLabels: "Select options for edge labels",
-    layout: "Options for how the nodes should be placed",
-    rotate: "Position of the exogenous variables when tree or tree2 layout is used",
-    abbNodeLabels: "No of characters to abbreviate node labels to",
-    abbEdgeLabels: "No of characters to abbreviate edge labels to",
-    label101: "Paths",
-    label102: "Layout",
-    label103: "Nodes",
-    semPlotOptions: "Plot options",
-    manifestShapes: "Manifest shapes",
-    latentShapes: "Latent shapes",
-    outputOptions: "Output options",
-    label104: "Standardized solutions",
-    stdall: "The standardized estimates are based on the variances of both (continuous) observed and latent variables",
-    stdlv: "The standardized estimates are on the variances of the (continuous) latent variables only",
-    stdnox: "The standardized estimates are based on both the variances of both (continuous) observed and latent variables, but not the variances of exogenous covariates",
-    label105: "Standard errors",
-    label106: "Bootstrap settings",
-    automatic: "Automatic",
-    standard: "Standard",
-    robust: "Robust",
-    pseudoML: "Pseudo ML",
-    bootstrap: "Bootstrap",
-    percentiles: "Percentiles",
-    normal: "Normal",
-    adjustedBiasCorrected: "Adjusted bias-corrected",
-    basic: "basic",
-    bootstratRep: "Bootstrap repetitions",
-    autoComputeCovar: "Automatically compute covariances",
-    equalityConstraints1: "Relationships",
-    sem3: "Equality constraints",
-    help: {
-      title: "SEM",
-      r_help: "help(sem, package=lavaan)",
-      body: `
-<b>Description</b></br>
-Structural Equation Modeling (SEM) utilizes the lavaan package (0.6.16) estimation and works with the traditional LISREL sem formulation (rather than Bentler-Weeks, RAMpath, or LISCOMP formulations).  Estimation defaults to maximum likelihood and uses NLMINB (quasi-Newton) using the normal likelihood approach (rather than the Wishart likelihood method).   Standard errors are based on expected (rather than observed) information matrices, but observed, expected, and deviations may be examined using heat maps.  Normality screening (i.e., Mardia's skew and kurtosis) are provided.   The user may specify models with and without continuous latent variables (i.e., measurement modeling) at both lower and higher orders, as well as structural models (i.e., path modeling).  Equality constraints, mediation, and multigroup analysis are possible.   A host of estimation methods (e.g., varieties of maximum likelihood, least squares, and James-Stein) are supported. Numerous fit statistics are available upon request (e.g., GFI, aGFI, ECVI, etc.), and a small subset (i.e., CFI, TLI, SRMR, RMSEA, AIC, BC) are provided by default. Confidence intervals utilizing various bootstrapping functions may also be obtained. Diagrams of models are produced using semPlot (1.1.6).  
-</br>
-</br>
-When you click on Covariances on the dialog, you will see that the checkbox, automatically compute covariances is checked. You can delete an automatically computed covariance by selecting the covariance and clicking the trash icon. When you delete a covariance, we suppress it in the code generated. If you want to undo the supression, you must manually add it again or delete and recreate the latent variable or higher order factor that is part of the covariance you want to undo the suppression for.
-</br>
-</br>
-When a grouping variable is selected (click on Multi-group options on the dialog), you need to select the checkbox "The intercepts of the observed variables" and the checkbox "The intercepts/means of the latent variables"
-Just checking the 1st checkbox gives you more flexibility.
-</br>
-Description for the fit functions are below</br>
-"ML" maximum likelihood</br>
-"GLS": generalized least squares. For complete data only.</br>
-"WLS": weighted least squares (sometimes called ADF estimation). For complete data only.</br>
-"DWLS": diagonally weighted least squares</br>
-"ULS": unweighted least squares</br>
-"DLS": distributionally-weighted least squares</br>
-"PML": pairwise maximum likelihood</br>
-Many estimators have robust variants, meaning that they provide robust standard errors and a scaled test statistic. For example, for the maximum likelihood estimator, lavaan provides the following robust variants:</br>
-"MLM": maximum likelihood estimation with robust standard errors and a Satorra-Bentler scaled test statistic. For complete data only.</br>
-"MLMVS": maximum likelihood estimation with robust standard errors and a mean- and variance adjusted test statistic (aka the Satterthwaite approach). For complete data only.</br>
-"MLMV": maximum likelihood estimation with robust standard errors and a mean- and variance adjusted test statistic (using a scale-shifted approach). For complete data only.</br>
-"MLF": for maximum likelihood estimation with standard errors based on the first-order derivatives, and a conventional test statistic. For both complete and incomplete data.</br>
-"MLR": maximum likelihood estimation with robust (Huber-White) standard errors and a scaled test statistic that is (asymptotically) equal to the Yuan-Bentler test statistic. For both complete and incomplete data.</br>
-</br>
-TBD
-Hande the documentation of the label see help
-We need to document the situation around the degrees of freedom basically when a grouping variable is selected, you need to select
-the checkbox "The intercepts of the observed variables" and the checkbox "The intercepts/means of the latent variables"
-Just checking the 1st checkbox gives you more flexibility.
-<b>Package</b></br>
-lavaan;semPlot;semTools</br>
-<b>Help</b></br>
-For detailed help click on the R icon on the top right hand side of this dialog overlay or run the following command in the R syntax editor</br>
-help(sem, package='lavaan')
 
-
-`}
-  }
-}
 class sem extends baseModal {
+    static dialogId = 'sem'
+    static t = baseModal.makeT(sem.dialogId)
+
   constructor() {
     var config = {
-      id: "sem",
-      label: localization.en.title,
+            id: sem.dialogId,
+      label: sem.t('title'),
       modalType: "two",
       parameterCount: 0,
       RCode: `
@@ -375,7 +239,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       modelname: {
         el: new input(config, {
           no: 'modelname',
-          label: localization.en.modelname,
+          label: sem.t('modelname'),
           placeholder: "",
           required: true,
           type: "character",
@@ -387,7 +251,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       content_var: { el: new srcVariableList(config, { action: "move", semMain: true }) },
       autoComputeCovar: {
         el: new checkbox(config, {
-          label: localization.en.autoComputeCovar,
+          label: sem.t('autoComputeCovar'),
           no: "autoComputeCovar",
           style: "mb-2",
           extraction: "Boolean",
@@ -398,7 +262,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       parameterizeFormula: {
         el: new checkbox(config, {
-          label: localization.en.parameterizeFormula,
+          label: sem.t('parameterizeFormula'),
           no: "chk1",
           style: "mb-2",
           extraction: "Boolean",
@@ -410,7 +274,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       sem: {
         el: new semControl(config, {
           no: "sem",
-          label: localization.en.sem,
+          label: sem.t('sem'),
           filter: "Numeric|Date|Logical|Scale|semFactor",
           extraction: "NoPrefix|UsePlus",
           placeHolderText: "Enter latent trait name",
@@ -426,13 +290,13 @@ if (exists('BSkyDV'))rm(BSkyDV)
       semSuppCtrl1: {
         el: new semSuppCtrl(config, {
           action: "move",
-          no: "semSuppCtrl1", label: localization.en.semSuppCtrl
+          no: "semSuppCtrl1", label: sem.t('semSuppCtrl')
         })
       },  
       //Note: Extraction has to be passed manually to semExtractData()
       sem2: {
         el: new semControl(config, {
-          label: localization.en.sem2,
+          label: sem.t('sem2'),
           no: "sem2",
           //This reduces the size of the semControl when in higher order factors and equality constraints
           style : "ms-list3",
@@ -449,31 +313,31 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       label1: {
         el: new labelVar(config, {
-          label: localization.en.label1,
+          label: sem.t('label1'),
         })
       },
       label2: {
         el: new labelVar(config, {
-          label: localization.en.label1,
+          label: sem.t('label1'),
         })
       },
       modelTerms: {
         el: new semModelTerms(config, {
           action: "move",
-          no: "modelTerms", label: localization.en.modelTerms
+          no: "modelTerms", label: sem.t('modelTerms')
         })
       },
       modelTerms1: {
         el: new semModelTerms(config, {
           action: "move",
-          no: "modelTerms1", label: localization.en.modelTerms1
+          no: "modelTerms1", label: sem.t('modelTerms1')
         })
       },
       //Note: Extraction has to be passed manually to semExtractData()
       modelTermsDst: {
         el: new semModelTermsDest(config, {
           action: "move",
-          no: "modelTermsDst", label: localization.en.modelTermsDst, 
+          no: "modelTermsDst", label: sem.t('modelTermsDst'), 
           filter: "String|Numeric|Logical|Ordinal|Nominal|Scale", 
           extraction: "modelTerms", 
           firstModelTermCtrl: "modelTerms", 
@@ -485,20 +349,20 @@ if (exists('BSkyDV'))rm(BSkyDV)
       coVarTerms: {
         el: new semModelTerms(config, {
           action: "move",
-          no: "coVarTerms", label: localization.en.coVarTerms
+          no: "coVarTerms", label: sem.t('coVarTerms')
         })
       },
       coVarTerms1: {
         el: new semModelTerms(config, {
           action: "move",
-          no: "coVarTerms1", label: localization.en.coVarTerms1
+          no: "coVarTerms1", label: sem.t('coVarTerms1')
         })
       },
       //Note: Extraction has to be passed manually to semExtractData()
       coVarDst: {
         el: new semModelTermsDest(config, {
           action: "move",
-          no: "coVarDst", label: localization.en.coVarDst, filter: "String|Numeric|Logical|Ordinal|Nominal|Scale", 
+          no: "coVarDst", label: sem.t('coVarDst'), filter: "String|Numeric|Logical|Ordinal|Nominal|Scale", 
           extraction: "coVariances", 
           firstModelTermCtrl: "coVarTerms", 
           secondModelTermCtrl: "coVarTerms1"
@@ -507,13 +371,13 @@ if (exists('BSkyDV'))rm(BSkyDV)
       equalityConstraints1: {
         el: new equalityConstraints(config, {
           action: "move",
-          no: "equalityConstraints1", label: localization.en.equalityConstraints1
+          no: "equalityConstraints1", label: sem.t('equalityConstraints1')
         })
       },
       //Note: Extraction has to be passed manually to semExtractData()
       sem3: {
         el: new semControl(config, {
-          label: localization.en.sem3,
+          label: sem.t('sem3'),
           placeHolderText: "",
           type: "equalityConstraint",
           allowedSrcCtrls: ["semequalityConstraints1"],
@@ -531,7 +395,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
         el: new comboBoxWithChilderen(config, {
           no: 'family',
           nochild: 'combokid',
-          label: localization.en.method,
+          label: sem.t('method'),
           multiple: false,
           extraction: "NoPrefix|UseComma",
           options: [
@@ -559,7 +423,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       missing: {
         el: new selectVar(config, {
           no: 'missing',
-          label: localization.en.missing,
+          label: sem.t('missing'),
           multiple: false,
           width: "w-25",
           extraction: "NoPrefix|UseComma",
@@ -569,18 +433,18 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       label3: {
         el: new labelVar(config, {
-          label: localization.en.label3,
+          label: sem.t('label3'),
         })
       },
       label4: {
         el: new labelVar(config, {
-          label: localization.en.label4,
+          label: sem.t('label4'),
           h: 4
         })
       },
       addFitMeasures: {
         el: new checkbox(config, {
-          label: localization.en.addFitMeasures,
+          label: sem.t('addFitMeasures'),
           no: "addFitMeasures",
           style: "mb-2",
           extraction: "Boolean"
@@ -588,7 +452,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       mardiaSkew: {
         el: new checkbox(config, {
-          label: localization.en.mardiaSkew,
+          label: sem.t('mardiaSkew'),
           no: "mardiaSkew",
           style: "mb-2",
           extraction: "Boolean",
@@ -596,7 +460,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       mardiaKurt: {
         el: new checkbox(config, {
-          label: localization.en.mardiaKurt,
+          label: sem.t('mardiaKurt'),
           no: "mardiaKurt",
           style: "mb-2",
           extraction: "Boolean",
@@ -604,13 +468,13 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       label5: {
         el: new labelVar(config, {
-          label: localization.en.label5,
+          label: sem.t('label5'),
           h: 4
         })
       },
       observed: {
         el: new checkbox(config, {
-          label: localization.en.observed,
+          label: sem.t('observed'),
           no: "observed",
           style: "mb-2",
           state: "checked",
@@ -619,7 +483,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       modelImplied: {
         el: new checkbox(config, {
-          label: localization.en.modelImplied,
+          label: sem.t('modelImplied'),
           no: "modelImplied",
           style: "mb-2",
           extraction: "Boolean",
@@ -627,7 +491,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       residual: {
         el: new checkbox(config, {
-          label: localization.en.residual,
+          label: sem.t('residual'),
           no: "residual",
           style: "mb-2",
           extraction: "Boolean",
@@ -635,7 +499,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       residualCovHeatmap: {
         el: new checkbox(config, {
-          label: localization.en.residualCovHeatmap,
+          label: sem.t('residualCovHeatmap'),
           no: "residualCovHeatmap",
           style: "mb-2",
           extraction: "Boolean",
@@ -643,7 +507,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
      observedCorr: {
         el: new checkbox(config, {
-          label: localization.en.observedCorr,
+          label: sem.t('observedCorr'),
           no: "observedCorr",
           style: "mb-2",
           extraction: "Boolean",
@@ -651,7 +515,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       modelImpliedCorr: {
         el: new checkbox(config, {
-          label: localization.en.modelImpliedCorr,
+          label: sem.t('modelImpliedCorr'),
           no: "modelImpliedCorr",
           style: "mb-2",
           extraction: "Boolean",
@@ -659,7 +523,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       residualCorr: {
         el: new checkbox(config, {
-          label: localization.en.residualCorr,
+          label: sem.t('residualCorr'),
           no: "residualCorr",
           style: "mb-2",
           extraction: "Boolean",
@@ -667,7 +531,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       residualCorrHeatmap: {
         el: new checkbox(config, {
-          label: localization.en.residualCorrHeatmap,
+          label: sem.t('residualCorrHeatmap'),
           no: "residualCorrHeatmap",
           style: "mb-2",
           extraction: "Boolean",
@@ -675,13 +539,13 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       label8: {
         el: new labelVar(config, {
-          label: localization.en.label8,
+          label: sem.t('label8'),
           h: 4
         })
       },
       modIndices: {
         el: new checkbox(config, {
-          label: localization.en.modIndices,
+          label: sem.t('modIndices'),
           no: "modIndices",
           style: "mb-2",
           extraction: "Boolean",
@@ -689,7 +553,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       highLowIndices: {
         el: new checkbox(config, {
-          label: localization.en.highLowIndices,
+          label: sem.t('highLowIndices'),
           no: "highLowIndices",
           style: "ml-2",
           newline: true,
@@ -699,7 +563,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       threshold: {
         el: new inputSpinner(config, {
           no: 'threshold',
-          label: localization.en.threshold,
+          label: sem.t('threshold'),
           min: 0,
           max: 99999999,
           style: "ml-2",
@@ -710,14 +574,14 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       label6: {
         el: new labelVar(config, {
-          label: localization.en.label6,
+          label: sem.t('label6'),
           style: "mt-3",
           h: 4
         })
       },
       r2squareNone: {
         el: new radioButton(config, {
-          label: localization.en.r2squareNone,
+          label: sem.t('r2squareNone'),
           no: "gpbox1",
           increment: "r2squareNone",
           style: "mb-2",
@@ -728,7 +592,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       r2squareEndo: {
         el: new radioButton(config, {
-          label: localization.en.r2squareEndo,
+          label: sem.t('r2squareEndo'),
           no: "gpbox1",
           increment: "r2squareEndo",
           value: "endo",
@@ -738,14 +602,14 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       label7: {
         el: new labelVar(config, {
-          label: localization.en.label7,
+          label: sem.t('label7'),
           style: "mt-3",
           h: 4
         })
       },
       factorScores: {
         el: new checkbox(config, {
-          label: localization.en.factorScores,
+          label: sem.t('factorScores'),
           no: "factorScores",
           style: "mb-2",
           extraction: "Boolean",
@@ -753,7 +617,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       indicators: {
         el: new checkbox(config, {
-          label: localization.en.indicators,
+          label: sem.t('indicators'),
           no: "indicators",
           style: "mb-2",
           extraction: "Boolean",
@@ -761,7 +625,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       dependentVars: {
         el: new checkbox(config, {
-          label: localization.en.dependentVars,
+          label: sem.t('dependentVars'),
           no: "dependentVars",
           style: "mb-2",
           extraction: "Boolean",
@@ -769,7 +633,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       residuals: {
         el: new checkbox(config, {
-          label: localization.en.residuals,
+          label: sem.t('residuals'),
           no: "residuals",
           newline: true,
           extraction: "Boolean"
@@ -777,7 +641,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       intercepts: {
         el: new checkbox(config, {
-          label: localization.en.intercepts,
+          label: sem.t('intercepts'),
           no: "intercepts",
           newline: true,
           extraction: "Boolean",
@@ -785,7 +649,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       includeThresholds: {
         el: new checkbox(config, {
-          label: localization.en.includeThresholds,
+          label: sem.t('includeThresholds'),
           no: "includeThresholds",
           newline: true,
           extraction: "Boolean",
@@ -793,7 +657,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       label101: {
         el: new labelVar(config, {
-          label: localization.en.label101,
+          label: sem.t('label101'),
           style: "mt-3",
           h: 4
         })
@@ -801,7 +665,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       edgeLabels: {
         el: new comboBox(config, {
           no: "edgeLabels",
-          label: localization.en.edgeLabels,
+          label: sem.t('edgeLabels'),
           multiple: false,
           extraction: "NoPrefix|UseComma",
           options: ["label", "parameter estimates", "standardized parameter estimate", "parameter number", "hide"],
@@ -810,7 +674,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       label102: {
         el: new labelVar(config, {
-          label: localization.en.label102,
+          label: sem.t('label102'),
           style: "mt-3",
           h: 4
         })
@@ -818,7 +682,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       layout: {
         el: new comboBox(config, {
           no: "layout",
-          label: localization.en.layout,
+          label: sem.t('layout'),
           multiple: false,
           extraction: "NoPrefix|UseComma",
           options: ["tree", "circle", "spring", "tree2"],
@@ -828,7 +692,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       rotate: {
         el: new comboBox(config, {
           no: "rotate",
-          label: localization.en.rotate,
+          label: sem.t('rotate'),
           multiple: false,
           extraction: "NoPrefix|UseComma",
           options: ["Exog. top", "Exog. left", "Exog. bottom", "Exog. right"],
@@ -837,7 +701,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       label103: {
         el: new labelVar(config, {
-          label: localization.en.label101,
+          label: sem.t('label101'),
           style: "mt-3",
           h: 4
         })
@@ -845,7 +709,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       manifestShapes: {
         el: new comboBox(config, {
           no: "manifestShapes",
-          label: localization.en.manifestShapes,
+          label: sem.t('manifestShapes'),
           multiple: false,
           extraction: "NoPrefix|UseComma",
           options: ["default","circle", "rectangle", "square", "ellipse", "diamond"],
@@ -855,7 +719,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       latentShapes: {
         el: new comboBox(config, {
           no: "latentShapes",
-          label: localization.en.latentShapes,
+          label: sem.t('latentShapes'),
           multiple: false,
           extraction: "NoPrefix|UseComma",
           options: ["default","circle","rectangle", "square", "ellipse", "diamond"],
@@ -865,7 +729,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       abbNodeLabels: {
         el: new inputSpinner(config, {
           no: 'abbNodeLabels',
-          label: localization.en.abbNodeLabels,
+          label: sem.t('abbNodeLabels'),
           min: 0,
           max: 99999999,
           step: 1,
@@ -876,7 +740,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       abbEdgeLabels: {
         el: new inputSpinner(config, {
           no: 'abbEdgeLabels',
-          label: localization.en.abbEdgeLabels,
+          label: sem.t('abbEdgeLabels'),
           min: 0,
           max: 99999999,
           step: 0.01,
@@ -886,12 +750,12 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       label104: {
         el: new labelVar(config, {
-          label: localization.en.label104,
+          label: sem.t('label104'),
         })
       },
       stdall: {
         el: new checkbox(config, {
-          label: localization.en.stdall,
+          label: sem.t('stdall'),
           no: "stdall",
           newline: true,
           extraction: "Boolean",
@@ -899,7 +763,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       stdlv: {
         el: new checkbox(config, {
-          label: localization.en.stdlv,
+          label: sem.t('stdlv'),
           no: "stdlv",
           newline: true,
           extraction: "Boolean",
@@ -907,7 +771,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       stnox: {
         el: new checkbox(config, {
-          label: localization.en.stdnox,
+          label: sem.t('stdnox'),
           no: "stdnox",
           newline: true,
           extraction: "Boolean",
@@ -915,12 +779,12 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       label105: {
         el: new labelVar(config, {
-          label: localization.en.label105,
+          label: sem.t('label105'),
         })
       },
       automatic: {
         el: new radioButton(config, {
-          label: localization.en.automatic,
+          label: sem.t('automatic'),
           no: "gpbox2",
           increment: "automatic",
           value: "",
@@ -930,7 +794,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       standard: {
         el: new radioButton(config, {
-          label: localization.en.standard,
+          label: sem.t('standard'),
           no: "gpbox2",
           increment: "standard",
           value: "standard",
@@ -939,7 +803,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       robust: {
         el: new radioButton(config, {
-          label: localization.en.robust,
+          label: sem.t('robust'),
           no: "gpbox2",
           increment: "robust",
           value: "robust",
@@ -948,7 +812,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       pseudoML: {
         el: new radioButton(config, {
-          label: localization.en.pseudoML,
+          label: sem.t('pseudoML'),
           no: "gpbox2",
           increment: "pseudoML",
           value: "robust.huber.white",
@@ -957,7 +821,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       bootstrap: {
         el: new radioButton(config, {
-          label: localization.en.bootstrap,
+          label: sem.t('bootstrap'),
           no: "gpbox2",
           increment: "bootstrap",
           value: "bootstrap",
@@ -967,12 +831,12 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       label106: {
         el: new labelVar(config, {
-          label: localization.en.label106,
+          label: sem.t('label106'),
         })
       },
       percentiles: {
         el: new radioButton(config, {
-          label: localization.en.percentiles,
+          label: sem.t('percentiles'),
           no: "gpbox3",
           increment: "percentiles",
           value: "perc",
@@ -982,7 +846,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       normal: {
         el: new radioButton(config, {
-          label: localization.en.normal,
+          label: sem.t('normal'),
           no: "gpbox3",
           increment: "normal",
           value: "norm",
@@ -991,7 +855,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       adjustedBiasCorrected: {
         el: new radioButton(config, {
-          label: localization.en.adjustedBiasCorrected,
+          label: sem.t('adjustedBiasCorrected'),
           no: "gpbox3",
           increment: "adjustedBiasCorrected",
           value: "bca.simple",
@@ -1000,7 +864,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       basic: {
         el: new radioButton(config, {
-          label: localization.en.basic,
+          label: sem.t('basic'),
           no: "gpbox3",
           increment: "basic",
           value: "basic",
@@ -1010,7 +874,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       bootstratRep: {
         el: new input(config, {
           no: 'bootstratRep',
-          label: localization.en.bootstratRep,
+          label: sem.t('bootstratRep'),
           placeholder: "",
           extraction: "TextAsIs",
           type: "numeric",
@@ -1024,12 +888,12 @@ if (exists('BSkyDV'))rm(BSkyDV)
         el: new semSuppCtrl(config, {
           action: "move",
           no: "mediationSrcCtrl", 
-          label: localization.en.mediationSrcCtrl
+          label: sem.t('mediationSrcCtrl')
         })
       },
       mediationDestCtrl: {
         el: new semControl(config, {
-          label: localization.en.mediationDestCtrl,
+          label: sem.t('mediationDestCtrl'),
           no: "mediationDestCtrl",
           style : "ms-list3",
           filter: "Numeric|Date|Logical|Scale|semFactor|relation|covariance|structuralParameter",
@@ -1040,11 +904,11 @@ if (exists('BSkyDV'))rm(BSkyDV)
           required: false,  
         }), r: ['{{ var | safe}}']
       },
-      multiGrpSrc: { el: new srcVariableList(config, { label: localization.en.multiGrpSrc,
+      multiGrpSrc: { el: new srcVariableList(config, { label: sem.t('multiGrpSrc'),
         no: "multiGrpSrc",action: "move"}) },
       multiGrpDependent: {
         el: new dstVariable(config, {
-          label: localization.en.multiGrpDependent,
+          label: sem.t('multiGrpDependent'),
           no: "multiGrpDependent",
           allowedSrcCtrls: ["semmultiGrpSrcVars"],
           filter: "String|Numeric|Logical|Ordinal|Nominal|Scale",
@@ -1054,14 +918,14 @@ if (exists('BSkyDV'))rm(BSkyDV)
 
       intercepts1: {
         el: new checkbox(config, {
-          label: localization.en.intercepts1,
+          label: sem.t('intercepts1'),
           no: "intercepts1",
           extraction: "Boolean"
         })
       },
       means: {
         el: new checkbox(config, {
-          label: localization.en.means,
+          label: sem.t('means'),
           no: "means",
           newline: true,
           extraction: "Boolean"
@@ -1069,7 +933,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       residuals1: {
         el: new checkbox(config, {
-          label: localization.en.residuals1,
+          label: sem.t('residuals1'),
           no: "residuals1",
           newline: true,
           extraction: "Boolean"
@@ -1077,7 +941,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       residual_covariances: {
         el: new checkbox(config, {
-          label: localization.en.residual_covariances,
+          label: sem.t('residual_covariances'),
           no: "residual_covariances",
           newline: true,
           extraction: "Boolean"
@@ -1085,7 +949,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       lv_variances: {
         el: new checkbox(config, {
-          label: localization.en.lv_variances,
+          label: sem.t('lv_variances'),
           no: "lv_variances",
           newline: true,
           extraction: "Boolean"
@@ -1093,7 +957,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       lv_covariances: {
         el: new checkbox(config, {
-          label: localization.en.lv_covariances,
+          label: sem.t('lv_covariances'),
           no: "lv_covariances",
           newline: true,
           extraction: "Boolean"
@@ -1101,7 +965,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       regressions: {
         el: new checkbox(config, {
-          label: localization.en.regressions,
+          label: sem.t('regressions'),
           no: "regressions",
           newline: true,
           extraction: "Boolean"
@@ -1109,7 +973,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       loadings: {
         el: new checkbox(config, {
-          label: localization.en.loadings,
+          label: sem.t('loadings'),
           no: "loadings",
           newline: true,
           extraction: "Boolean"
@@ -1117,7 +981,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
       },
       label9: {
         el: new labelVar(config, {
-          label: localization.en.label9,
+          label: sem.t('label9'),
           style: "mt-2", 
           h:5
         })
@@ -1153,7 +1017,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
     var optionsModelTerms = {
       el: new optionsVar(config, {
         no: "sem_model_terms",
-        name: localization.en.sem_model_terms,
+        name: sem.t('sem_model_terms'),
         layout: "three",
         top: [objects.label1.el,],
         left: [
@@ -1170,7 +1034,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
     var optionsCoVarTerms = {
       el: new optionsVar(config, {
         no: "optionsCoVarTerms",
-        name: localization.en.optionsCoVarTerms,
+        name: sem.t('optionsCoVarTerms'),
         layout: "three",
         top: [objects.autoComputeCovar.el,objects.label2.el,],
         left: [
@@ -1187,7 +1051,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
     var modelOptions = {
       el: new optionsVar(config, {
         no: "modelOptions",
-        name: localization.en.modelOptions,
+        name: sem.t('modelOptions'),
         content: [
           objects.family.el,
           objects.missing.el,
@@ -1201,7 +1065,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
     var parameterOptions = {
       el: new optionsVar(config, {
         no: "parameterOptions",
-        name: localization.en.parameterOptions,
+        name: sem.t('parameterOptions'),
         layout: "four",
         top: [],
         left: [
@@ -1227,7 +1091,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
     var outputOptions = {
       el: new optionsVar(config, {
         no: "outputOptions",
-        name: localization.en.outputOptions,
+        name: sem.t('outputOptions'),
         layout: "four",
         top: [objects.label5.el],
         left: [
@@ -1279,7 +1143,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
     var multiGrpOptions = {
       el: new optionsVar(config, {
         no: "multiGrpOptions",
-        name: localization.en.multiGrpOptions,
+        name: sem.t('multiGrpOptions'),
         layout: "two",
         top: [objects.label5.el],
         left: [
@@ -1304,7 +1168,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
     var semPlotOptions = {
       el: new optionsVar(config, {
         no: "semPlotOptions",
-        name: localization.en.semPlotOptions,
+        name: sem.t('semPlotOptions'),
         layout: "four",
         top: [objects.residuals.el],
         left: [
@@ -1331,13 +1195,19 @@ if (exists('BSkyDV'))rm(BSkyDV)
       right: [objects.parameterizeFormula.el.content, objects.sem.el.content],
       bottom: [secOrderFactors.el.content, optionsModelTerms.el.content, mediation.el.content, optionsCoVarTerms.el.content, equalConst.el.content,modelOptions.el.content, outputOptions.el.content, semPlotOptions.el.content, parameterOptions.el.content, multiGrpOptions.el.content],
       nav: {
-        name: localization.en.navigation,
+        name: sem.t('navigation'),
         icon: "icon-teamwork",
         modal: config.id
       }
     }
     super(config, objects, content);
-    this.help = localization.en.help;
+    
+        this.help = {
+            title: sem.t('help.title'),
+            r_help: "help(data,package='utils')",
+            body: sem.t('help.body')
+        }
+;
   }
   prepareExecution(instance) {
     let res = [];

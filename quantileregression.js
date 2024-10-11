@@ -1,61 +1,14 @@
 
-var localization = {
-    en: {
-		label1: "To compare quantile regression model slopes, see \"Model Evaluation > Compare > Quant Reg Models\"",
-		title: "Quantile Regression",
-        navigation: "Quantile",
-        modelname:"Enter model name",
-        depvarlabel: "Dependent Variable",
-		quantilelabel: "Quantile (0-1)",
-		estgrplabel: "Estimation Method",
-		brlabel: "Barrodale and Roberts",
-		fnlabel: "Frisch-Newton",
-		pfnlabel: "Frisch-Newton, preprocessing",
-		sfnlabel: "Frisch-Newton, sparse",
-		stderrgrplabel: "Standard Error Method",
-		ranklabel: "Rank",
-		iidlabel: "IID",
-		nidlabel: "NID",
-		kernallabel: "Kernal",
-		bootstraplabel: "Bootstrap",
-		bootsamplabel: "Bootstrap Samples",
-        help: {
-            title: "Quantile Regression",
-            r_help: "help(rq, package = 'quantreg')",
-            body: `
-This fits a quantile regression model, which models a desired quantile (i.e. percentile) of the outcome variable.  A typical quantile to model is 0.5, i.e. the median.  
-A model summary and parameter estimates with 95% confidence intervals are provided.
-<br/><br/>
-<b>Enter Model Name:</b>  the desired name of the model
-<br/><br/>
-<b>Dependent Variable:</b>  Specify the dependent variable for the model.  The desired quantile of this variable will be modeled.  This must be numeric.
-<br/><br/>
-<b>Formula Builder:</b>  Specify the model terms using formula notation.  Numeric, factor, ordered factor, and character variables are allowed.  Character variables will be coerced to factors.
-<br/><br/>
-<b>Quantile (0-1):</b>  Specify the desired quantile to model for the dependent variable.  0.5 (the median) is the default and is a typical quantity.
-<br/><br/>
-<b>Estimation Method:</b>  Specify the estimation method for the model parameters.  The Barrodale and Roberts method is the default and is efficient for models with 
-several thousand observations.  The Frisch-Newton and the Frisch-Newton, preprocessing approach might be advantageous for large and very large problems, respectively, 
-especially in cases with a small number of estimated parameters.  For large sample sizes with a large number of parameters, the Frisch-Newton, sparse method may be needed.  
-See the references in the R Help for details.
-<br/><br/>
-<b>Standard Error Method:</b>  Specify the method used to estimate standard errors and confidence intervals.  The Rank method provides confidence intervals only, can be slow 
-to run for larger sample sizes (n > 1000), and is based on inverting a rank test.  The IID method assumes the errors are independent and identically distributed (iid).  The NID 
-method presumes local linearity in the quantile and computes a sandwich estimate using a local estimate of sparsity.  The Kernal method uses a kernal estimate of the sandwich.  
-The Bootstrap method uses a re-sampling bootstrap approach to estimate the standard errors.  See the references in the R Help for details.
-<br/><br/>
-<b>Bootstrap Samples:</b>  Desired number of bootstrap samples for the bootstrap standard error approach.  The default is 2000 samples.
-<br/><br/>
-<b>Required R Packages:</b> quantreg, broom
-		`}
-    }
-}
+
 
 class QuantileRegression extends baseModal {
+    static dialogId = 'QuantileRegression'
+    static t = baseModal.makeT(QuantileRegression.dialogId)
+
     constructor() {
         var config = {
-            id: "QuantileRegression",
-            label: localization.en.title,
+            id: QuantileRegression.dialogId,
+            label: QuantileRegression.t('title'),
 			splitProcessing: true,
             modalType: "two",
             RCode: `
@@ -103,11 +56,11 @@ detach(package:SparseM)
                     action: "move"
                 })
             },
-			label1: { el: new labelVar(config, { label: localization.en.label1, h: 6 }) },
+			label1: { el: new labelVar(config, { label: QuantileRegression.t('label1'), h: 6 }) },
             modelname: {
                 el: new input(config, {
                     no: 'modelname',
-                    label: localization.en.modelname,
+                    label: QuantileRegression.t('modelname'),
 					style: "mb-3",
                     placeholder: "QuantRegModel1",
                     required: true,
@@ -118,7 +71,7 @@ detach(package:SparseM)
             },
             depvar: {
                 el: new dstVariable(config, {
-                    label: localization.en.depvarlabel,
+                    label: QuantileRegression.t('depvarlabel'),
                     no: "depvar",
                     filter: "Numeric|Scale",
                     required: true,
@@ -134,7 +87,7 @@ detach(package:SparseM)
 			quantile: {
 				el: new inputSpinner(config, {
 				no: 'quantile',
-				label: localization.en.quantilelabel,
+				label: QuantileRegression.t('quantilelabel'),
 				style: "mt-5",
 				min: 0,
 				max: 1,
@@ -145,14 +98,14 @@ detach(package:SparseM)
 			},
 			estgrplabel: {
 				el: new labelVar(config, {
-				label: localization.en.estgrplabel, 
+				label: QuantileRegression.t('estgrplabel'), 
 				style: "mt-3", 
 				h:5
 				})
 			},			
 			br: {
 				el: new radioButton(config, {
-				label: localization.en.brlabel,
+				label: QuantileRegression.t('brlabel'),
 				no: "estgrp",
 				style: "ml-3",
 				increment: "br",
@@ -163,7 +116,7 @@ detach(package:SparseM)
 			},
  			fn: {
 				el: new radioButton(config, {
-				label: localization.en.fnlabel,
+				label: QuantileRegression.t('fnlabel'),
 				no: "estgrp",
 				style: "ml-3",
 				increment: "fn",
@@ -174,7 +127,7 @@ detach(package:SparseM)
 			},           
  			pfn: {
 				el: new radioButton(config, {
-				label: localization.en.pfnlabel,
+				label: QuantileRegression.t('pfnlabel'),
 				no: "estgrp",
 				style: "ml-3",
 				increment: "pfn",
@@ -185,7 +138,7 @@ detach(package:SparseM)
 			},
  			sfn: {
 				el: new radioButton(config, {
-				label: localization.en.sfnlabel,
+				label: QuantileRegression.t('sfnlabel'),
 				no: "estgrp",
 				style: "ml-3",
 				increment: "sfn",
@@ -196,14 +149,14 @@ detach(package:SparseM)
 			},
 			stderrgrplabel: {
 				el: new labelVar(config, {
-				label: localization.en.stderrgrplabel, 
+				label: QuantileRegression.t('stderrgrplabel'), 
 				style: "mt-3", 
 				h:5
 				})
 			},
 			rank: {
 				el: new radioButton(config, {
-				label: localization.en.ranklabel,
+				label: QuantileRegression.t('ranklabel'),
 				no: "stderrgrp",
 				style: "ml-3",
 				increment: "rank",
@@ -214,7 +167,7 @@ detach(package:SparseM)
 			},
  			iid: {
 				el: new radioButton(config, {
-				label: localization.en.iidlabel,
+				label: QuantileRegression.t('iidlabel'),
 				no: "stderrgrp",
 				style: "ml-3",
 				increment: "iid",
@@ -225,7 +178,7 @@ detach(package:SparseM)
 			},
  			nid: {
 				el: new radioButton(config, {
-				label: localization.en.nidlabel,
+				label: QuantileRegression.t('nidlabel'),
 				no: "stderrgrp",
 				style: "ml-3",
 				increment: "nid",
@@ -236,7 +189,7 @@ detach(package:SparseM)
 			},
  			kernal: {
 				el: new radioButton(config, {
-				label: localization.en.kernallabel,
+				label: QuantileRegression.t('kernallabel'),
 				no: "stderrgrp",
 				style: "ml-3",
 				increment: "kernal",
@@ -247,7 +200,7 @@ detach(package:SparseM)
 			},
  			bootstrap: {
 				el: new radioButton(config, {
-				label: localization.en.bootstraplabel,
+				label: QuantileRegression.t('bootstraplabel'),
 				no: "stderrgrp",
 				style: "ml-3",
 				increment: "bootstrap",
@@ -259,7 +212,7 @@ detach(package:SparseM)
 			bootsamp: {
 				el: new inputSpinner(config, {
 				no: 'bootsamp',
-				label: localization.en.bootsamplabel,
+				label: QuantileRegression.t('bootsamplabel'),
 				style: "ml-5",
 				min: 100,
 				max: 1000000,
@@ -281,13 +234,22 @@ detach(package:SparseM)
 				objects.bootsamp.el.content
             ],
             nav: {
-                name: localization.en.navigation,
+                name: QuantileRegression.t('navigation'),
                 icon: "icon-linear_regression_white_comp",
                 modal: config.id
             }
         }
         super(config, objects, content);
-        this.help = localization.en.help;
+        
+        this.help = {
+            title: QuantileRegression.t('help.title'),
+            r_help: "help(data,package='utils')",
+            body: QuantileRegression.t('help.body')
+        }
+;
     }
 }
-module.exports.item = new QuantileRegression().render()
+
+module.exports = {
+    render: () => new QuantileRegression().render()
+}

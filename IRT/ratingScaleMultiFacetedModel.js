@@ -1,63 +1,14 @@
 
-var localization = {
-    en: {
-        title: "Rating Scale Model (Multi-faceted)",
-        navigation: "Rating Scale Model (Multi-faceted)",
-        modelname: "Enter model name",
-        destinationvars: "Items",
-        firstlevel: "First level variable",
-        secondlevel: "Second level variable",
-        help: {
-            title: "Rating Scale Model (Multi-faceted)",
-            r_help: "help(tam.mml.mfr, package=TAM)",
-            body: `
-            <b>Description</b>
-            <br/>
-            Generates parameter estmates for a multi-faceted rating scale model
-            <br/><br/>
-            <b>Usage</b>
-            <br/>
-            <code>
-            tam.mml.mfr( resp,facets=,formulaA = ~ item+step+rater,pid = ,verbose=FALSE)
-            </code>
-            <br/><br/>
-            <b>Arguments</b>
-            <br/>
-            <ul>
-            <li>
-            resp: Data frame with polytomous item responses k=0,...,K. Missing responses must be declared as NA.
-            </li>
-            <li>
-            formulaA: Design formula (only applies to tam.mml.mfr). See example 8 in detailed help. It is also to possible to set all effects of a facet to zero, e.g. item*step + 0*rater (see Example 10a in detailed help).
-            </li>
-            <li>
-            facets: A data frame with facet entries (only applies to tam.mml.mfr)
-            </li>
-            <li>
-            pid: An optional vector of person identifiers
-            </li>
-            <li>
-            verbose: Logical indicating whether output should be printed during iterations. 
-            </li>
-            </ul>
 
-            <br/><br/><br/>
-            <b>Packages</b>
-            <br/>
-            TAM
-            <br/><br/>
-            <b>Help</b>
-            <br/>
-            help(tam.mml.mfr, package='TAM')
-`}
-    }
-}
 
 class ratingScaleMultiFacetedModel extends baseModal {
+    static dialogId = 'ratingScaleMultiFacetedModel'
+    static t = baseModal.makeT(ratingScaleMultiFacetedModel.dialogId)
+
     constructor() {
         var config = {
-            id: "ratingScaleMultiFacetedModel",
-            label: localization.en.title,
+            id: ratingScaleMultiFacetedModel.dialogId,
+            label: ratingScaleMultiFacetedModel.t('title'),
             modalType: "two",
             RCode: `
 require(TAM);
@@ -74,7 +25,7 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
             modelname: {
                 el: new input(config, {
                     no: 'modelname',
-                    label: localization.en.modelname,
+                    label: ratingScaleMultiFacetedModel.t('modelname'),
                     placeholder: "",
                     required: true,
                     type: "character",
@@ -85,7 +36,7 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
             },
             destinationvars: {
                 el: new dstVariableList(config, {
-                    label: localization.en.destinationvars,
+                    label: ratingScaleMultiFacetedModel.t('destinationvars'),
                     no: "destinationvars",
                     required: true,
                     filter: "String|Numeric|Logical|Ordinal|Nominal|Scale",
@@ -94,7 +45,7 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
             },
             firstlevel: {
                 el: new dstVariable(config, {
-                  label: localization.en.firstlevel,
+                  label: ratingScaleMultiFacetedModel.t('firstlevel'),
                   no: "firstlevel",
                   filter: "String|Numeric|Date|Logical|Ordinal|Nominal|Scale",
                   extraction: "NoPrefix|UseComma",
@@ -103,7 +54,7 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
               },
               secondlevel: {
                 el: new dstVariable(config, {
-                  label: localization.en.secondlevel,
+                  label: ratingScaleMultiFacetedModel.t('secondlevel'),
                   no: "secondlevel",
                   filter: "String|Numeric|Date|Logical|Ordinal|Nominal|Scale",
                   extraction: "NoPrefix|UseComma",
@@ -119,13 +70,22 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
             objects.firstlevel.el.content, objects.secondlevel.el.content
             ],
             nav: {
-                name: localization.en.navigation,
+                name: ratingScaleMultiFacetedModel.t('navigation'),
                 icon: "icon-rsmf",
                 modal: config.id
             }
         };
         super(config, objects, content);
-        this.help = localization.en.help;
+        
+        this.help = {
+            title: ratingScaleMultiFacetedModel.t('help.title'),
+            r_help: "help(data,package='utils')",
+            body: ratingScaleMultiFacetedModel.t('help.body')
+        }
+;
     }
 }
-module.exports.item = new ratingScaleMultiFacetedModel().render()
+
+module.exports = {
+    render: () => new ratingScaleMultiFacetedModel().render()
+}

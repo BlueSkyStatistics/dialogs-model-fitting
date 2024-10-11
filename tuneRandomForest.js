@@ -1,69 +1,14 @@
 
-var localization = {
-    en: {
-        title: "Tune Random Forest Model",
-        navigation: "Tune",
-        dependentvar: "Dependent variable",
-        independentvars: "Independent variable(s)",
-        ntreetry: "No. of trees to try",
-        stepfactor: "Step factor",
-        improve: "Improve",
-        trace: "Trace",
-        plot: "Plot",
-        help: {
-            title: "Tune Random Forest Model",
-            r_help: "help(tuneRF,package='randomForest')",
-            body: `
-                <b>Description</b></br>
-Starting with the default value of mtry, search for the optimal value (with respect to Out-of-Bag error estimate) of mtry for randomForest. 
-<br/>
-<b>Usage</b>
-<br/>
-<code> 
-tuneRF(x, y, ntreeTry=50, stepFactor=2, improve=0.05, trace=TRUE, plot=TRUE,  ...)
-</code> <br/>
-<b>Arguments</b><br/>
-<ul>
-<li>
-x : matrix or data frame of predictor variables
-</li>
-<li>
-y : response vector (factor for classification, numeric for regression)
-</li>
-<li>
-ntreeTry : number of trees used at the tuning step.
-</li>
-<li>
-stepFactor : at each iteration, mtry is inflated (or deflated) by this value.
-</li>
-<li>
-improve : the (relative) improvement in OOB error must be by this much for the search to continue
-</li>
-<li>
-trace : whether to print the progress of the search.
-</li>
-<li>
-plot : whether to plot the OOB error as function of mtry.
-</li>
-<li>
-... : options to be given to randomForest
-</li>
-</ul>
-<b>Value</b></br>
-Returns a matrix whose first column contains the mtry values searched, and the second column the corresponding OOB error.</br>
-<b>Package</b></br>
-randomForest​;BlueSky</br>
-<b>Help</b></br>
-For detailed help click on the R icon on the top right hand side of this dialog overlay or run the following command in the R syntax editor help(tuneRF,package='randomForest')
-`}
-    }
-}
+
 
 class tuneRandomForest extends baseModal {
+    static dialogId = 'tuneRandomForest'
+    static t = baseModal.makeT(tuneRandomForest.dialogId)
+
     constructor() {
         var config = {
-            id: "tuneRandomForest",
-            label: localization.en.title,
+            id: tuneRandomForest.dialogId,
+            label: tuneRandomForest.t('title'),
             modalType: "two",
             RCode: `
 require(randomForest)
@@ -75,7 +20,7 @@ BSkyFormat(bskyTuningResults, singleTableOutputHeader="Tuning Results")
             content_var: { el: new srcVariableList(config, {action: "move"}) },
             dependentvar: {
                 el: new dstVariable(config, {
-                    label: localization.en.dependentvar,
+                    label: tuneRandomForest.t('dependentvar'),
                     no: "dependentvar",
                     filter: "String|Numeric|Logical|Ordinal|Nominal|Scale",
                     extraction: "Prefix|UseComma",
@@ -84,7 +29,7 @@ BSkyFormat(bskyTuningResults, singleTableOutputHeader="Tuning Results")
             },
             independentvars: {
                 el: new dstVariableList(config, {
-                    label: localization.en.independentvars,
+                    label: tuneRandomForest.t('independentvars'),
                     no: "independentvars",
                     required: true,
                     filter: "Numeric|Logical|Ordinal|Nominal|Scale",
@@ -94,7 +39,7 @@ BSkyFormat(bskyTuningResults, singleTableOutputHeader="Tuning Results")
             ntreetry: {
                 el: new inputSpinner(config, {
                     no: "ntreetry",
-                    label: localization.en.ntreetry,
+                    label: tuneRandomForest.t('ntreetry'),
                     min: 1,
                     max: 999999999,
                     step: 1,
@@ -105,7 +50,7 @@ BSkyFormat(bskyTuningResults, singleTableOutputHeader="Tuning Results")
             stepfactor: {
                 el: new inputSpinner(config, {
                     no: "stepfactor",
-                    label: localization.en.stepfactor,
+                    label: tuneRandomForest.t('stepfactor'),
                     min: 1,
                     max: 999999999,
                     step: 1,
@@ -116,7 +61,7 @@ BSkyFormat(bskyTuningResults, singleTableOutputHeader="Tuning Results")
             improve: {
                 el: new inputSpinner(config, {
                     no: "improve",
-                    label: localization.en.improve,
+                    label: tuneRandomForest.t('improve'),
                     min: 0,
                     max: 999999999,
                     step: 0.01,
@@ -128,7 +73,7 @@ BSkyFormat(bskyTuningResults, singleTableOutputHeader="Tuning Results")
                 el: new checkbox(config, {
                     //   label: "Click to Enable Input", 
                     no: "trace",
-                    label: localization.en.trace,
+                    label: tuneRandomForest.t('trace'),
                     bs_type: "valuebox",
                     extraction: "BooleanValue",
                     true_value: "TRUE",
@@ -141,7 +86,7 @@ BSkyFormat(bskyTuningResults, singleTableOutputHeader="Tuning Results")
                 el: new checkbox(config, {
                     //   label: "Click to Enable Input", 
                     no: "plot",
-                    label: localization.en.plot,
+                    label: tuneRandomForest.t('plot'),
                     bs_type: "valuebox",
                     extraction: "BooleanValue",
                     true_value: "TRUE",
@@ -155,13 +100,22 @@ BSkyFormat(bskyTuningResults, singleTableOutputHeader="Tuning Results")
             left: [objects.content_var.el.content],
             right: [objects.dependentvar.el.content, objects.independentvars.el.content, objects.ntreetry.el.content, objects.stepfactor.el.content, objects.improve.el.content, objects.trace.el.content, objects.plot.el.content],
             nav: {
-                name: localization.en.navigation,
+                name: tuneRandomForest.t('navigation'),
                 icon: "icon-tune",
                 modal: config.id
             }
         };
         super(config, objects, content);
-        this.help = localization.en.help;
+        
+        this.help = {
+            title: tuneRandomForest.t('help.title'),
+            r_help: "help(data,package='utils')",
+            body: tuneRandomForest.t('help.body')
+        }
+;
     }
 }
-module.exports.item = new tuneRandomForest().render()
+
+module.exports = {
+    render: () => new tuneRandomForest().render()
+}

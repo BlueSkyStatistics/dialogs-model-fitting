@@ -1,93 +1,14 @@
 
-var localization = {
-    en: {
-        title: "Rating Scale Model",
-        navigation: "Rating Scale Model",
-        modelname: "Enter model name",
-        destinationvars: "Desitination variable(s)",
-        estimationlbl: "Estimation",
-        rad1: "Use CML estimation",
-        chk1: "Compute standardized error",
-        chk2: "Normalize parameters to sum (0)",
-        rad2: "Use MML estimation",
-        help: {
-            title: "Rating Scale Model",
-            r_help: "help(RSM, package='eRm')",
-            body: `
-            <b>Description</b>
-            <br/>
-            Generates parameter estimates for a rating scale model
-            <br/><br/>
-            For CML estimation, we invoke eRm::RSM to compute the parameter estimates of a rating scale model for polychotomous item responses 
-            <br/><br/>
-            For MML estimation, we invoke tam.mml with appropriate parameters see below
-            <br/><br/>
-            <b>Usage for CML estimation</b>
-            <br/>
-            <code>
-            eRm::RSM(X,se=FALSE,sum0=FALSE) 
-            </code>  
-            <br/><br/>
-            <b>Arguments</b>
-            <br/>                      
-            <ul>
-            <li>
-            X:  Input 0/1 data matrix or data frame; rows represent individuals, columns represent items. Missing values are inserted as NA.
-            </li>
-            <li>
-            W:  Design matrix for the Rasch model. If omitted, the function will compute W automatically.
-            </li>
-            <li>
-            se: If TRUE, the standard errors are computed.
-            </li>
-            <li>
-            sum0: If TRUE, the parameters are normed to sum-0 by specifying an appropriate W. If FALSE, the first parameter is restricted to 0.
-            </li>
-            <li>
-            etaStart: A vector of starting values for the eta parameters can be specified. If missing, the 0-vector is used.
-            </li>
-            </ul>
-            <br/><br/><br/>
-            <b>Usage for MML estimation</b>
-            <br/>
-            <code>
-            tam.mml(resp,irtmodel="RSM",verbose=FALSE )
-            </code>
-            <br/><br/>
-            <b>Arguments</b>
-            <br/>             
-            <ul>
-            <li>
-            resp: Data frame with polytomous item responses k=0,...,K. Missing responses must be declared as NA.
-            </li>
-            <li>
-            irtmodel: For fixed item slopes (in tam.mml) options include PCM (partial credit model), PCM2 (partial credit model with ConQuest parametrization 'item+item*step' and RSM (rating scale model; the ConQuest parametrization 'item+step'). 
-            <br/>
-            For estimated item slopes (only available in tam.mml.2pl) options are 2PL (all slopes of item categories are estimated; Nominal Item Response Model), GPCM (generalized partial credit model in which every item gets one and only slope parameter per dimension) and 2PL.groups (subsets of items get same item slope estimates) and a design matrix E on item slopes in the generalized partial credit model (GPCM.design, see Examples). Note that item slopes can not be estimated with faceted designs using the function tam.mml.mfr. However, it is easy to use pre-specified design matrices and apply some restrictions to tam.mml.2pl
-            </li>
-            <li>
-            verbose: Logical indicating whether output should be printed during iterations. 
-            </li>
-            </ul>
-            <br/><br/>
-            <b>Packages</b>
-            <br/>
-            TAM, eRm
-            <br/><br/>
-            <b>Help</b>
-            <br/>
-            help(RSM, package='eRm')
-            <br/>
-            help(tam.mml, package='TAM')
-`}
-    }
-}
+
 
 class ratingScaleModel extends baseModal {
+    static dialogId = 'ratingScaleModel'
+    static t = baseModal.makeT(ratingScaleModel.dialogId)
+
     constructor() {
         var config = {
-            id: "ratingScaleModel",
-            label: localization.en.title,
+            id: ratingScaleModel.dialogId,
+            label: ratingScaleModel.t('title'),
             modalType: "two",
             RCode: `
 require(eRm);
@@ -113,7 +34,7 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
             modelname: {
                 el: new input(config, {
                     no: 'modelname',
-                    label: localization.en.modelname,
+                    label: ratingScaleModel.t('modelname'),
                     placeholder: "",
                     required: true,
                     type: "character",
@@ -124,7 +45,7 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
             },
             destinationvars: {
                 el: new dstVariableList(config, {
-                    label: localization.en.destinationvars,
+                    label: ratingScaleModel.t('destinationvars'),
                     no: "destinationvars",
                     required: true,
                     filter: "Numeric|Ordinal|Nominal|Scale",
@@ -133,10 +54,10 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
             },
 
 
-            label1: { el: new labelVar(config, { label: localization.en.estimationlbl, style: "mt-2", h: 6 }) },
+            label1: { el: new labelVar(config, { label: ratingScaleModel.t('estimationlbl'), style: "mt-2", h: 6 }) },
             cmlrad: {
                 el: new radioButton(config, {
-                    label: localization.en.rad1,
+                    label: ratingScaleModel.t('rad1'),
                     no: "estimation",
                     increment: "cml",
                     value: "CML",
@@ -147,7 +68,7 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
             },
             stderr: {
                 el: new checkbox(config, {
-                    label: localization.en.chk1,
+                    label: ratingScaleModel.t('chk1'),
                     no: "stderr",
                     style: "ml-4",
                     bs_type: "valuebox",
@@ -160,7 +81,7 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
             },
             normalize: {
                 el: new checkbox(config, {
-                    label: localization.en.chk2,
+                    label: ratingScaleModel.t('chk2'),
                     no: "normalize",
                     style: "ml-4",
                     bs_type: "valuebox",
@@ -174,7 +95,7 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
 
             mmlrad: {
                 el: new radioButton(config, {
-                    label: localization.en.rad2,
+                    label: ratingScaleModel.t('rad2'),
                     no: "estimation",
                     increment: "mml",
                     value: "MML",
@@ -191,13 +112,22 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
             objects.mmlrad.el.content
             ],
             nav: {
-                name: localization.en.navigation,
+                name: ratingScaleModel.t('navigation'),
                 icon: "icon-rs",
                 modal: config.id
             }
         };
         super(config, objects, content);
-        this.help = localization.en.help;
+        
+        this.help = {
+            title: ratingScaleModel.t('help.title'),
+            r_help: "help(data,package='utils')",
+            body: ratingScaleModel.t('help.body')
+        }
+;
     }
 }
-module.exports.item = new ratingScaleModel().render()
+
+module.exports = {
+    render: () => new ratingScaleModel().render()
+}

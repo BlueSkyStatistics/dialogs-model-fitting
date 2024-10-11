@@ -1,58 +1,14 @@
 
-var localization = {
-    en: {
-        title: "Load Models from a file",
-        navigation: "Load Models",
-        filterModels: "Filter models by class",
-        modelSelection: "Select a model to save",
-        importResp: "Select a file to load models from",
-        label1: "All the models in the file specified will be loaded into memory. Note: If you have existing models with the same name, they will be overwritten.",
-        levelOfInterest: "When the variable to predict has 2 levels, specify the level of interest. The confusion matrix and related statistics are displayed with the specified level of interest as the reference",
-        label12: "Test results: As soon as a model is selected, we will run tests to see whether dependent variables specified in the model are \navailable in the dataset to be scored. The results will be displayed here",
-        label2: "Save predicted values and supporting statistics.",
-        label3: "Predictions and predicted probabilities where applicable are stored in the dataset being scored as new variables with prefix below",
-        label4: "**For dependent variables with 2 levels, the 2nd level is treated as the positive level. See Data > Factor Levels > Reorder Levels Manually to change the order of factor levels and rebuild the model.",
-        conflevel: "Save confidence intervals for individual predicted values  **(Valid only for linear models (class lm))",
-        roctable: "Show ROC table (**For binary dependent variables only)",
-        colname: "Specify column name prefix",
-        label5: "**Checking the checkbox above will incur a performance penalty for large datasets.",
-        level: "Specify the confidence level",
-        confusioncheck: "Generate Confusion Matrix",
-        help: {
-            title: "Load Models",
-            r_help: "help(load, package='base')",
-            body: `
-<b>Description</b></br>
-R Model objects saved to the file selected will be loaded.</br>
-We will load ALL R objects saved to the selected file. If objects with the same name exist in the R global environment, they will be overwritten.</br>
-We will display a message confirming the models built with the BlueSky application that were loaded.</br>
-You have to click the execute button (the horizontal triangle button) to load R objects saved to the selected file. 
-<br/>
-<b>Usage</b>
-<br/>
-<code> 
-load(file ="path of the file")
-</code> <br/>
-<b>Arguments</b><br/>
-<ul>
-<li>
-file:file name with path, the model objects selected will be saved to this RData file
-</li>
-</ul>
-<b>Package</b></br>
-base</br>
-<b>Help</b></br>
-For detailed help click on the R icon on the top right hand side of this dialog overlay or run the following command help(load, package = 'base') in the R editor window
-</br>
-                `}
-    }
-}
+
 
 class loadAModel extends baseModal {
+    static dialogId = 'loadAModel'
+    static t = baseModal.makeT(loadAModel.dialogId)
+
     constructor() {
         var config = {
-            id: "loadAModel",
-            label: localization.en.title,
+            id: loadAModel.dialogId,
+            label: loadAModel.t('title'),
             modalType: "one",
             RCode: `
 base::load(file = "{{selected.importResp | safe}}")
@@ -68,13 +24,13 @@ local ({
 `
         }
         var objects = {
-            label1: { el: new labelVar(config, { label: localization.en.label1, no: "label1", h: 8, style: "mt-3" }) },
+            label1: { el: new labelVar(config, { label: loadAModel.t('label1'), no: "label1", h: 8, style: "mt-3" }) },
             
             importResp: {
                 el: new fileOpenControl(config, 
                     {
                         no: "importResp", 
-                        label: localization.en.importResp,
+                        label: loadAModel.t('importResp'),
                         extraction: "TextAsIs"
                     })}
             
@@ -82,14 +38,20 @@ local ({
         const content = {
             items: [objects.label1.el.content, objects.importResp.el.content ],
             nav: {
-                name: localization.en.navigation,
+                name: loadAModel.t('navigation'),
                 icon: "icon-package_install",
                 modal: config.id,
                 datasetRequired: false,
             }
         }
         super(config, objects, content);
-        this.help = localization.en.help;
+        
+        this.help = {
+            title: loadAModel.t('help.title'),
+            r_help: "help(data,package='utils')",
+            body: loadAModel.t('help.body')
+        }
+;
     }
      prepareExecution(instance) {
         var res = [];
@@ -119,4 +81,7 @@ local ({
         return res;
     } 
 }
-module.exports.item = new loadAModel().render()
+
+module.exports = {
+    render: () => new loadAModel().render()
+}

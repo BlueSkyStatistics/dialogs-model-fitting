@@ -1,167 +1,15 @@
 
 
-var localization = {
-    en: {
-        title: "Ordinal Regression",
-        navigation: "Ordinal",
-        label1:"Test method",
-        logit: "Logit",
-        probit: "Probit",
-        modelname: "Enter model name",
-        dependent: "Dependent variable",
-        formula: "Independent variable(s)",
-        generateplotchk: "Plot residuals vs fitted, normal Q-Q , scale-location and residuals vs leverage",
-        weights: "Specify a variable with weights",
-        help: {
-            title: "Ordinal",
-            r_help: "help(polr, package=MASS)",
-            body: `
-            <b>Description</b></br>
-            Fits a logistic or probit regression model to an ordered factor response. The default logistic case is proportional odds logistic regression, after which the function is named.
-            <br/>
-            <b>Usage</b>
-            <br/>
-            <code> 
-            polr(formula, data, weights, start, ..., subset, na.action,
-                 contrasts = NULL, Hess = FALSE, model = TRUE,
-                 method = c("logistic", "probit", "loglog", "cloglog", "cauchit"))
-            </code> <br/>
-            <b>Arguments</b><br/>
-            <ul>
-            <li>
-            formula: a formula expression as for regression models, of the form response ~ predictors. The response should be a factor (preferably an ordered factor), which will be interpreted as an ordinal response, with levels ordered as in the factor. The model must have an intercept: attempts to remove one will lead to a warning and be ignored. An offset may be used. See the documentation of formula for other details.
-            </li>
-            <li>
-            data: an optional data frame in which to interpret the variables occurring in formula.
-            </li>
-            <li>
-            weights: optional case weights in fitting. Default to 1.
-            </li>
-            <li>
-            start: initial values for the parameters. This is in the format c(coefficients, zeta): see the Values section.
-            </li>
-            <li>
-            ... additional arguments to be passed to optim, most often a control argument.
-            </li>
-            <li>
-            subset: expression saying which subset of the rows of the data should be used in the fit. All observations are included by default.
-            </li>
-            <li>
-            na.action: a function to filter missing data.
-            </li>
-            <li>
-            contrasts: a list of contrasts to be used for some or all of the factors appearing as variables in the model formula.
-            </li>
-            <li>
-            Hess: logical for whether the Hessian (the observed information matrix) should be returned. Use this if you intend to call summary or vcov on the fit.
-            </li>
-            <li>
-            model: logical for whether the model matrix should be returned.
-            </li>
-            <li>
-            method: logistic or probit or (complementary) log-log or cauchit (corresponding to a Cauchy latent variable).
-            </li>
-            </ul>
-            <b>Details</b></br>
-            This model is what Agresti (2002) calls a cumulative link model. The basic interpretation is as a coarsened version of a latent variable Y_i which has a logistic or normal or extreme-value or Cauchy distribution with scale parameter one and a linear model for the mean. The ordered factor which is observed is which bin Y_i falls into with breakpoints
-            zeta_0 = -Inf < zeta_1 < … < zeta_K = Inf</br>
-            This leads to the model</br>
-            logit P(Y <= k | x) = zeta_k - eta</br>
-            with logit replaced by probit for a normal latent variable, and eta being the linear predictor, a linear function of the explanatory variables (with no intercept). Note that it is quite common for other software to use the opposite sign for eta (and hence the coefficients beta).</br>
-            In the logistic case, the left-hand side of the last display is the log odds of category k or less, and since these are log odds which differ only by a constant for different k, the odds are proportional. Hence the term proportional odds logistic regression.</br>
-            The log-log and complementary log-log links are the increasing functions F^-1(p) = -log(-log(p)) and F^-1(p) = log(-log(1-p)); some call the first the ‘negative log-log’ link. These correspond to a latent variable with the extreme-value distribution for the maximum and minimum respectively.</br>
-            A proportional hazards model for grouped survival times can be obtained by using the complementary log-log link with grouping ordered by increasing times.</br>
-            predict, summary, vcov, anova, model.frame and an extractAIC method for use with stepAIC (and step). There are also profile and confint methods.</br>
-            <b>Value</b><br/>
-            A object of class "polr". This has components
-            <li>
-            coefficients: the coefficients of the linear predictor, which has no intercept.
-            </li>
-            <li>
-            zeta: the intercepts for the class boundaries.
-            </li>
-            <li>
-            deviance: the residual deviance.
-            </li>
-            <li>
-            fitted.values: a matrix, with a column for each level of the response.
-            </li>
-            <li>
-            lev: the names of the response levels.
-            </li>
-            <li>
-            terms: the terms structure describing the model.
-            </li>
-            <li>
-            df.residual: the number of residual degrees of freedoms, calculated using the weights.
-            </li>
-            <li>
-            edf: the (effective) number of degrees of freedom used by the model
-            </li>
-            <li>
-            n, nobs: the (effective) number of observations, calculated using the weights. (nobs is for use by stepAIC.
-            </li>
-            <li>
-            call: the matched call.
-            </li>
-            <li>
-            method: the matched method used.
-            </li>
-            <li>
-            convergence: the convergence code returned by optim.
-            </li>
-            <li>
-            niter: the number of function and gradient evaluations used by optim.
-            </li>
-            <li>
-            lp: the linear predictor (including any offset).</li>
-            <li>
-            Hessian: (if Hess is true). Note that this is a numerical approximation derived from the optimization process.
-            </li>
-            <li>
-            model:(if model is true).
-            </li>
-            <li>
-            Note</br>
-            The vcov method uses the approximate Hessian: for reliable results the model matrix should be sensibly scaled with all columns having range the order of one.</br>
-            Prior to version 7.3-32, method = "cloglog" confusingly gave the log-log link, implicitly assuming the first response level was the ‘best’.</br>
-            <br/>
-            <b>Examples</b><br/>
-            <code> 
-            options(contrasts = c("contr.treatment", "contr.poly"))<br/>
-            house.plr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)<br/>
-            house.plr<br/>
-            summary(house.plr, digits = 3)<br/>
-            ## slightly worse fit from<br/>
-            summary(update(house.plr, method = "probit", Hess = TRUE), digits = 3)<br/>
-            ## although it is not really appropriate, can fit<br/>
-            summary(update(house.plr, method = "loglog", Hess = TRUE), digits = 3)<br/>
-            summary(update(house.plr, method = "cloglog", Hess = TRUE), digits = 3)<br/>
-            <br/>
-            predict(house.plr, housing, type = "p")<br/>
-            addterm(house.plr, ~.^2, test = "Chisq")<br/>
-            house.plr2 <- stepAIC(house.plr, ~.^2)<br/>
-            house.plr2$anova<br/>
-            anova(house.plr, house.plr2)<br/>
-            <br/>
-            house.plr <- update(house.plr, Hess=TRUE)<br/>
-            pr <- profile(house.plr)<br/>
-            confint(pr)<br/>
-            plot(pr)<br/>
-            pairs(pr)<br/>
-            </code> <br/>
-            <b>Package</b></br>
-            MASS</br>
-            <b>Help</b></br>
-            For detailed help click on the R icon on the top right hand side of this dialog overlay or run the following command help(polr, package =MASS) by creating a R code chunk by clicking + in the output window			`}
-    }
-}
+
 
 class ordinalRegression extends baseModal {
+    static dialogId = 'ordinalRegression'
+    static t = baseModal.makeT(ordinalRegression.dialogId)
+
     constructor() {
         var config = {
-            id: "ordinalRegression",
-            label: localization.en.title,
+            id: ordinalRegression.dialogId,
+            label: ordinalRegression.t('title'),
             modalType: "two",
            /* 
 These comments are needed for compatibilty and reference
@@ -337,7 +185,7 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
             model: {
                 el: new input(config, {
                     no: 'model',
-                    label: localization.en.modelname,
+                    label: ordinalRegression.t('modelname'),
                     placeholder: "",
                     required: true,
                     type: "character",
@@ -347,10 +195,10 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
                 })
             },
 
-            label1: { el: new labelVar(config, { label: localization.en.label1, style: "mt-2", h: 6 }) },
+            label1: { el: new labelVar(config, { label: ordinalRegression.t('label1'), style: "mt-2", h: 6 }) },
             logit: {
                 el: new radioButton(config, {
-                    label: localization.en.logit,
+                    label: ordinalRegression.t('logit'),
                     no: "method",
                     increment: "logit",
                     value: "logistic",
@@ -360,7 +208,7 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
             },
             probit: {
                 el: new radioButton(config, {
-                    label: localization.en.probit,
+                    label: ordinalRegression.t('probit'),
                     no: "method",
                     increment: "probit",
                     value: "probit",
@@ -371,7 +219,7 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
 
             dependent: {
                 el: new dstVariable(config, {
-                    label: localization.en.dependent,
+                    label: ordinalRegression.t('dependent'),
                     no: "dependent",
                     filter: "Numeric|Ordinal",
                     extraction: "NoPrefix|UseComma",
@@ -386,7 +234,7 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
             },
             generateplotchk: {
                 el: new checkbox(config, {
-                    label: localization.en.generateplotchk,
+                    label: ordinalRegression.t('generateplotchk'),
                     no: "generateplotchk",
                     bs_type: "valuebox",
                     extraction: "BooleanValue",
@@ -396,7 +244,7 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
             },
             weights: {
                 el: new dstVariable(config, {
-                    label: localization.en.weights,
+                    label: ordinalRegression.t('weights'),
                     no: "weights",
                     filter: "String|Numeric|Date|Logical|Ordinal|Nominal|Scale",
                     extraction: "NoPrefix|UseComma",
@@ -407,13 +255,19 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
             left: [objects.content_var.el.content],
             right: [objects.model.el.content, objects.label1.el.content, objects.logit.el.content, objects.probit.el.content,objects.dependent.el.content, objects.formulaBuilder.el.content,  objects.weights.el.content],
             nav: {
-                name: localization.en.navigation,
+                name: ordinalRegression.t('navigation'),
                 icon: "icon-regression_ordinal",
                 modal: config.id
             }
         };
         super(config, objects, content);
-        this.help = localization.en.help;
+        
+        this.help = {
+            title: ordinalRegression.t('help.title'),
+            r_help: "help(data,package='utils')",
+            body: ordinalRegression.t('help.body')
+        }
+;
     }
 
     prepareExecution(instance) {
