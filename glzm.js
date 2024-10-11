@@ -1,7 +1,6 @@
 
 
 
-
 class glzm extends baseModal {
     static dialogId = 'glzm'
     static t = baseModal.makeT(glzm.dialogId)
