@@ -103,7 +103,7 @@ base::save({{selected.modelSelection | safe}}, file = "{{selected.importResp | s
             if (response ==2) return res
           } */
         const cmd = instance.dialog.renderR(code_vars);
-        res.push({ cmd: cmd, cgid: newCommandGroup() })
+        res.push({ cmd: cmd, cgid: newCommandGroup(`${instance.config.id}`, `${instance.config.label}`), oriR: instance.config.RCode, code_vars: code_vars })
         return res;
     } 
 }

@@ -283,7 +283,7 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
         code_vars.selected.rCharacterArray = stringToRCharacterArray(independentVars)
         code_vars.selected.all_vars = stringToRCharacterArray(independentVars  +","+code_vars.selected.dependent)
         const cmd = instance.dialog.renderR(code_vars);
-        res.push({ cmd: cmd, cgid: newCommandGroup() })
+        res.push({ cmd: cmd, cgid: newCommandGroup(`${instance.config.id}`, `${instance.config.label}`), oriR: instance.config.RCode, code_vars: code_vars })
         return res;
        
     }
