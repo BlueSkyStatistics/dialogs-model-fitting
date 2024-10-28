@@ -1583,7 +1583,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
     {
       finalString = instance.dialog.renderR(code_vars);
     }
-    res.push({ cmd: finalString, cgid: newCommandGroup() })
+    res.push({ cmd: finalString, cgid: newCommandGroup(`${instance.config.id}`, `${instance.config.label}`), oriR: instance.config.RCode, code_vars: code_vars })
     if (flippedParameterCheckbox)
     {
       $(`#${parameterizeFormulaChkId}`).prop('checked',true)
