@@ -159,7 +159,7 @@ BSkyLoadRefresh("{{selected.datasetToScore | safe}}")
                     extraction: "NoPrefix|UseComma"
                 })
             },
-            Group1: { el: new labelVar(config, { label: localization.en.Group1, style: "mt-3",h: 6 }) },
+            /*Group1: { el: new labelVar(config, { label: localization.en.Group1, style: "mt-3",h: 6 }) },
             splitPercentage: {
                 el: new inputSpinner(config, {
                     no: 'splitPercentage',
@@ -170,7 +170,7 @@ BSkyLoadRefresh("{{selected.datasetToScore | safe}}")
                     value: 80,
                     extraction: "NoPrefix|UseComma"
                 })
-            },
+            },*/
            
             predictedValues: {
                 el: new input(config, {
