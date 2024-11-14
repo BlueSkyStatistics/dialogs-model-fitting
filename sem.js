@@ -72,6 +72,7 @@ var localization = {
     label102: "Layout",
     label103: "Nodes",
     semPlotOptions: "Plot options",
+    parameterOptions:"Parameter Options",
     manifestShapes: "Manifest shapes",
     latentShapes: "Latent shapes",
     outputOptions: "Output options",
