@@ -485,7 +485,7 @@ BSkyFormat(as.data.frame(unclass(BSkyRsquared[[2]])), singleTableOutputHeader = 
             tempoutput += "lmer(" + code_vars.selected.tvarbox1 + "~" + code_vars.selected.tvarbox2 + code_vars.selected.estimator + ", data =" + code_vars.dataset.name + ")\n";
         }
         if (errorRaised) {
-            res.push({ cmd: tempoutput, cgid: newCommandGroup() })
+            res.push({ cmd: tempoutput, cgid: newCommandGroup(`${instance.config.id}`, `${instance.config.label}`), oriR: instance.config.RCode, code_vars: code_vars })
             return res;
         }
         if (!errorRaised) 
@@ -770,7 +770,7 @@ BSkyFormat(as.data.frame(unclass(BSkyRsquared[[2]])), singleTableOutputHeader = 
         tempoutput += "if (exists('reg_formula')){rm(reg_formula)}\n";
         tempoutput += "if (exists('reg_equation')){rm(reg_equation)}\n";
         tempoutput = tempoutput + "\n\n";
-        res.push({ cmd: tempoutput, cgid: newCommandGroup() })
+        res.push({ cmd: tempoutput, cgid: newCommandGroup(`${instance.config.id}`, `${instance.config.label}`), oriR: instance.config.RCode, code_vars: code_vars })
         return res;
     }
 }
