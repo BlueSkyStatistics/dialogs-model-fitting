@@ -64,7 +64,7 @@ help(knn, package ='class')
     }
 }
 
-class KNN extends baseModal {
+class kNearestNeighbhors extends baseModal {
     constructor() {
         var config = {
             id: "kNearestNeighbhors",
@@ -211,4 +211,4 @@ BSkyLoadRefresh("{{selected.testDatasetName | safe}}")
         this.help = localization.en.help;
     }
 }
-module.exports.item = new KNN().render()
+module.exports.item = new kNearestNeighbhors().render()

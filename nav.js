@@ -29,7 +29,7 @@ const nav = [
                 "name": "KNN",
                 "icon": "icon-network",
                 "children": [
-                    "./KNN",
+                    "./kNearestNeighbhors",
                     "./KNNPredict"
                 ]
             },
@@ -44,7 +44,7 @@ const nav = [
                     "./logisticRegression",
                     "./multiNomialLogistic",
                     "./ordinalRegression",
-                    "./quantileregression"
+                    "./QuantileRegression"
                 ]
             },
             {
@@ -69,7 +69,7 @@ const nav = [
                 "name": "Trees",
                 "icon": "icon-tree",
                 "children": [
-                    "./decisionTrees",
+                    "./decisionTreesEZ",
                     "./extremeGradientBoosting",
                     "./optimalNoTrees",                
                     "./randomForest",
