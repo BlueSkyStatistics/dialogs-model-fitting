@@ -7,6 +7,7 @@ var localization = {
         modelname: "Enter model name",
         dependent: "Dependent variable",
         independent: "Independent variable(s)",
+        unusualObservations: "Fit and diagnostics for unusual observations",
         generateplotchk: "Plot residuals vs fitted, normal Q-Q , scale-location and residuals vs leverage",
         weights: "Specify a variable with weights",
         help: {
@@ -85,6 +86,11 @@ matSumOfSquares = matrix(c(regSumOfSquares, residualSumOfSquares,
         "Sum of squares of residuals", "Total sum of squares"), 
         c("Values")))
 BSkyFormat(matSumOfSquares, singleTableOutputHeader = "Sum of squares Table")
+
+{{if (options.selected.unusualObservations == "TRUE")}}#Fit and diagnostics for unusual observations\nBSkyUnusualObs({{selected.modelname | safe}},{{dataset.name}}\${{selected.dependent | safe}},"{{selected.dependent | safe}}" ){{/if}}
+
+
+
 #remove(BSky_LM_Summary_{{selected.modelname | safe}})
 #remove({{selected.modelname | safe}})
 {{if (options.selected.generateplotchk == "TRUE")}}#displaying plots\n#Plots residuals vs. fitted, normal Q-Q, scale-location, residuals vs. leverage\nplot({{selected.modelname | safe}}){{/if}}
@@ -134,6 +140,17 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
                     false_value: "FALSE",
                 })
             },
+            unusualObservations: {
+                el: new checkbox(config, {
+                    label: localization.en.unusualObservations,
+                    no: "unusualObservations",
+                    style: "mt-2 mb-3",
+                    bs_type: "valuebox",
+                    extraction: "BooleanValue",
+                    true_value: "TRUE",
+                    false_value: "FALSE",
+                })
+            },
             weights: {
                 el: new dstVariable(config, {
                     label: localization.en.weights,
@@ -146,7 +163,7 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
         };
         const content = {
             left: [objects.content_var.el.content],
-            right: [objects.modelname.el.content, objects.dependent.el.content, objects.formulaBuilder.el.content, objects.generateplotchk.el.content, objects.weights.el.content],
+            right: [objects.modelname.el.content, objects.dependent.el.content, objects.formulaBuilder.el.content, objects.generateplotchk.el.content, objects.unusualObservations.el.content,objects.weights.el.content],
             nav: {
                 name: localization.en.navigation,
                 icon: "icon-linear_regression_formula",
