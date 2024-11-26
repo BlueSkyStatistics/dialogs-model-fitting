@@ -1591,4 +1591,8 @@ if (exists('BSkyDV'))rm(BSkyDV)
     return res;
   }
 }
-module.exports.item = new sem().render()
+
+module.exports = {
+    render: () => new sem().render()
+}
+

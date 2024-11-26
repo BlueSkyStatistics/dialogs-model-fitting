@@ -1,14 +1,14 @@
 
 
 
-class KNN extends baseModal {
-    static dialogId = 'KNN'
-    static t = baseModal.makeT(KNN.dialogId)
+class kNearestNeighbhors extends baseModal {
+    static dialogId = 'kNearestNeighbhors'
+    static t = baseModal.makeT(kNearestNeighbhors.dialogId)
 
     constructor() {
         var config = {
-            id: KNN.dialogId,
-            label: KNN.t('title'),
+            id: kNearestNeighbhors.dialogId,
+            label: kNearestNeighbhors.t('title'),
             modalType: "two",
             RCode: `
 require(caret)
@@ -51,11 +51,11 @@ BSkyLoadRefresh("{{selected.testDatasetName | safe}}")
 `
         }
         var objects = {
-            header: { el: new labelVar(config, { label: KNN.t('header'), style: "mt-3",h: 6 }) },
+            header: { el: new labelVar(config, { label: kNearestNeighbhors.t('header'), style: "mt-3",h: 6 }) },
             content_var: { el: new srcVariableList(config, {action: "move"}) },
             dependentvar: {
                 el: new dstVariable(config, {
-                    label: KNN.t('dependentvar'),
+                    label: kNearestNeighbhors.t('dependentvar'),
                     no: "dependentvar",
                     required: true,
                     filter: "String|Numeric|Logical|Ordinal|Nominal|Scale",
@@ -64,7 +64,7 @@ BSkyLoadRefresh("{{selected.testDatasetName | safe}}")
             },
             independentvars: {
                 el: new dstVariableList(config, {
-                    label: KNN.t('independentvars'),
+                    label: kNearestNeighbhors.t('independentvars'),
                     no: "independentvars",
                     filter: "String|Numeric|Logical|Ordinal|Nominal|Scale",
                     required: true,
@@ -75,28 +75,28 @@ BSkyLoadRefresh("{{selected.testDatasetName | safe}}")
                 el: new input(config, {
                     no: 'Seed',
                     allow_spaces:true,
-                    label: KNN.t('Seed'),
+                    label: kNearestNeighbhors.t('Seed'),
                     placeholder: "Enter a value for seed",
                     extraction: "TextAsIs",
                     value: 123
                 }),
             },
-            Group2: { el: new labelVar(config, { label: KNN.t('Group2'),  style: "mt-3", h: 6 }) },
+            Group2: { el: new labelVar(config, { label: kNearestNeighbhors.t('Group2'),  style: "mt-3", h: 6 }) },
             noneighbhors: {
                 el: new inputSpinner(config, {
                     no: 'noneighbhors',
-                    label: KNN.t('noneighbhors'),
+                    label: kNearestNeighbhors.t('noneighbhors'),
                     min: 0,
                     max: 9999999,
                     step: 1,
                     extraction: "NoPrefix|UseComma"
                 })
             },
-            Group1: { el: new labelVar(config, { label: KNN.t('Group1'), style: "mt-3",h: 6 }) },
+            Group1: { el: new labelVar(config, { label: kNearestNeighbhors.t('Group1'), style: "mt-3",h: 6 }) },
             splitPercentage: {
                 el: new inputSpinner(config, {
                     no: 'splitPercentage',
-                    label: KNN.t('splitPercentage'),
+                    label: kNearestNeighbhors.t('splitPercentage'),
                     min: 0,
                     max: 100,
                     step: 1,
@@ -108,7 +108,7 @@ BSkyLoadRefresh("{{selected.testDatasetName | safe}}")
                 el: new input(config, {
                     no: 'trainDatasetName',
                     required: true,
-                    label: KNN.t('trainDatasetName'),
+                    label: kNearestNeighbhors.t('trainDatasetName'),
                     placeholder: "",
                     extraction: "TextAsIs",
                     value: "trainData"
@@ -117,7 +117,7 @@ BSkyLoadRefresh("{{selected.testDatasetName | safe}}")
             testDatasetName: {
                 el: new input(config, {
                     no: 'testDatasetName',
-                    label: KNN.t('testDatasetName'),
+                    label: kNearestNeighbhors.t('testDatasetName'),
                     placeholder: "",
                     required: true,
                     extraction: "TextAsIs",
@@ -127,7 +127,7 @@ BSkyLoadRefresh("{{selected.testDatasetName | safe}}")
             predictedValues: {
                 el: new input(config, {
                     no: 'predictedValues',
-                    label: KNN.t('predictedValues'),
+                    label: kNearestNeighbhors.t('predictedValues'),
                     placeholder: "",
                     required: true,
                     extraction: "TextAsIs",
@@ -141,7 +141,7 @@ BSkyLoadRefresh("{{selected.testDatasetName | safe}}")
             right: [objects.dependentvar.el.content, objects.independentvars.el.content],
             bottom: [objects.Seed.el.content, objects.Group2.el.content, objects.noneighbhors.el.content, objects.Group1.el.content, objects.splitPercentage.el.content, objects.trainDatasetName.el.content, objects.testDatasetName.el.content, objects.predictedValues.el.content],
             nav: {
-                name: KNN.t('navigation'),
+                name: kNearestNeighbhors.t('navigation'),
                // icon: "icon-knn",
                icon: "icon-network",
                 modal: config.id
@@ -150,14 +150,14 @@ BSkyLoadRefresh("{{selected.testDatasetName | safe}}")
         super(config, objects, content);
         
         this.help = {
-            title: KNN.t('help.title'),
+            title: kNearestNeighbhors.t('help.title'),
             r_help: "help(data,package='utils')",
-            body: KNN.t('help.body')
+            body: kNearestNeighbhors.t('help.body')
         }
 ;
     }
 }
 
 module.exports = {
-    render: () => new KNN().render()
+    render: () => new kNearestNeighbhors().render()
 }

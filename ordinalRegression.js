@@ -289,5 +289,9 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
     }
 
 }
-module.exports.item = new ordinalRegression().render()
+
+module.exports = {
+    render: () => new ordinalRegression().render()
+}
+
 

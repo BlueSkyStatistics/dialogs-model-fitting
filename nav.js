@@ -1,11 +1,12 @@
-const nav = [
+// const i18next = require("i18next");
+const nav = () => ([
     {
-        "name": "Model Fitting",
+        "name": i18next.t('modelfitting_top_level_title', {ns: 'menutoolbar'}),
         "tab": "model_fitting",
         "buttons": [
             
             {
-                "name": "Contrasts",
+                "name": i18next.t('modelfitting_Contrasts', {ns: 'menutoolbar'}),
                 "icon": "icon-brightness-and-contrast",
                 "children": [
                     "./contrastsDisplay",
@@ -14,7 +15,7 @@ const nav = [
             },
             "./glzm",
             {
-                "name": "IRT",
+                "name": i18next.t('modelfitting_IRT', {ns: 'menutoolbar'}),
                 "icon": "icon-lamp",
                 "children": [
                     "./IRT/partialCreditModel",
@@ -26,15 +27,15 @@ const nav = [
                 ]
             },
             {
-                "name": "KNN",
+                "name": i18next.t('modelfitting_KNN', {ns: 'menutoolbar'}),
                 "icon": "icon-network",
                 "children": [
-                    "./KNN",
+                    "./kNearestNeighbhors",
                     "./KNNPredict"
                 ]
             },
         {
-                "name": "Regression",
+                "name": i18next.t('modelfitting_Regression', {ns: 'menutoolbar'}),
                 "icon": "icon-linear_regression_white_comp",
                 "children": [
                     "./linearRegressionFormula",
@@ -44,11 +45,11 @@ const nav = [
                     "./logisticRegression",
                     "./multiNomialLogistic",
                     "./ordinalRegression",
-                    "./quantileregression"
+                    "./QuantileRegression"
                 ]
             },
             {
-                "name": "Nonlinear Regression",
+                "name": i18next.t('modelfitting_Nonlinear_Regression', {ns: 'menutoolbar'}),
                 "icon": "icon-logistic_white_comp",
                 "children": [
         
@@ -57,7 +58,7 @@ const nav = [
             "./mixedModelsBasic",
             "./naiveBayes",
             {
-                "name": "Neural Nets",
+                "name": i18next.t('modelfitting_Neural_Nets', {ns: 'menutoolbar'}),
                 "icon": "icon-brain",
                 "children": [
                     "./multiLayerPerceptron",
@@ -66,10 +67,10 @@ const nav = [
             },
             "./sem",  
             {
-                "name": "Trees",
+                "name": i18next.t('modelfitting_Trees', {ns: 'menutoolbar'}),
                 "icon": "icon-tree",
                 "children": [
-                    "./decisionTrees",
+                    "./decisionTreesEZ",
                     "./extremeGradientBoosting",
                     "./optimalNoTrees",                
                     "./randomForest",
@@ -81,7 +82,7 @@ const nav = [
         ]
     },
     {
-        "name": "File",
+        "name": i18next.t('modelfitting_File', {ns: 'menutoolbar'}),
         "tab": "file",
         "buttons": [
             {
@@ -95,6 +96,9 @@ const nav = [
         ]
 
     }
-]
+])
 
-module.exports.nav = nav
+module.exports = {
+    nav: nav(),
+    render: () => nav()
+}
