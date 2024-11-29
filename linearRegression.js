@@ -60,6 +60,8 @@ matrix(c(BSkyregSumOfSquares, BSkyresidualSumOfSquares,
 # Model Plotting
 {{if (options.selected.generateplotchk == "TRUE")}}#displaying plots\n#Plots residuals vs. fitted, normal Q-Q, scale-location, residuals vs. leverage\n{{selected.modelname | safe}} %>%\n\tplot(){{/if}}
 
+{{if (options.selected.unusualObservations == "TRUE")}}#Fit and diagnostics for unusual observations\nBSkyUnusualObs({{selected.modelname | safe}},{{dataset.name}}\${{selected.dependent | safe}},"{{selected.dependent | safe}}" ){{/if}}
+
 #Adding attributes to support scoring
 #We don't add dependent and independent variables as this is handled by our functions
 attr(.GlobalEnv\${{selected.modelname | safe}},"classDepVar")= class({{dataset.name}}[, c("{{selected.dependent | safe}}")])
@@ -127,6 +129,17 @@ if (exists("BSkytotalSumOfSquares")) rm (BSkytotalSumOfSquares)
                     false_value: "FALSE",
                 })
             },
+            unusualObservations: {
+                el: new checkbox(config, {
+                    label: linearRegression.t('unusualObservations'),
+                    no: "unusualObservations",
+                    style: "mt-2 mb-3",
+                    bs_type: "valuebox",
+                    extraction: "BooleanValue",
+                    true_value: "TRUE",
+                    false_value: "FALSE",
+                })
+            },
             weights: {
                 el: new dstVariable(config, {
                     label: linearRegression.t('weights'),
@@ -139,7 +152,7 @@ if (exists("BSkytotalSumOfSquares")) rm (BSkytotalSumOfSquares)
         };
         const content = {
             left: [objects.content_var.el.content],
-            right: [objects.modelname.el.content, objects.dependent.el.content, objects.independent.el.content, objects.nointercept.el.content, objects.generateplotchk.el.content, objects.weights.el.content],
+            right: [objects.modelname.el.content, objects.dependent.el.content, objects.independent.el.content, objects.nointercept.el.content, objects.generateplotchk.el.content, objects.unusualObservations.el.content,objects.weights.el.content],
             nav: {
                 name: linearRegression.t('navigation'),
                 icon: "icon-linear_regression_white_comp",
