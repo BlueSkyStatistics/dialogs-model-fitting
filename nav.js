@@ -1,12 +1,12 @@
-// const i18next = require("i18next");
+let t = getT('menutoolbar')
 const nav = () => ([
     {
-        "name": i18next.t('modelfitting_top_level_title', {ns: 'menutoolbar'}),
+        "name": t('modelfitting_top_level_title'),// {ns: 'menutoolbar'}),
         "tab": "model_fitting",
         "buttons": [
             
             {
-                "name": i18next.t('modelfitting_Contrasts', {ns: 'menutoolbar'}),
+                "name": t('modelfitting_Contrasts'),// {ns: 'menutoolbar'}),
                 "icon": "icon-brightness-and-contrast",
                 "children": [
                     "./contrastsDisplay",
@@ -15,7 +15,7 @@ const nav = () => ([
             },
             "./glzm",
             {
-                "name": i18next.t('modelfitting_IRT', {ns: 'menutoolbar'}),
+                "name": t('modelfitting_IRT'),// {ns: 'menutoolbar'}),
                 "icon": "icon-lamp",
                 "children": [
                     "./IRT/partialCreditModel",
@@ -27,7 +27,7 @@ const nav = () => ([
                 ]
             },
             {
-                "name": i18next.t('modelfitting_KNN', {ns: 'menutoolbar'}),
+                "name": t('modelfitting_KNN'),// {ns: 'menutoolbar'}),
                 "icon": "icon-network",
                 "children": [
                     "./kNearestNeighbhors",
@@ -35,7 +35,7 @@ const nav = () => ([
                 ]
             },
         {
-                "name": i18next.t('modelfitting_Regression', {ns: 'menutoolbar'}),
+                "name": t('modelfitting_Regression'),// {ns: 'menutoolbar'}),
                 "icon": "icon-linear_regression_white_comp",
                 "children": [
                     "./linearRegressionFormula",
@@ -49,7 +49,7 @@ const nav = () => ([
                 ]
             },
             {
-                "name": i18next.t('modelfitting_Nonlinear_Regression', {ns: 'menutoolbar'}),
+                "name": t('modelfitting_Nonlinear_Regression'),// {ns: 'menutoolbar'}),
                 "icon": "icon-logistic_white_comp",
                 "children": [
         
@@ -58,7 +58,7 @@ const nav = () => ([
             "./mixedModelsBasic",
             "./naiveBayes",
             {
-                "name": i18next.t('modelfitting_Neural_Nets', {ns: 'menutoolbar'}),
+                "name": t('modelfitting_Neural_Nets'),// {ns: 'menutoolbar'}),
                 "icon": "icon-brain",
                 "children": [
                     "./multiLayerPerceptron",
@@ -67,7 +67,7 @@ const nav = () => ([
             },
             "./sem",  
             {
-                "name": i18next.t('modelfitting_Trees', {ns: 'menutoolbar'}),
+                "name": t('modelfitting_Trees'),// {ns: 'menutoolbar'}),
                 "icon": "icon-tree",
                 "children": [
                     "./decisionTreesEZ",
@@ -82,11 +82,11 @@ const nav = () => ([
         ]
     },
     {
-        "name": i18next.t('modelfitting_File', {ns: 'menutoolbar'}),
+        "name": t('modelfitting_File'),// {ns: 'menutoolbar'}),
         "tab": "file",
         "buttons": [
             {
-                "name": "Model",
+                "name": t('modelfitting_File_Model'),// {ns: 'menutoolbar'}),
                 "icon": "icon-package_install",
                 "children": [
                     "./loadAModel",
