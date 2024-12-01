@@ -1,4 +1,4 @@
-let t = getT('menutoolbar')
+const {t} = global.i18next
 const nav = () => ([
     {
         "name": t('modelfitting_top_level_title'),// {ns: 'menutoolbar'}),
