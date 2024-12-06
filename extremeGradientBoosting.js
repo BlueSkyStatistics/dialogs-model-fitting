@@ -20,6 +20,9 @@ var localization = {
         basescore: "Base score",
         Verbose: "Verbose mode (0=Silent, 1=performance info, 2= other info)",
         printevery: "Print each n-th iteration evaluation messages when verbose > 0",
+		OptvarTaskparam: "Task Parameters",
+		OptvarAdvDiagnostics: "Advanced Diagnostics",
+		OptvarTreeBoostparam: "Parameters for Tree Boosting",	
         help: {
             title: "Extreme Gradient Boosting",
             r_help: "help(xgboost, package ='xgboost')",
@@ -331,7 +334,7 @@ rm(BSkyImpMatrix)
         var taskParameters = {
             el: new optionsVar(config, {
                 no: "taskParameters",
-                name: "Task Parameters",
+                name: localization.en.OptvarTaskparam,
                 content: [
                     objects.objective.el,
                     objects.numclasses.el,
@@ -342,7 +345,7 @@ rm(BSkyImpMatrix)
         var advanced = {
             el: new optionsVar(config, {
                 no: "advanced",
-                name: "Advanced Diagnostics",
+                name: localization.en.OptvarAdvDiagnostics,
                 content: [
                     objects.Verbose.el,
                     objects.printevery.el,
@@ -352,7 +355,7 @@ rm(BSkyImpMatrix)
         var paramsTreeBoosting = {
             el: new optionsVar(config, {
                 no: "paramsTreeBoosting",
-                name: "Parameters for Tree Boosting",
+                name: localization.en.OptvarTreeBoostparam,
                 content: [
                     objects.maxdepth.el,
                     objects.minchildweight.el,

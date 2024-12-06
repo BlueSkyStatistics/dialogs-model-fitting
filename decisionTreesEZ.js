@@ -19,6 +19,9 @@ var localization = {
         TxtCPPrune: "Enter complexity parameter",
         PlotCVChkbox: "Plot cross-validation",
         PlotRSQRChkbox: "Plot R-squared ",
+		OptvarPlots: "Plots",
+		OptvarPreprune: "PrePruning",
+		OptvarPrune: "Prune Tree",	
         help: {
             title: "Decision Trees",
             r_help: "help(rpart, package ='rpart')",
@@ -380,7 +383,7 @@ rm(bsky_tree)
         var plots = {
             el: new optionsVar(config, {
                 no: "plots",
-                name: "Plots",
+                name: localization.en.OptvarPlots,
                 content: [
                     objects.PlotCVChkbox.el,
                     objects.PlotRSQRChkbox.el
@@ -390,7 +393,7 @@ rm(bsky_tree)
         var prePruningOptions = {
             el: new optionsVar(config, {
                 no: "prePruningOptions",
-                name: "PrePruning",
+                name: localization.en.OptvarPreprune,
                 content: [
                     objects.TxtMinSplit.el,
                     objects.minBucket.el,
@@ -402,7 +405,7 @@ rm(bsky_tree)
         var pruneTree = {
             el: new optionsVar(config, {
                 no: "pruneTree",
-                name: "Prune Tree",
+                name: localization.en.OptvarPrune,
                 content: [
                     objects.radio1.el,
                     objects.radio2.el,
