@@ -230,7 +230,7 @@ rm(bsky_tree)
         var plots = {
             el: new optionsVar(config, {
                 no: "plots",
-                name: "Plots",
+                name: decisionTreesEZ.t('OptvarPlots'),
                 content: [
                     objects.PlotCVChkbox.el,
                     objects.PlotRSQRChkbox.el
@@ -240,7 +240,7 @@ rm(bsky_tree)
         var prePruningOptions = {
             el: new optionsVar(config, {
                 no: "prePruningOptions",
-                name: "PrePruning",
+                name: decisionTreesEZ.t('OptvarPreprune'),
                 content: [
                     objects.TxtMinSplit.el,
                     objects.minBucket.el,
@@ -252,7 +252,7 @@ rm(bsky_tree)
         var pruneTree = {
             el: new optionsVar(config, {
                 no: "pruneTree",
-                name: "Prune Tree",
+                name: decisionTreesEZ.t('OptvarPrune'),
                 content: [
                     objects.radio1.el,
                     objects.radio2.el,

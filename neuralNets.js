@@ -220,7 +220,7 @@ if (!is.null({{selected.model | safe}}))
         var advanced = {
             el: new optionsVar(config, {
                 no: "advanced",
-                name: "Advanced",
+                name: neuralNets.t('advanced_lbl'),
                 content: [
                     objects.rep.el,
                     objects.label3.el,

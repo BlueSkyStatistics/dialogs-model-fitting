@@ -198,7 +198,7 @@ rm(BSkyImpMatrix)
         var taskParameters = {
             el: new optionsVar(config, {
                 no: "taskParameters",
-                name: "Task Parameters",
+                name: extremeGradientBoosting.t('OptvarTaskparam'),
                 content: [
                     objects.objective.el,
                     objects.numclasses.el,
@@ -209,7 +209,7 @@ rm(BSkyImpMatrix)
         var advanced = {
             el: new optionsVar(config, {
                 no: "advanced",
-                name: "Advanced Diagnostics",
+                name: extremeGradientBoosting.t('OptvarAdvDiagnostics'),
                 content: [
                     objects.Verbose.el,
                     objects.printevery.el,
@@ -219,7 +219,7 @@ rm(BSkyImpMatrix)
         var paramsTreeBoosting = {
             el: new optionsVar(config, {
                 no: "paramsTreeBoosting",
-                name: "Parameters for Tree Boosting",
+                name: extremeGradientBoosting.t('OptvarTreeBoostparam'),
                 content: [
                     objects.maxdepth.el,
                     objects.minchildweight.el,
