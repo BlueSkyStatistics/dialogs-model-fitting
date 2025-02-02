@@ -23,6 +23,7 @@ var localization = {
         errfct: "Differentiable function used for calculation of the error",
         linearoutput: "Activation function should not be applied to the output neurons",
         likelihood: "Likelihood",
+		advanced_lbl: "Advanced",
         help: {
             title: "Training Neuralnets, using neuralnet package",
             r_help: "help(neuralnet, package='neuralnet')",
@@ -366,7 +367,7 @@ if (!is.null({{selected.model | safe}}))
         var advanced = {
             el: new optionsVar(config, {
                 no: "advanced",
-                name: "Advanced",
+                name: localization.en.advanced_lbl,
                 content: [
                     objects.rep.el,
                     objects.label3.el,
