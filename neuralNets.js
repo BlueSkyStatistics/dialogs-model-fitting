@@ -249,7 +249,7 @@ if (!is.null({{selected.model | safe}}))
         
         this.help = {
             title: neuralNets.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: neuralNets.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: neuralNets.t('help.body')
         }
 ;

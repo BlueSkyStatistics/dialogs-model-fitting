@@ -121,7 +121,7 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
         
         this.help = {
             title: ratingScaleModel.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: ratingScaleModel.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: ratingScaleModel.t('help.body')
         }
 ;

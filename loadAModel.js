@@ -48,7 +48,7 @@ local ({
         
         this.help = {
             title: loadAModel.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: loadAModel.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: loadAModel.t('help.body')
         }
 ;

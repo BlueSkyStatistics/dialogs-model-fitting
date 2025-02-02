@@ -145,7 +145,7 @@ local({
         
         this.help = {
             title: multiLayerPerceptron.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: multiLayerPerceptron.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: multiLayerPerceptron.t('help.body')
         }
 ;

@@ -134,7 +134,7 @@ BSkyLoadRefresh("{{selected.datasetToScore | safe}}")
         
         this.help = {
             title: KNNPredict.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: KNNPredict.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: KNNPredict.t('help.body')
         }
 ;

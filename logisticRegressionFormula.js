@@ -114,7 +114,7 @@ local(
         
         this.help = {
             title: logisticRegressionFormula.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: logisticRegressionFormula.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: logisticRegressionFormula.t('help.body')
         }
 ;

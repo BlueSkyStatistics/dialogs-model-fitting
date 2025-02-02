@@ -40,7 +40,7 @@ BSkyFormat( contrasts({{dataset.name}}\${{selected.target | safe}}) ,singleTable
         
         this.help = {
             title: contrastsDisplay.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: contrastsDisplay.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: contrastsDisplay.t('help.body')
         }
 ;

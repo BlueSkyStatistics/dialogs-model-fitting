@@ -275,7 +275,7 @@ rm(bsky_tree)
         
         this.help = {
             title: decisionTreesEZ.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: decisionTreesEZ.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: decisionTreesEZ.t('help.body')
         }
 ;

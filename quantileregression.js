@@ -243,7 +243,7 @@ detach(package:SparseM)
         
         this.help = {
             title: QuantileRegression.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: QuantileRegression.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: QuantileRegression.t('help.body')
         }
 ;

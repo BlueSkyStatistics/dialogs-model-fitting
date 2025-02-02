@@ -73,7 +73,7 @@ base::save({{selected.modelSelection | safe}}, file = "{{selected.importResp | s
         
         this.help = {
             title: saveAModel.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: saveAModel.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: saveAModel.t('help.body')
         }
 ;

@@ -109,7 +109,7 @@ BSkyFormat(bskyTuningResults, singleTableOutputHeader="Tuning Results")
         
         this.help = {
             title: tuneRandomForest.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: tuneRandomForest.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: tuneRandomForest.t('help.body')
         }
 ;

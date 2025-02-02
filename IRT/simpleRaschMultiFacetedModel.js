@@ -82,7 +82,7 @@ if (!validateDataRasch( vars =c({{selected.destinationvars | safe}}), data ="{{d
         
         this.help = {
             title: simpleRaschMultiFacetedModel.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: simpleRaschMultiFacetedModel.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: simpleRaschMultiFacetedModel.t('help.body')
         }
 ;

@@ -264,7 +264,7 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
         
         this.help = {
             title: ordinalRegression.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: ordinalRegression.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: ordinalRegression.t('help.body')
         }
 ;

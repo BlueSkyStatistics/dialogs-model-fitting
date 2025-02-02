@@ -95,7 +95,7 @@ BSkyFormat(oobdf, singleTableOutputHeader="Results")
         
         this.help = {
             title: optimalNoTrees.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: optimalNoTrees.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: optimalNoTrees.t('help.body')
         }
 ;

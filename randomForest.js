@@ -178,7 +178,7 @@ if( !exists('{{selected.modelname | safe}}' ) || is.null({{selected.modelname | 
         
         this.help = {
             title: randomForest.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: randomForest.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: randomForest.t('help.body')
         }
 ;

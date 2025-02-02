@@ -79,7 +79,7 @@ if (validateDataRatingScale(vars=c({{selected.destinationvars | safe}}),data= "{
         
         this.help = {
             title: ratingScaleMultiFacetedModel.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: ratingScaleMultiFacetedModel.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: ratingScaleMultiFacetedModel.t('help.body')
         }
 ;

@@ -126,7 +126,7 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
         
         this.help = {
             title: linearRegressionLegacy.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: linearRegressionLegacy.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: linearRegressionLegacy.t('help.body')
         }
 ;

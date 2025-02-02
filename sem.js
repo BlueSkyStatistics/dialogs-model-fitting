@@ -991,7 +991,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
     var secOrderFactors = {
       el: new optionsVar(config, {
         no: "sem_options",
-        name: sem.t('secOrdFacOptvar'),//"Second order factors",
+        name: sem.t('secOrdFacOptvar'),
         layout: "two",
         left: [
           objects.semSuppCtrl1.el,
@@ -1004,7 +1004,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
     var equalConst = {
       el: new optionsVar(config, {
         no: "equalConst",
-        name: sem.t('EqConstraintsOptvar'),//"Equality constraints",
+        name: sem.t('EqConstraintsOptvar'),
         layout: "two",
         left: [
           objects.equalityConstraints1.el,
@@ -1129,7 +1129,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
     var mediation = {
       el: new optionsVar(config, {
         no: "mediation_options",
-        name: sem.t('mediationOptvar'),//"Mediation",
+        name: sem.t('mediationOptvar'),
         layout: "two",
         left: [
           objects.mediationSrcCtrl.el,
@@ -1204,7 +1204,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
     
         this.help = {
             title: sem.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: sem.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: sem.t('help.body')
         }
 ;

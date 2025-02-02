@@ -245,7 +245,7 @@ rm(BSkyImpMatrix)
         
         this.help = {
             title: extremeGradientBoosting.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: extremeGradientBoosting.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: extremeGradientBoosting.t('help.body')
         }
 ;

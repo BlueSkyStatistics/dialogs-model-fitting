@@ -121,7 +121,7 @@ if (validateDataPartialCredit(vars =c({{selected.destinationvars | safe}}), data
         
         this.help = {
             title: partialCreditModel.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: partialCreditModel.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: partialCreditModel.t('help.body')
         }
 ;

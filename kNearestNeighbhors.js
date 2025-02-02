@@ -151,7 +151,7 @@ BSkyLoadRefresh("{{selected.testDatasetName | safe}}")
         
         this.help = {
             title: kNearestNeighbhors.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: kNearestNeighbhors.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: kNearestNeighbhors.t('help.body')
         }
 ;

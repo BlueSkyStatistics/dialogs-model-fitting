@@ -124,7 +124,7 @@ if (!validateDataRasch( vars =c({{selected.destinationvars | safe}}), data ="{{d
         
         this.help = {
             title: simpleRaschModel.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: simpleRaschModel.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: simpleRaschModel.t('help.body')
         }
 ;

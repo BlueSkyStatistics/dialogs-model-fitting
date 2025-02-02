@@ -110,7 +110,7 @@ local(
         
         this.help = {
             title: naiveBayes.t('help.title'),
-            r_help: "help(data,package='utils')",
+            r_help: naiveBayes.t('help.r_help'),  //r_help: "help(data,package='utils')",
             body: naiveBayes.t('help.body')
         }
 ;
