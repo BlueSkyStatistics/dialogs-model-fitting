@@ -98,7 +98,7 @@ local(
         #McFadden R2
         BSkyFormat( pR2({{selected.modelname | safe}}) ,singleTableOutputHeader="McFadden R2")
         #odds ratio and 95% confidence interval
-        BSkyFormat(exp(cbind(OR=coef({{selected.modelname | safe}}), confint.glm({{selected.modelname | safe}},level=0.95))),singleTableOutputHeader="Odds ratio(OR) and 95% Confidence interval ")
+        BSkyFormat(exp(cbind(OR=coef({{selected.modelname | safe}}), stats::confint({{selected.modelname | safe}},level=0.95))),singleTableOutputHeader="Odds ratio(OR) and 95% Confidence interval ")
         {{if (options.selected.generateplotchk == "TRUE")}}#Displaying plots\nplot({{selected.modelname | safe}}){{/if}} 
         #Adding attributes to support scoring
         #We don't add dependent and independent variables as this is handled by our functions
