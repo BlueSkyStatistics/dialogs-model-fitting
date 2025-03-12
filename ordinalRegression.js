@@ -1,3 +1,9 @@
+/**
+  * This file is protected by copyright (c) 2023-2025 by BlueSky Statistics, LLC.
+  * All rights reserved. The copy, modification, or distribution of this file is not
+  * allowed without the prior written permission from BlueSky Statistics, LLC.
+ */
+
 
 
 
@@ -55,9 +61,17 @@ RCode: `
 require(equatiomatic)
 require(textutils)
 require(broom)
+#We use the code na.omit({{dataset.name}}[, {{selected.all_vars | safe}}]) as we are comparing the
+#model specified with the null model. Using na.action=na.exclude will result in the specified model
+#and the null model being built on different datasets
+#For the same reason we use na.omit in generalhoslem::logitgof
 {{selected.model | safe}} = MASS::polr({{selected.dependent | safe}}~{{selected.formula | safe}}, 
-    method = '{{selected.method | safe}}', Hess = TRUE, weights ={{selected.weights | safe}}, 
-    na.action=na.exclude, data = na.omit({{dataset.name}}[, {{selected.all_vars | safe}}]))
+    method = '{{selected.method | safe}}', Hess = TRUE, {{if(options.selected.weights !="")}}weights ={{selected.weights | safe}},{{/if}} 
+    data = na.omit({{dataset.name}}[, {{selected.all_vars | safe}}]))
+
+#{{selected.model | safe}} = MASS::polr({{selected.dependent | safe}}~{{selected.formula | safe}}, 
+#    method = '{{selected.method | safe}}', Hess = TRUE, {{if(options.selected.weights !="")}}weights ={{selected.weights | safe}},{{/if}} 
+#    na.action=na.exclude, data = {{dataset.name}})
   
 #Display theoretical model equation and coefficients
 #Display theoretical model
@@ -111,7 +125,6 @@ BSky_p2 <- stats::pt(abs(BSky_ctable[, "t value"]),lower.tail=FALSE, df={{select
 names(BSky_p) <-NULL
 names(BSky_p2) <-NULL
 
-
 #Storing the p values in the return structure
 BSky_Results_tidy <- cbind(BSky_Results_tidy , "p.value(z)" = BSky_p, "p.value(t)" = BSky_p2)
 
@@ -134,14 +147,20 @@ cat ("LogLikelihood:", round (BSkyLogLikelihood, BSkyGetDecimalDigitSetting()) )
 
 {{selected.model | safe}}_null = MASS::polr({{selected.dependent | safe}}~1, 
     method = '{{selected.method | safe}}', Hess = TRUE, weights ={{selected.weights | safe}}, 
-    na.action=na.exclude, data = na.omit({{dataset.name}}[, {{selected.all_vars | safe}}]))
+    data = na.omit({{dataset.name}}[, {{selected.all_vars | safe}}]))
+
+#{{selected.model | safe}}_null = MASS::polr({{selected.dependent | safe}}~1, 
+#    method = '{{selected.method | safe}}', Hess = TRUE, {{if(options.selected.weights !="")}}weights ={{selected.weights | safe}},{{/if}} 
+#    na.action=na.exclude, data = {{dataset.name}})
+
+
 BSkyTestSlopes <- stats::anova({{selected.model | safe}}, {{selected.model | safe}}_null)
 BSkyTestSlopes <- as.data.frame(BSkyTestSlopes)
 BSkyTestSlopes <- cbind(Description= c("Null model", "Specified model"), BSkyTestSlopes)
 BSkyFormat(as.data.frame(BSkyTestSlopes), singleTableOutputHeader = "Test of all slopes equal to zero" )
 
 #Hosmer-Lemeshow goodness of fit tests
-BSkyHosmer <-generalhoslem::logitgof({{dataset.name}}\${{selected.dependent | safe}}, fitted({{selected.model | safe}}))
+BSkyHosmer <-generalhoslem::logitgof(na.omit({{dataset.name}}[, {{selected.all_vars | safe}}])[,"{{selected.dependent | safe}}"], fitted({{selected.model | safe}}))
 BSkyFormat(BSkyHosmer, outputTableIndex = c(tableone=1))
 
 #Pulkstenis-Robinson goodness of fit chi-squared
@@ -264,7 +283,7 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
         
         this.help = {
             title: ordinalRegression.t('help.title'),
-            r_help: ordinalRegression.t('help.r_help'),  //r_help: "help(data,package='utils')",
+            r_help: ordinalRegression.t('help.r_help'), //Fix by Anil //r_help: "help(data,package='utils')",
             body: ordinalRegression.t('help.body')
         }
 ;
@@ -281,7 +300,13 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
         let results = getFixedEffectsandCovariates(code_vars.selected.formula);
         let independentVars =Object.values(results.covariates).concat( Object.values(results.fixedEffects)).toString();
         code_vars.selected.rCharacterArray = stringToRCharacterArray(independentVars)
-        code_vars.selected.all_vars = stringToRCharacterArray(independentVars  +","+code_vars.selected.dependent)
+        if (code_vars.selected.weights !="")
+        {
+            code_vars.selected.all_vars = stringToRCharacterArray(independentVars  +","+code_vars.selected.dependent +","+code_vars.selected.weights)
+        }
+        else{
+            code_vars.selected.all_vars = stringToRCharacterArray(independentVars  +","+code_vars.selected.dependent)
+        }
         const cmd = instance.dialog.renderR(code_vars);
         res.push({ cmd: cmd, cgid: newCommandGroup(`${instance.config.id}`, `${instance.config.label}`), oriR: instance.config.RCode, code_vars: code_vars })
         return res;
