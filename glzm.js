@@ -39,10 +39,10 @@ class(BSky_GLM_Summary_{{selected.modelname | safe}}) = unique(c("summary.glm", 
 {{/if}}
 BSkyFormat(BSky_GLM_Summary_{{selected.modelname | safe}})
 #Coefficients -95% confidence interval
-BSkyFormat(cbind(Estimate=coef({{selected.modelname | safe}}),stats::confint({{selected.modelname | safe}},level=0.95)),singleTableOutputHeader='Coefficient estimates and 95% confidence intervals')
+BSkyFormat(cbind(Estimate=coef({{selected.modelname | safe}}),confint.glm({{selected.modelname | safe}},level=0.95)),singleTableOutputHeader='Coefficient estimates and 95% confidence intervals')
 {{if (options.selected.expCoefficients =="TRUE")}}
 #Exponents of the coefficients and 95% confidence interval
-BSkyFormat(exp(cbind(Exp_Coef=coef({{selected.modelname | safe}}),stats::confint({{selected.modelname | safe}},level=0.95))),singleTableOutputHeader='Exponentiated coefficient estimates and 95% confidence intervals')
+BSkyFormat(exp(cbind(Exp_Coef=coef({{selected.modelname | safe}}),confint.glm({{selected.modelname | safe}},level=0.95))),singleTableOutputHeader='Exponentiated coefficient estimates and 95% confidence intervals')
 {{/if}}
 #Adding attributes to support scoring
 ##The attribute indepvar does not have to be populated as the function getModelIndependentVariables handles models of class glm and negbin (negative binomial)
