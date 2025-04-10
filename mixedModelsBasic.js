@@ -504,10 +504,10 @@ BSkyFormat(as.data.frame(unclass(BSkyRsquared[[2]])), singleTableOutputHeader = 
             {
                 tempoutput += "#Display theoretical model equation and coefficients\n";
                 tempoutput += "#Display theoretical model\n";
-                tempoutput += "reg_formula = equatiomatic::extract_eq(" + code_vars.selected.modelname + ", raw_tex = FALSE, wrap = TRUE, \n\t intercept = \"alpha\", ital_vars = FALSE)\n"; 
+                tempoutput += "reg_formula = BlueSky::extract_eq_safe(" + code_vars.selected.modelname + ", raw_tex = FALSE, wrap = TRUE, \n\t intercept = \"alpha\", ital_vars = FALSE)\n"; 
                 tempoutput += "BSkyFormat(reg_formula)\n";
                 tempoutput += "#Display coefficients\n";
-                tempoutput += "reg_equation = equatiomatic::extract_eq(" + code_vars.selected.modelname + ", wrap = TRUE, \n\tital_vars = FALSE, use_coefs = TRUE, coef_digits = BSkyGetDecimalDigitSetting())\n";
+                tempoutput += "reg_equation = BlueSky::extract_eq_safe(" + code_vars.selected.modelname + ", wrap = TRUE, \n\tital_vars = FALSE, use_coefs = TRUE, coef_digits = BSkyGetDecimalDigitSetting())\n";
                 tempoutput += "BSkyFormat(reg_equation)\n";
             }
            // if ( !(code_vars.selected.NestingVar.length != 0 && code_vars.selected.tvarbox2 === "" && code_vars.selected.randomvars.length == 0 && code_vars.selected.cov === "Intercept Only"))
