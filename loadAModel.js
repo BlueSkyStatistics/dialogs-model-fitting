@@ -25,7 +25,7 @@ var localization = {
 <b>Description</b></br>
 R Model objects saved to the file selected will be loaded.</br>
 We will load ALL R objects saved to the selected file. If objects with the same name exist in the R global environment, they will be overwritten.</br>
-We will display a message confirming the models built with the BlueSky application that were loaded.</br>
+We will display a message confirming the models built with the application that were loaded.</br>
 You have to click the execute button (the horizontal triangle button) to load R objects saved to the selected file. 
 <br/>
 <b>Usage</b>
