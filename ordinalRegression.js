@@ -180,10 +180,10 @@ require(MASS)
 local({
     #Display theoretical model equation and coefficients
     #Display theoretical model
-    reg_formula = BlueSky::extract_eq_safe({{selected.model | safe}}, raw_tex = FALSE,\n\t wrap = TRUE, intercept = "alpha", ital_vars = FALSE) 
+    reg_formula = equatiomatic::extract_eq({{selected.model | safe}}, raw_tex = FALSE,\n\t wrap = TRUE, intercept = "alpha", ital_vars = FALSE) 
     BSkyFormat(reg_formula)
     #Display coefficients
-    reg_equation = BlueSky::extract_eq_safe({{selected.model | safe}}, use_coefs = TRUE,\n\t wrap = TRUE,ital_vars = FALSE, coef_digits = BSkyGetDecimalDigitSetting() )
+    reg_equation = equatiomatic::extract_eq({{selected.model | safe}}, use_coefs = TRUE,\n\t wrap = TRUE,ital_vars = FALSE, coef_digits = BSkyGetDecimalDigitSetting() )
     BSkyFormat(reg_equation)
     BSky_Ordinal_Regression_Summary_{{selected.model | safe}} = summary({{selected.model | safe}})
     #Getting the coefficients
@@ -227,10 +227,10 @@ require(broom)
   
 #Display theoretical model equation and coefficients
 #Display theoretical model
-reg_formula = BlueSky::extract_eq_safe({{selected.model | safe}}, raw_tex = FALSE,\n\t wrap = TRUE, intercept = "alpha", ital_vars = FALSE) 
+reg_formula = equatiomatic::extract_eq({{selected.model | safe}}, raw_tex = FALSE,\n\t wrap = TRUE, intercept = "alpha", ital_vars = FALSE) 
 BSkyFormat(reg_formula)
 #Display coefficients in the model equation
-reg_equation = BlueSky::extract_eq_safe({{selected.model | safe}}, use_coefs = TRUE,\n\t wrap = TRUE,ital_vars = FALSE, coef_digits = BSkyGetDecimalDigitSetting() )
+reg_equation = equatiomatic::extract_eq({{selected.model | safe}}, use_coefs = TRUE,\n\t wrap = TRUE,ital_vars = FALSE, coef_digits = BSkyGetDecimalDigitSetting() )
 BSkyFormat(reg_equation)
 
 #Using tidy to get the model statistics with Unexponentiated coefficients
