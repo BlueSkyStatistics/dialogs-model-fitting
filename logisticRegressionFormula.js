@@ -81,8 +81,14 @@ require(MASS);
 require(pscl);
 require(textutils);
 #Builds a logistic model 
+#We build the model on a dataset with na's removed from all the variables selected
+#due to a defect in the equatiomatic package where the level to be predicted was getting selected
+#incorrectly i.e. the equation listed a different level of the dependent variable as the 
+#predicted level, but the model was built with a different level of the dependent variable
+#This happened when the data was skewed i.e. one level of the dependent variable had many more 
+#rows than the other level
 {{selected.modelname | safe}}= glm({{selected.dependent | safe}} ~ {{selected.formula | safe}}, {{if(options.selected.destination2 != "")}}weights = {{selected.destination2 | safe}},{{/if}} family =binomial(link='logit'), na.action=na.exclude, 
-data={{dataset.name}})
+data=na.omit({{dataset.name}}[,{{selected.all_vars | safe}}]))
 local(
 {
     if(!is.null( {{selected.modelname | safe}} ) )
@@ -178,5 +184,32 @@ local(
         super(config, objects, content);
         this.help = localization.en.help;
     }
+
+    prepareExecution(instance) {
+        var res = [];
+        var code_vars = {
+            dataset: {
+                name: $(`#${instance.config.id}`).attr('dataset') ? $(`#${instance.config.id}`).attr('dataset') : getActiveDataset()
+            },
+            selected: instance.dialog.extractData()
+        }
+        let results = getFixedEffectsandCovariates(code_vars.selected.formula);
+        let independentVars =Object.values(results.covariates).concat( Object.values(results.fixedEffects)).toString();
+        code_vars.selected.rCharacterArray = stringToRCharacterArray(independentVars)
+        if (code_vars.selected.destination2 !="")
+        {
+            code_vars.selected.all_vars = stringToRCharacterArray(independentVars  +","+code_vars.selected.dependent +","+code_vars.selected.destination2)
+        }
+        else{
+            code_vars.selected.all_vars = stringToRCharacterArray(independentVars  +","+code_vars.selected.dependent)
+        }
+        const cmd = instance.dialog.renderR(code_vars);
+        res.push({ cmd: cmd, cgid: newCommandGroup(`${instance.config.id}`, `${instance.config.label}`), oriR: instance.config.RCode, code_vars: code_vars })
+        return res;
+       
+    }
+
+
+
 }
 module.exports.item = new logisticRegressionFormula().render()
