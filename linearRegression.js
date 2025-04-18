@@ -169,7 +169,7 @@ if (exists("BSkytotalSumOfSquares")) rm (BSkytotalSumOfSquares)
         
         this.help = {
             title: linearRegression.t('help.title'),
-            r_help: linearRegression.t('help.r_help'),  //r_help: "help(data,package='utils')",
+            r_help: linearRegression.t('help.r_help'), //Fix by Anil //r_help: "help(data,package='utils')",
             body: linearRegression.t('help.body')
         }
 ;
