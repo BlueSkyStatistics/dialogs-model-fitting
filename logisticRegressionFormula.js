@@ -88,7 +88,7 @@ require(textutils);
 #This happened when the data was skewed i.e. one level of the dependent variable had many more 
 #rows than the other level
 {{selected.modelname | safe}}= glm({{selected.dependent | safe}} ~ {{selected.formula | safe}}, {{if(options.selected.destination2 != "")}}weights = {{selected.destination2 | safe}},{{/if}} family =binomial(link='logit'), na.action=na.exclude, 
-data=na.omit({{dataset.name}}[,{{selected.all_vars | safe}}]))
+data=base::na.omit({{dataset.name}}[,{{selected.all_vars | safe}}]))
 local(
 {
     if(!is.null( {{selected.modelname | safe}} ) )
