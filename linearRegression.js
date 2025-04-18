@@ -76,13 +76,13 @@ require(textutils)
 
 #Display theoretical model
 {{selected.modelname | safe}} %>%
-    BlueSky::extract_eq_safe(raw_tex = FALSE,
+    equatiomatic::extract_eq(raw_tex = FALSE,
         wrap = TRUE, intercept = "alpha", ital_vars = FALSE) %>%
         BSkyFormat()       
 
 #Display coefficients
 {{selected.modelname | safe}} %>%
-    BlueSky::extract_eq_safe(use_coefs = TRUE,
+    equatiomatic::extract_eq(use_coefs = TRUE,
     wrap = TRUE,  ital_vars = FALSE, coef_digits = BSkyGetDecimalDigitSetting()) %>%
        BSkyFormat()
 

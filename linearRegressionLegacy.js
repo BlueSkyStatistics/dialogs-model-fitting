@@ -67,10 +67,10 @@ require(textutils)
 ##local ({
 #Display theoretical model equation and coefficients
 #Display theoretical model
-reg_formula = BlueSky::extract_eq_safe({{selected.modelname | safe}}, raw_tex = FALSE,\n\t wrap = TRUE, intercept = "alpha", ital_vars = FALSE) 
+reg_formula = equatiomatic::extract_eq({{selected.modelname | safe}}, raw_tex = FALSE,\n\t wrap = TRUE, intercept = "alpha", ital_vars = FALSE) 
 BSkyFormat(reg_formula)
 #Display coefficients
-reg_equation = BlueSky::extract_eq_safe({{selected.modelname | safe}}, use_coefs = TRUE,\n\t wrap = TRUE,  ital_vars = FALSE, coef_digits = BSkyGetDecimalDigitSetting() )
+reg_equation = equatiomatic::extract_eq({{selected.modelname | safe}}, use_coefs = TRUE,\n\t wrap = TRUE,  ital_vars = FALSE, coef_digits = BSkyGetDecimalDigitSetting() )
 BSkyFormat(reg_equation)
 #Summarizing the model
 BSky_LM_Summary_{{selected.modelname | safe}} = summary({{selected.modelname | safe}})
