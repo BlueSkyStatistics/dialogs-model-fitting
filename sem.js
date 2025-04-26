@@ -1253,7 +1253,7 @@ if (exists('BSkyDV'))rm(BSkyDV)
     //If mediation terms and a grouping variable are defined, we don't handle this case and display an error
     if (code_vars.selected.multiGrpDependent.length >0 && Object.keys(code_vars.selected.mediationDestCtrl).length >0)
     {
-       dialog.showMessageBoxSync({ type: "error", buttons: ["OK"], title: "Not supported", message: `We don't support mediation when a grouping variable is defined. Contact support@blueskystatistics.com if you need this capability.` })
+       dialog.showMessageBoxSync({ type: "error", buttons: ["OK"], title: "Not supported", message: `We don't support mediation when a grouping variable is defined. Contact support@biostatprime.com if you need this capability.` })
        return res
     }
     code_vars.selected["allLatentLoadingRemoved"] =false
