@@ -70,7 +70,7 @@ base::save({{selected.modelSelection | safe}}, file = "{{selected.importResp | s
             nav: {
                 name: saveAModel.t('navigation'),
                 icon: "fas fa-save",
-                onclick: `r_before_modal("${config.id}")`,
+                onclick: `r_before_modal('${config.id}')`,
                 modal_id: config.id,
                 datasetRequired: false,
             }
