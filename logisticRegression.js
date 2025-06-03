@@ -22,8 +22,15 @@ require(pscl);
 require(equatiomatic)
 require(textutils)
 #Builds a logistic model 
+#We build the model on a dataset with na's removed from all the variables selected
+#due to a defect in the equatiomatic package where the level to be predicted was getting selected
+#incorrectly i.e. the equation listed a different level of the dependent variable as the 
+#predicted level, but the model was built with a different level of the dependent variable
+#This happened when the data was skewed i.e. one level of the dependent variable had many more 
+#rows than the other level
+
 {{selected.modelname | safe}}= glm({{selected.dependent | safe}} ~ {{selected.independent | safe}}, {{if(options.selected.destination2 != "")}}weights = {{selected.destination2 | safe}},{{/if}} family =binomial(link='logit'), na.action=na.exclude, 
-data={{dataset.name}})
+data=base::na.omit({{dataset.name}}[,{{selected.all_vars | safe}}]))
 local(
 {
     if(!is.null( {{selected.modelname | safe}} ) )
@@ -31,9 +38,11 @@ local(
         #Display theoretical model equation and coefficients
         #Display theoretical model
         reg_formula = equatiomatic::extract_eq({{selected.modelname | safe}}, raw_tex = FALSE,\n\t wrap = TRUE, intercept = "alpha", ital_vars = FALSE) 
+        
         BSkyFormat(reg_formula)
         #Display coefficients
         reg_equation = equatiomatic::extract_eq({{selected.modelname | safe}}, use_coefs = TRUE,\n\t wrap = TRUE,ital_vars = FALSE, coef_digits = BSkyGetDecimalDigitSetting() )
+        
         BSkyFormat(reg_equation)
         #Summarizing the model
         BSky_Logistic = summary({{selected.modelname | safe}})
@@ -45,7 +54,7 @@ local(
         #McFadden R2
         BSkyFormat( pR2({{selected.modelname | safe}}) ,singleTableOutputHeader="McFadden R2")
         #odds ratio and 95% confidence interval
-        BSkyFormat(exp(cbind(OR=coef({{selected.modelname | safe}}), confint.glm({{selected.modelname | safe}},level=0.95))),singleTableOutputHeader="Odds ratio(OR) and 95% Confidence interval ")
+        BSkyFormat(exp(cbind(OR=coef({{selected.modelname | safe}}),  stats::confint({{selected.modelname | safe}},level=0.95))),singleTableOutputHeader="Odds ratio(OR) and 95% Confidence interval ")
         {{if (options.selected.generateplotchk == "TRUE")}}#Displaying plots\nplot({{selected.modelname | safe}}){{/if}} 
         #Adding attributes to support scoring
         #We don't add dependent and independent variables as this is handled by our functions
@@ -123,11 +132,35 @@ local(
         
         this.help = {
             title: logisticRegression.t('help.title'),
-            r_help: logisticRegression.t('help.r_help'),  //r_help: "help(data,package='utils')",
+            r_help: logisticRegression.t('help.r_help'), //Fix by Anil //r_help: "help(data,package='utils')",
             body: logisticRegression.t('help.body')
         }
 ;
     }
+    prepareExecution(instance) {
+        var res = [];
+        var code_vars = {
+            dataset: {
+                name: $(`#${instance.config.id}`).attr('dataset') ? $(`#${instance.config.id}`).attr('dataset') : getActiveDataset()
+            },
+            selected: instance.dialog.extractData()
+        }
+        let results = getFixedEffectsandCovariates(code_vars.selected.independent);
+        let independentVars =Object.values(results.covariates).concat( Object.values(results.fixedEffects)).toString();
+        code_vars.selected.rCharacterArray = stringToRCharacterArray(independentVars)
+        if (code_vars.selected.destination2 !="")
+        {
+            code_vars.selected.all_vars = stringToRCharacterArray(independentVars  +","+code_vars.selected.dependent +","+code_vars.selected.destination2)
+        }
+        else{
+            code_vars.selected.all_vars = stringToRCharacterArray(independentVars  +","+code_vars.selected.dependent)
+        }
+        const cmd = instance.dialog.renderR(code_vars);
+        res.push({ cmd: cmd, cgid: newCommandGroup(`${instance.config.id}`, `${instance.config.label}`), oriR: instance.config.RCode, code_vars: code_vars })
+        return res;
+       
+    }
+
 }
 
 module.exports = {
