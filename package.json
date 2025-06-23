@@ -4,7 +4,7 @@
     "description": "BioStat Prime Model Fitting dialogs",
     "keywords": [],
     "main": "nav.js",
-    "version": "1.1.9",
+    "version": "1.2.0",
     "author": "BioStat Prime",
 	"minBSkyVersion": "8.93",
     "scripts": {},
