@@ -1,11 +1,11 @@
 {
     "name": "@BlueSkyStatistics/dialogs/modelFitting",
     "productName": "Model Fitting dialogs",
-    "description": "BlueSky Statistics Model Fitting dialogs",
+    "description": "BioStat Prime Model Fitting dialogs",
     "keywords": [],
     "main": "nav.js",
     "version": "1.1.9",
-    "author": "BlueSky Statistics",
+    "author": "BioStat Prime",
 	"minBSkyVersion": "8.93",
     "scripts": {},
     "dependencies": {
