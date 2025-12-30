@@ -20,7 +20,6 @@ require(equatiomatic);
 require(textutils);
 require(MASS);
 require(pscl);
-require(textutils);
 #Builds a logistic model 
 #We build the model on a dataset with na's removed from all the variables selected
 #due to a defect in the equatiomatic package where the level to be predicted was getting selected
