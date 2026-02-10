@@ -28,7 +28,7 @@ require(pscl);
 #This happened when the data was skewed i.e. one level of the dependent variable had many more 
 #rows than the other level
 {{selected.modelname | safe}}= glm({{selected.dependent | safe}} ~ {{selected.formula | safe}}, {{if(options.selected.destination2 != "")}}weights = {{selected.destination2 | safe}},{{/if}} family =binomial(link='logit'), na.action=na.exclude, 
-data=na.omit({{dataset.name}}[,{{selected.all_vars | safe}}]))
+data=stats::na.omit({{dataset.name}}[,{{selected.all_vars | safe}}]))
 local(
 {
     if(!is.null( {{selected.modelname | safe}} ) )
@@ -50,7 +50,7 @@ local(
         #McFadden R2
         BSkyFormat( pR2({{selected.modelname | safe}}) ,singleTableOutputHeader="McFadden R2")
         #odds ratio and 95% confidence interval
-        BSkyFormat(exp(cbind(OR=coef({{selected.modelname | safe}}),  stats::confint({{selected.modelname | safe}},level=0.95))),singleTableOutputHeader="Odds ratio(OR) and 95% Confidence interval ")
+        BSkyFormat(exp(cbind(OR=coef({{selected.modelname | safe}}), stats::confint({{selected.modelname | safe}},level=0.95))),singleTableOutputHeader="Odds ratio(OR) and 95% Confidence interval ")
         {{if (options.selected.generateplotchk == "TRUE")}}#Displaying plots\nplot({{selected.modelname | safe}}){{/if}} 
         #Adding attributes to support scoring
         #We don't add dependent and independent variables as this is handled by our functions
