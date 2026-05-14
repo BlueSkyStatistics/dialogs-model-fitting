@@ -1,19 +1,10 @@
-/**
-  * This file is protected by copyright (c) 2023-2025 by BlueSky Statistics, LLC.
-  * All rights reserved. The copy, modification, or distribution of this file is not
-  * allowed without the prior written permission from BlueSky Statistics, LLC.
- */
-
-const {getT} = global.requireFromRoot("localization");
-let t = getT('menutoolbar')
-const nav = () => ([
+const nav = [
     {
-        "name": t('modelfitting_top_level_title'),// {ns: 'menutoolbar'}),
-        "tab": "model_fitting",
+        "id": "menu-modelfitting",
         "buttons": [
             
             {
-                "name": t('modelfitting_Contrasts'),// {ns: 'menutoolbar'}),
+                "id": "menu-modelfitting-contrasts",
                 "icon": "icon-brightness-and-contrast",
                 "children": [
                     "./contrastsDisplay",
@@ -22,7 +13,7 @@ const nav = () => ([
             },
             "./glzm",
             {
-                "name": t('modelfitting_IRT'),// {ns: 'menutoolbar'}),
+                "id": "menu-modelfitting-irt",
                 "icon": "icon-lamp",
                 "children": [
                     "./IRT/partialCreditModel",
@@ -34,7 +25,7 @@ const nav = () => ([
                 ]
             },
             {
-                "name": t('modelfitting_KNN'),// {ns: 'menutoolbar'}),
+                "id": "menu-modelfitting-knn",
                 "icon": "icon-network",
                 "children": [
                     "./kNearestNeighbhors",
@@ -42,7 +33,7 @@ const nav = () => ([
                 ]
             },
         {
-                "name": t('modelfitting_Regression'),// {ns: 'menutoolbar'}),
+                "id": "menu-modelfitting-regression",
                 "icon": "icon-linear_regression_white_comp",
                 "children": [
                     "./linearRegressionFormula",
@@ -56,7 +47,7 @@ const nav = () => ([
                 ]
             },
             {
-                "name": t('modelfitting_Nonlinear_Regression'),// {ns: 'menutoolbar'}),
+                "id": "menu-modelfitting-nonlinearregression",
                 "icon": "icon-logistic_white_comp",
                 "children": [
         
@@ -65,7 +56,7 @@ const nav = () => ([
             "./mixedModelsBasic",
             "./naiveBayes",
             {
-                "name": t('modelfitting_Neural_Nets'),// {ns: 'menutoolbar'}),
+                "id": "menu-modelfitting-neuralnets",
                 "icon": "icon-brain",
                 "children": [
                     "./multiLayerPerceptron",
@@ -74,7 +65,7 @@ const nav = () => ([
             },
             "./sem",  
             {
-                "name": t('modelfitting_Trees'),// {ns: 'menutoolbar'}),
+                "id": "menu-modelfitting-trees",
                 "icon": "icon-tree",
                 "children": [
                     "./decisionTreesEZ",
@@ -89,11 +80,10 @@ const nav = () => ([
         ]
     },
     {
-        "name": t('modelfitting_File'),// {ns: 'menutoolbar'}),
-        "tab": "file",
+        "id": "menu-file",
         "buttons": [
             {
-                "name": t('modelfitting_File_Model'),// {ns: 'menutoolbar'}),
+                "id": "menu-file-model",
                 "icon": "icon-package_install",
                 "children": [
                     "./loadAModel",
@@ -103,9 +93,6 @@ const nav = () => ([
         ]
 
     }
-])
+]
 
-module.exports = {
-    nav: nav(),
-    render: () => nav()
-}
+module.exports.nav = nav
