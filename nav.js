@@ -18,6 +18,20 @@ const nav = [
                     "./contrastsSet"
                 ]
             },
+			{
+                "name": "Elastic Net",
+                "icon": "icon-variance",
+                "children": [
+    
+                ]				
+			},		
+			{
+                "name": "GEE",
+                "icon": "icon-link",
+                "children": [
+                 
+                ]				
+			},			
             "./glzm",
             {
                 "name": "IRT",
