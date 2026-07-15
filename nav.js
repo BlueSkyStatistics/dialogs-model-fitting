@@ -12,14 +12,14 @@ const nav = [
                 ]
             },
 			{
-                "name": "Elastic Net",
+                "id": "menu-modelfitting-elasticnet",
                 "icon": "icon-variance",
                 "children": [
     
                 ]				
 			},		
 			{
-                "name": "GEE",
+                "id": "menu-modelfitting-gee",
                 "icon": "icon-link",
                 "children": [
                  
