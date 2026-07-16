@@ -21,14 +21,14 @@ const nav = () => ([
                 ]
             },
 			{
-                "name": "Elastic Net",
+                "name": t('menu-modelfitting-elasticnet'),
                 "icon": "icon-variance",
                 "children": [
     
                 ]				
 			},		
 			{
-                "name": "GEE",
+                "name": t('menu-modelfitting-gee'),
                 "icon": "icon-link",
                 "children": [
                  
