@@ -162,6 +162,7 @@ if (exists("BSkytotalSumOfSquares")) rm (BSkytotalSumOfSquares)
             nav: {
                 name: linearRegression.t('navigation'),
                 icon: "icon-linear_regression_white_comp",
+				positionInNav: 9,
                 modal: config.id
             }
         };

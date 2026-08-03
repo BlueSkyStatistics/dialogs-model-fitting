@@ -118,6 +118,7 @@ local(
             nav: {
                 name: logisticRegressionFormula.t('navigation'),
                 icon: "icon-logistic_formula",
+				positionInNav: 11,
                 modal: config.id
             }
         };

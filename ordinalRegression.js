@@ -276,6 +276,7 @@ if (exists("BSkyLogLikelihood")) rm(BSkyLogLikelihood)
             nav: {
                 name: ordinalRegression.t('navigation'),
                 icon: "icon-regression_ordinal",
+				positionInNav: 19,
                 modal: config.id
             }
         };

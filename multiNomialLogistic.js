@@ -94,6 +94,7 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
             nav: {
                 name: multiNomialLogistic.t('navigation'),
                 icon: "icon-ml",
+				positionInNav: 18,
                 modal: config.id
             }
         };

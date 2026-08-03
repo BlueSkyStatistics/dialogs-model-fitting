@@ -242,6 +242,7 @@ detach(package:SparseM)
             nav: {
                 name: QuantileRegression.t('navigation'),
                 icon: "icon-linear_regression_white_comp",
+				positionInNav: 21,
                 modal: config.id
             }
         }

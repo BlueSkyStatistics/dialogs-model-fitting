@@ -130,6 +130,7 @@ attr(.GlobalEnv\${{selected.modelname | safe}},"depVarSample")= sample({{dataset
             nav: {
                 name: linearRegressionFormula.t('navigation'),
                 icon: "icon-linear_regression_formula",
+				positionInNav: 8,
                 modal: config.id
             }
         };

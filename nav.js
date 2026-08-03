@@ -13,7 +13,7 @@ const nav = [
             },
 			{
                 "id": "menu-modelfitting-elasticnet",
-                "icon": "icon-variance",
+                "icon": "icon-elastic_net",
                 "children": [
     
                 ]				

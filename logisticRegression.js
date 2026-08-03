@@ -125,6 +125,7 @@ local(
             nav: {
                 name: logisticRegression.t('navigation'),
                 icon: "icon-logistic_white_comp",
+				positionInNav: 12,
                 modal: config.id
             }
         };
