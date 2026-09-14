@@ -86,7 +86,7 @@ require(pscl);
 #predicted level, but the model was built with a different level of the dependent variable
 #This happened when the data was skewed i.e. one level of the dependent variable had many more 
 #rows than the other level
-{{selected.modelname | safe}}= glm({{selected.dependent | safe}} ~ {{selected.formula | safe}}, {{if(options.selected.destination2 != "")}}weights = {{selected.destination2 | safe}},{{/if}} family =binomial(link='logit'), na.action=na.exclude, 
+{{selected.modelname | safe}}= glm({{selected.dependent | safe}} ~ {{selected.formula | safe}}, {{if(options.selected.destination2 != "")}}weights = {{dataset.name}}\${{selected.destination2 | safe}},{{/if}} family =binomial(link='logit'), na.action=na.exclude, 
 data=stats::na.omit({{dataset.name}}[,{{selected.all_vars | safe}}]))
 local(
 {
@@ -166,7 +166,7 @@ local(
                     label: localization.en.destination2,
                     no: "destination2",
                     filter: "String|Numeric|Date|Logical|Ordinal|Nominal|Scale",
-                    extraction: "Prefix|UseComma",
+                    extraction: "UseComma",
                    // wrapped: 'weight=%val%,',
                 })
             },
